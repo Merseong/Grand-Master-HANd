@@ -96,3 +96,16 @@ MonoBehaviour:
   attackPos: {x: 0, y: 0.2, z: 0}
   canMove: 1
   isMoving: 0
+  handType: 0
+  touchPadAction:
+    actionPath: /actions/default/in/TouchPad
+    needsReinit: 0
+  touchPositionAction:
+    actionPath: /actions/default/in/TouchPosition
+    needsReinit: 0
+  teleportAction:
+    actionPath: /actions/default/in/Teleport
+    needsReinit: 0
+  grabPinchAction:
+    actionPath: /actions/default/in/GrabPinch
+    needsReinit: 0

@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// for test
+using Valve.VR;
+
 public abstract class Piece : MonoBehaviour
 {
     public int damage = 3;
@@ -25,16 +28,26 @@ public abstract class Piece : MonoBehaviour
 
     // 들고있을때 이것저것 표시 (어디에 옮겨질지나, 그런거)
 
+
+    // temporary
+    public SteamVR_Input_Sources handType;
+    public SteamVR_Action_Boolean touchPadAction;
+    public SteamVR_Action_Vector2 touchPositionAction;
+    public SteamVR_Action_Boolean teleportAction;
+    public SteamVR_Action_Boolean grabPinchAction;
+
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (touchPadAction.GetState(handType))
         {
-            AutoAttack();
-        }
-        if (Input.GetMouseButton(1))
-        {
-            Time.timeScale = 0.1f;
+            Time.timeScale = (touchPositionAction.GetAxis(handType).y + 1) / 2;
+            Debug.Log(Time.timeScale);
         }
         else Time.timeScale = 1;
+        if (grabPinchAction.GetStateDown(handType))
+        {
+            Debug.Log("GrabPinch " + handType);
+            AutoAttack();
+        }
     }
 }
