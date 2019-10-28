@@ -62,6 +62,19 @@ public class ControllerGrabObject : MonoBehaviour
 
     private void GrabObject()
     {
+        Piece piece = null;
+        if (collidingObject.CompareTag("Piece"))
+        {
+            piece = collidingObject.GetComponent<Piece>();
+            if (!piece.canMove) return;
+            else
+            {
+                piece.isMoving = true;
+                piece.canMove = false;
+                StartCoroutine(piece.WhenGrabedCoroutine());
+            }
+        }
+
         objectInHand = collidingObject;
         collidingObject = null;
 
@@ -86,6 +99,12 @@ public class ControllerGrabObject : MonoBehaviour
 
             objectInHand.GetComponent<Rigidbody>().velocity = controllerPose.GetVelocity();
             objectInHand.GetComponent<Rigidbody>().angularVelocity = controllerPose.GetAngularVelocity();
+
+            if (objectInHand.CompareTag("Piece"))
+            {
+                var piece = objectInHand.GetComponent<Piece>();
+                piece.isMoving = false;
+            }
         }
         objectInHand = null;
     }

@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 6676759668033594009}
   m_Layer: 0
   m_Name: Pawn
-  m_TagString: Untagged
+  m_TagString: Piece
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -96,6 +96,9 @@ MonoBehaviour:
   damage: 3
   moveLimit: 2
   attackPos: {x: 0, y: 0.2, z: 0}
+  boardIdx: {x: 0, y: 0}
+  laserPrefab: {fileID: 1672131874932173437, guid: ca995102de98a4f49973ab7851409bd7,
+    type: 3}
   canMove: 1
   isMoving: 0
 --- !u!65 &2320064429982000558

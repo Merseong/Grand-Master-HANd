@@ -6,10 +6,10 @@ public class ChessBoard : MonoBehaviour
 {
     private int maxBoardIndex = 7;
     private Vector2 zeroOffset = new Vector2(-0.21f, -0.21f);
-    private float indexOffset = 0.6f;
+    private float indexOffset = 0.06f;
     private Piece[,] piecesGrid = new Piece[8, 8]; // [right, up] from left-down
 
-    public Vector2 IndexToPos(int right, int up)
+    public Vector2 IndexToLocalPos(int right, int up)
     {
         if (0 > right || right > maxBoardIndex || 0 > up || up > maxBoardIndex)
         {
@@ -20,10 +20,17 @@ public class ChessBoard : MonoBehaviour
         return new Vector2(zeroOffset.x + right * indexOffset, zeroOffset.y + up * indexOffset);
     }
 
+    public Vector3 IndexToGlobalPos(int right, int up)
+    {
+        var lPos = 3 * IndexToLocalPos(right, up);
+        return new Vector3(lPos.y, 0, lPos.x) + transform.position;
+    }
+
+    // offset: 0.06f -> 0.18f, area -0.63 ~ 0.63
     public Vector2Int PosToNearIndex(float x, float y)
     {
-        int i = Mathf.Clamp(Mathf.RoundToInt(x / indexOffset - zeroOffset.x), 0, maxBoardIndex);
-        int j = Mathf.Clamp(Mathf.RoundToInt(y / indexOffset - zeroOffset.y), 0, maxBoardIndex);
+        int i = Mathf.Clamp(Mathf.RoundToInt((x - zeroOffset.x * 3) / (indexOffset * 3)), 0, maxBoardIndex);
+        int j = Mathf.Clamp(Mathf.RoundToInt((y - zeroOffset.y * 3) / (indexOffset * 3)), 0, maxBoardIndex);
         return new Vector2Int(i, j);
     }
 
