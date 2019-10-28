@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
     public static GameManager inst;
     private void Awake()
     {
+        Application.targetFrameRate = 60;
         if (inst != null) Destroy(inst);
         inst = this;
     }
