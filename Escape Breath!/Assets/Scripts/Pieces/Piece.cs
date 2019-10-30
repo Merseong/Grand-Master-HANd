@@ -13,6 +13,7 @@ public abstract class Piece : MonoBehaviour
     public Vector2Int boardIdx;
     public GameObject laserPrefab;
     private GameObject laserInst;
+    public bool isActive = true;
     public bool canMove = true;
     public bool isMoving = false;
 
@@ -23,6 +24,7 @@ public abstract class Piece : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         laserInst = Instantiate(laserPrefab, transform);
         laserInst.SetActive(false);
+        GameManager.inst.chessBoard.AddPiece(this);
     }
 
     public abstract void PieceDestroy();
@@ -75,12 +77,17 @@ public abstract class Piece : MonoBehaviour
             yield return null;
         }
         yield return null;
-        Debug.LogWarning(nextIdx + " " + nextPos);
-        if (nextIdx.x < 0 && nextIdx.y < 0) yield break;
+        //Debug.LogWarning(nextIdx + " " + nextPos);
+        if (nextIdx.x < 0 && nextIdx.y < 0)
+        {
+            isActive = false;
+            yield break;
+        }
         else
         {
             laserInst.SetActive(false);
             nextPos = GameManager.inst.chessBoard.IndexToLocalPos(nextIdx.x, nextIdx.y);
+            GameManager.inst.chessBoard.MovePiece(boardIdx, nextIdx);
             rb.velocity = Vector3.zero;
             rb.isKinematic = true;
             float time = 1;

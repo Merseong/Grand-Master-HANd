@@ -7,7 +7,18 @@ public class ChessBoard : MonoBehaviour
     private int maxBoardIndex = 7;
     private Vector2 zeroOffset = new Vector2(-0.21f, -0.21f);
     private float indexOffset = 0.06f;
-    private Piece[,] piecesGrid = new Piece[8, 8]; // [right, up] from left-down
+    private Piece[,] piecesGrid = new Piece[8, 8]
+        {
+            {null, null,null,null,null,null,null,null},
+            {null, null,null,null,null,null,null,null},
+            {null, null,null,null,null,null,null,null},
+            {null, null,null,null,null,null,null,null},
+            {null, null,null,null,null,null,null,null},
+            {null, null,null,null,null,null,null,null},
+            {null, null,null,null,null,null,null,null},
+            {null, null,null,null,null,null,null,null}
+        }; // [right, up] from left-down
+    public List<Piece> pieceList = new List<Piece>();
 
     public Vector2 IndexToLocalPos(int right, int up)
     {
@@ -34,11 +45,28 @@ public class ChessBoard : MonoBehaviour
         return new Vector2Int(i, j);
     }
 
+    public bool AddPiece(Piece p)
+    {
+        var idx = PosToNearIndex(p.transform.position.x, p.transform.position.z);
+        if (GetPiece(idx.x, idx.y) != null)
+        {
+            Debug.LogError("[ERR-AddPiece] already piece on " + idx);
+            return false;
+        }
+        else
+        {
+            piecesGrid[idx.x, idx.y] = p;
+            p.boardIdx = idx;
+            pieceList.Add(p);
+        }
+        return true;
+    }
+
     public Piece GetPiece(int right, int up)
     {
         if (0 > right || right > maxBoardIndex || 0 > up || up > maxBoardIndex)
         {
-            Debug.LogError("[ERR-GetPiece] bound exceeded");
+            Debug.LogError("[ERR-GetPiece] bound exceeded: " + right + ", " + up);
             return null;
         }
         else return piecesGrid[right, up];
@@ -51,16 +79,20 @@ public class ChessBoard : MonoBehaviour
             Debug.LogError("[ERR-MovePiece] from bound exceeded");
             return;
         }
-        else if (0 > toRight || toRight > maxBoardIndex || 0 > toUp || toUp > maxBoardIndex)
+        if (0 > toRight || toRight > maxBoardIndex || 0 > toUp || toUp > maxBoardIndex)
         {
             Debug.LogError("[ERR-MovePiece] to bound exceeded");
             return;
         }
-        else
-        {
-            piecesGrid[toRight, toUp] = piecesGrid[fromRight, fromUp];
-            piecesGrid[fromRight, fromUp] = null;
-        }
+        piecesGrid[toRight, toUp] = piecesGrid[fromRight, fromUp];
+        piecesGrid[fromRight, fromUp] = null;
+        piecesGrid[toRight, toUp].boardIdx = new Vector2Int(toRight, toUp);
+        return;
+    }
+
+    public void MovePiece(Vector2Int from, Vector2Int to)
+    {
+        MovePiece(from.x, from.y, to.x, to.y);
     }
 
     public void ShowAttackArea(int right, int up, float duration, bool isStrong = false)
