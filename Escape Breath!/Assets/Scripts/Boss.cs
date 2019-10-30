@@ -13,12 +13,25 @@ public class Boss : MonoBehaviour
         if (other.CompareTag("Attack"))
         {
             var obj = other.GetComponent<AttackObj>();
-            health -= obj.damage;
-            testTextMesh.text = health.ToString();
+            health = Mathf.Max(0, health - obj.damage);
+            if (health > 0) testTextMesh.text = health.ToString();
+            else GameEnd(true);
 
             obj.rb.isKinematic = true;
             obj.rb.velocity = Vector3.zero;
             obj.transform.position = transform.position;
+        }
+    }
+
+    private void GameEnd(bool isClear)
+    {
+        if (isClear)
+        {
+            testTextMesh.text = "클리어!";
+        }
+        else
+        {
+
         }
     }
 }

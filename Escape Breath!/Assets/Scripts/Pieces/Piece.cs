@@ -18,10 +18,13 @@ public abstract class Piece : MonoBehaviour
     public bool isMoving = false;
 
     private Rigidbody rb;
+    private Collider col;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
+        col = GetComponent<Collider>();
+
         laserInst = Instantiate(laserPrefab, transform);
         laserInst.SetActive(false);
         GameManager.inst.chessBoard.AddPiece(this);
@@ -47,7 +50,7 @@ public abstract class Piece : MonoBehaviour
         if (Physics.Raycast(transform.position, Vector3.down, out hit, 100, layerMask))
         {
             //Debug.LogWarning("hit, " + hit.point);
-            return GameManager.inst.chessBoard.PosToNearIndex(hit.point.z, hit.point.x);
+            return GameManager.inst.chessBoard.PosToNearIndex(hit.point.x, hit.point.z);
         }
         else
         {
@@ -59,12 +62,14 @@ public abstract class Piece : MonoBehaviour
     {
         Vector2Int nextIdx = boardIdx;
         Vector3 nextPos = transform.position;
+        col.enabled = false;
         while (isMoving)
         {
             nextIdx = DetectFloor();
-            if (!(nextIdx.x < 0 && nextIdx.y < 0))
+            if (!(nextIdx.x < 0 || nextIdx.y < 0))
             {
                 laserInst.SetActive(true);
+                if (GameManager.inst.chessBoard.GetPiece(nextIdx.x, nextIdx.y) != null) nextIdx = boardIdx;
                 nextPos = GameManager.inst.chessBoard.IndexToGlobalPos(nextIdx.x, nextIdx.y);
                 laserInst.transform.position = Vector3.Lerp(transform.position, nextPos, 0.5f);
                 laserInst.transform.LookAt(transform.position);
@@ -77,19 +82,21 @@ public abstract class Piece : MonoBehaviour
             yield return null;
         }
         yield return null;
-        //Debug.LogWarning(nextIdx + " " + nextPos);
-        if (nextIdx.x < 0 && nextIdx.y < 0)
+        Debug.LogWarning(nextIdx + " " + nextPos);
+        if (nextIdx.x < 0 || nextIdx.y < 0)
         {
-            isActive = false;
+            isActive = false; // dead
+            col.enabled = true;
             yield break;
         }
         else
         {
             laserInst.SetActive(false);
             nextPos = GameManager.inst.chessBoard.IndexToLocalPos(nextIdx.x, nextIdx.y);
-            GameManager.inst.chessBoard.MovePiece(boardIdx, nextIdx);
+            if (boardIdx != nextIdx) GameManager.inst.chessBoard.MovePiece(boardIdx, nextIdx);
             rb.velocity = Vector3.zero;
             rb.isKinematic = true;
+            
             float time = 1;
             float timer = 0;
             while (timer < time)
@@ -99,7 +106,10 @@ public abstract class Piece : MonoBehaviour
                 transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.identity, timer / time);
                 yield return null;
             }
+
             rb.isKinematic = false;
+            col.enabled = true;
+            yield break;
         }
     }
     // 들고있을때 이것저것 표시 (어디에 옮겨질지나, 그런거)

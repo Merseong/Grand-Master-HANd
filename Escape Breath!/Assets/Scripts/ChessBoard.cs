@@ -28,7 +28,7 @@ public class ChessBoard : MonoBehaviour
             up = Mathf.Clamp(up, 0, maxBoardIndex);
             Debug.LogWarning("[WARN-IndexToPos] bound exceeded, clamped");
         }
-        return new Vector2(zeroOffset.x + right * indexOffset, zeroOffset.y + up * indexOffset);
+        return new Vector2(zeroOffset.y + up * indexOffset, zeroOffset.x + right * indexOffset);
     }
 
     public Vector3 IndexToGlobalPos(int right, int up)

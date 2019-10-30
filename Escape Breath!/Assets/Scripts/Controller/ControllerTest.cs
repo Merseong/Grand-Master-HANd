@@ -5,7 +5,6 @@ using Valve.VR;
 
 public class ControllerTest : MonoBehaviour
 {
-    public Pawn attacker;
     // temporary
     public SteamVR_Input_Sources handType;
     public SteamVR_Action_Boolean touchPadAction;
@@ -22,7 +21,10 @@ public class ControllerTest : MonoBehaviour
         //else Time.timeScale = 1;
         if (grabGripAction.GetStateDown(handType))
         {
-            attacker.AutoAttack();
+            GameManager.inst.chessBoard.pieceList.ForEach((Piece p) =>
+            {
+                p.AutoAttack();
+            });
         }
     }
 }
