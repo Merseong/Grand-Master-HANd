@@ -37,7 +37,7 @@ public class ChessBoard : MonoBehaviour
 
     public Vector3 IndexToLocalPos(int right, int up, float zOffset = 0)
     {
-        if (IsInBoardIdx(right, up))
+        if (!IsInBoardIdx(right, up))
         {
             right = Mathf.Clamp(right, 0, maxBoardIndex);
             up = Mathf.Clamp(up, 0, maxBoardIndex);
@@ -46,10 +46,10 @@ public class ChessBoard : MonoBehaviour
         return new Vector3(zeroOffset.y + up * indexOffset, zeroOffset.x + right * indexOffset, zOffset);
     }
 
-    public Vector3 IndexToGlobalPos(int right, int up)
+    public Vector3 IndexToGlobalPos(int right, int up, float zOffset = 0)
     {
         var lPos = 3 * IndexToLocalPos(right, up);
-        return new Vector3(lPos.y, 0, lPos.x) + transform.position;
+        return new Vector3(lPos.y, zOffset, lPos.x) + transform.position;
     }
 
     // offset: 0.06f -> 0.18f, area -0.63 ~ 0.63
@@ -79,7 +79,7 @@ public class ChessBoard : MonoBehaviour
 
     public Piece GetPiece(int right, int up)
     {
-        if (IsInBoardIdx(right, up))
+        if (!IsInBoardIdx(right, up))
         {
             Debug.LogError("[ERR-GetPiece] bound exceeded: " + right + ", " + up);
             return null;
@@ -89,12 +89,12 @@ public class ChessBoard : MonoBehaviour
 
     public void MovePiece(int fromRight, int fromUp, int toRight, int toUp)
     {
-        if (IsInBoardIdx(fromRight, fromUp))
+        if (!IsInBoardIdx(fromRight, fromUp))
         {
             Debug.LogError("[ERR-MovePiece] from bound exceeded");
             return;
         }
-        if (IsInBoardIdx(toRight, toUp))
+        if (!IsInBoardIdx(toRight, toUp))
         {
             Debug.LogError("[ERR-MovePiece] to bound exceeded");
             return;
@@ -117,23 +117,33 @@ public class ChessBoard : MonoBehaviour
 
     public void ShowMoveArea(int right, int up, int limit)
     {
-        for (int i = -limit; i < limit; ++i)
+        for (int i = -limit; i <= limit; ++i)
         {
-            for (int j = -limit; j < limit; ++j)
+            for (int j = -limit; j <= limit; ++j)
             {
-                if (Mathf.Abs(i + j) <= limit && IsInBoardIdx(right + i, up + j))
+                if (IsInBoardIdx(right + i, up + j))
                 {
-                    var newMoveableArea = Instantiate(moveableAreaPrefab, transform);
-                    newMoveableArea.transform.localPosition = IndexToLocalPos(right + i, up + j, 0.0006f);
-                    moveableAreaList.Add(newMoveableArea);
+                    //Debug.Log(i + ", " + j);
+                    var isPiece = GetPiece(right + i, up + j);
+                    if ((i == 0 && j == 0) || (Mathf.Abs(i) + Mathf.Abs(j) <= limit && isPiece == null))
+                    {
+                        var newMoveableArea = Instantiate(moveableAreaPrefab, transform);
+                        newMoveableArea.transform.localPosition = IndexToLocalPos(right + i, up + j, 0.001f);
+                        moveableAreaList.Add(newMoveableArea);
+                    }
                 }
             }
         }
     }
 
+    public void ShowMoveArea(Vector2Int boardIdx, int limit)
+    {
+        ShowMoveArea(boardIdx.x, boardIdx.y, limit);
+    }
+
     public void HideMoveArea()
     {
-        for (int i = 0; i < moveableAreaList.Count; ++i)
+        while (moveableAreaList.Count > 0)
         {
             Destroy(moveableAreaList[0]);
             moveableAreaList.RemoveAt(0);

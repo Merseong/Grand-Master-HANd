@@ -23,7 +23,7 @@ public abstract class Piece : MonoBehaviour
     private GameObject laserInst;
     public GameObject landingPrefab;
     private GameObject landingInst;
-    private float landingZOffset = 0.0007f;
+    private float landingZOffset = 0.01f;
 
     private Rigidbody rb;
     private Collider col;
@@ -35,7 +35,7 @@ public abstract class Piece : MonoBehaviour
 
         laserInst = Instantiate(laserPrefab, transform);
         laserInst.SetActive(false);
-        landingInst = Instantiate(landingInst, transform);
+        landingInst = Instantiate(landingPrefab, transform);
         landingInst.SetActive(false);
 
         GameManager.inst.chessBoard.AddPiece(this);
@@ -84,14 +84,17 @@ public abstract class Piece : MonoBehaviour
             {
                 laserInst.SetActive(true);
                 landingInst.SetActive(true);
-                if (Mathf.Abs(boardIdx.x - tempIdx.x) < moveLimit && Mathf.Abs(boardIdx.y - tempIdx.y) < moveLimit)
+                if (Mathf.Abs(boardIdx.x - tempIdx.x) + Mathf.Abs(boardIdx.y - tempIdx.y) <= moveLimit)
                 {
-                    if (GameManager.inst.chessBoard.GetPiece(nextIdx.x, nextIdx.y) != null) nextIdx = boardIdx;
+                    //Debug.Log(boardIdx + ", " + tempIdx);
+                    if (GameManager.inst.chessBoard.GetPiece(tempIdx.x, tempIdx.y) != null) nextIdx = boardIdx;
                     else nextIdx = tempIdx;
                 }
+                nextPos = GameManager.inst.chessBoard.IndexToGlobalPos(nextIdx.x, nextIdx.y, landingZOffset);
                 laserInst.transform.position = Vector3.Lerp(transform.position, nextPos, 0.5f);
-                landingInst.transform.localPosition = GameManager.inst.chessBoard.IndexToLocalPos(nextIdx.x, nextIdx.y, landingZOffset);
+                landingInst.transform.position = nextPos;
                 laserInst.transform.LookAt(transform.position);
+                landingInst.transform.rotation = Quaternion.Euler(90, 0, 0);
                 laserInst.transform.localScale = new Vector3(laserInst.transform.localScale.x, laserInst.transform.localScale.y, (transform.position - nextPos).magnitude / 2.5f);
             }
             else

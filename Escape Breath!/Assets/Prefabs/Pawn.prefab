@@ -97,10 +97,13 @@ MonoBehaviour:
   moveLimit: 2
   attackPos: {x: 0, y: 0.2, z: 0}
   boardIdx: {x: 0, y: 0}
-  laserPrefab: {fileID: 1672131874932173437, guid: ca995102de98a4f49973ab7851409bd7,
-    type: 3}
+  isActive: 1
   canMove: 1
   isMoving: 0
+  laserPrefab: {fileID: 1672131874932173437, guid: ca995102de98a4f49973ab7851409bd7,
+    type: 3}
+  landingPrefab: {fileID: 2155337330694968365, guid: 4f4e207bec96e674b96fd123741e7a48,
+    type: 3}
 --- !u!65 &2320064429982000558
 BoxCollider:
   m_ObjectHideFlags: 0
