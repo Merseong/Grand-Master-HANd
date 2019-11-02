@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
 
     public Boss boss;
     public ChessBoard chessBoard;
+    public TurnSystem turnSystem;
 
     public GameObject attackObj;
 }

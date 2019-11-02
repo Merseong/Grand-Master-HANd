@@ -7,16 +7,21 @@ using Valve.VR;
 
 public abstract class Piece : MonoBehaviour
 {
+    [Header("Piece Data")]
+    public bool isAttacker = true;
     public int damage = 3;
     public int moveLimit = 2;
-    public Vector3 attackPos = new Vector3();
     public Vector2Int boardIdx;
-    public GameObject laserPrefab;
-    private GameObject laserInst;
+
+    [Header("Piece Status")]
     public bool isActive = true;
     public bool canMove = true;
     public bool isMoving = false;
 
+    [Header("else")]
+    public Vector3 attackPos = new Vector3();
+    public GameObject laserPrefab;
+    private GameObject laserInst;
     private Rigidbody rb;
     private Collider col;
 
@@ -34,12 +39,29 @@ public abstract class Piece : MonoBehaviour
 
     public void AutoAttack()
     {
-        if (damage != 0)
+        if (isAttacker && damage != 0 && !isMoving)
         {
             // auto attack
             var attackObj = Instantiate(GameManager.inst.attackObj, transform.position + attackPos, Quaternion.identity).GetComponent<AttackObj>();
             attackObj.damage = damage;
             attackObj.Init();
+        }
+    }
+
+    public void ResetAfterTurnEnd()
+    {
+        if (isActive)
+        {
+            switch(GameManager.inst.turnSystem.currentTurn)
+            {
+                case TurnType.AttackReady:
+                case TurnType.Attack:
+                    canMove = false;
+                    break;
+                case TurnType.MovePiece:
+                    canMove = true;
+                    break;
+            }
         }
     }
 
@@ -112,5 +134,4 @@ public abstract class Piece : MonoBehaviour
             yield break;
         }
     }
-    // 들고있을때 이것저것 표시 (어디에 옮겨질지나, 그런거)
 }

@@ -20,6 +20,10 @@ public class ChessBoard : MonoBehaviour
         }; // [right, up] from left-down
     public List<Piece> pieceList = new List<Piece>();
 
+    public delegate void PieceAction();
+    public PieceAction allAttack;
+    public PieceAction allReset;
+
     public Vector2 IndexToLocalPos(int right, int up)
     {
         if (0 > right || right > maxBoardIndex || 0 > up || up > maxBoardIndex)
@@ -58,6 +62,8 @@ public class ChessBoard : MonoBehaviour
             piecesGrid[idx.x, idx.y] = p;
             p.boardIdx = idx;
             pieceList.Add(p);
+            allAttack += p.AutoAttack;
+            allReset += p.ResetAfterTurnEnd;
         }
         return true;
     }
@@ -100,8 +106,16 @@ public class ChessBoard : MonoBehaviour
         // show attack mark on [right, up] for duration
     }
 
-    private void Start()
+    private void Awake()
     {
         // init all pieces
+        allAttack = new PieceAction(() =>
+        {
+            Debug.Log("All attack");
+        });
+        allReset = new PieceAction(() =>
+        {
+            Debug.Log("All reset");
+        });
     }
 }
