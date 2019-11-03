@@ -16,10 +16,10 @@ public class Rook : Piece
             // guard this and backside
             isProtected = true;
             // instantiate protecter gameObj
-            Piece backside; 
-            if (backside = GameManager.inst.chessBoard.GetPiece(boardIdx.x, boardIdx.y - 1))
+            if (GameManager.inst.chessBoard.IsInBoardIdx(boardIdx.x, boardIdx.y - 1))
             {
-                backside.isProtected = true;
+                Piece backside = GameManager.inst.chessBoard.GetPiece(boardIdx.x, boardIdx.y - 1);
+                if (backside != null) backside.isProtected = true;
                 // make protecter long
             }
         }

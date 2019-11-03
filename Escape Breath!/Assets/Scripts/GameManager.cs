@@ -17,4 +17,14 @@ public class GameManager : MonoBehaviour
     public TurnSystem turnSystem;
 
     public GameObject attackObj;
+
+    public void GameOver()
+    {
+
+    }
+
+    public void GameClear()
+    {
+
+    }
 }

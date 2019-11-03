@@ -9,6 +9,7 @@ public abstract class Piece : MonoBehaviour
 {
     [Header("Piece Data")]
     public int damage = 3;
+    private int originalDamage;
     public int moveLimit = 2;
     public Vector3 attackPos = new Vector3();
     public Vector2Int boardIdx;
@@ -40,6 +41,8 @@ public abstract class Piece : MonoBehaviour
         landingInst.SetActive(false);
 
         GameManager.inst.chessBoard.AddPiece(this);
+
+        originalDamage = damage;
     }
 
     public abstract void PieceDestroy();
@@ -48,7 +51,7 @@ public abstract class Piece : MonoBehaviour
 
     public void AutoAttack()
     {
-        BeforeAttack();
+        BeforeAttack(); // 이거를 또 델리게이트로 만들어서 옮겨야될듯
         if (damage != 0)
         {
             // auto attack
