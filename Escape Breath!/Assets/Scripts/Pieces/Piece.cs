@@ -7,15 +7,25 @@ using Valve.VR;
 
 public abstract class Piece : MonoBehaviour
 {
+    [Header("Piece Data")]
     public int damage = 3;
+    private int originalDamage;
     public int moveLimit = 2;
     public Vector3 attackPos = new Vector3();
     public Vector2Int boardIdx;
-    public GameObject laserPrefab;
-    private GameObject laserInst;
+
+    [Header("Piece Status")]
     public bool isActive = true;
     public bool canMove = true;
     public bool isMoving = false;
+    public bool isProtected = false;
+
+    [Header("for User Interface")]
+    public GameObject laserPrefab;
+    private GameObject laserInst;
+    public GameObject landingPrefab;
+    private GameObject landingInst;
+    private float landingZOffset = 0.01f;
 
     private Rigidbody rb;
     private Collider col;
@@ -27,13 +37,21 @@ public abstract class Piece : MonoBehaviour
 
         laserInst = Instantiate(laserPrefab, transform);
         laserInst.SetActive(false);
+        landingInst = Instantiate(landingPrefab, transform);
+        landingInst.SetActive(false);
+
         GameManager.inst.chessBoard.AddPiece(this);
+
+        originalDamage = damage;
     }
 
     public abstract void PieceDestroy();
 
+    public virtual void BeforeAttack() { }
+
     public void AutoAttack()
     {
+        BeforeAttack(); // 이거를 또 델리게이트로 만들어서 옮겨야될듯
         if (damage != 0)
         {
             // auto attack
@@ -43,17 +61,27 @@ public abstract class Piece : MonoBehaviour
         }
     }
 
-    public Vector2Int DetectFloor()
+    public void Damaged(bool isStrong = false)
+    {
+        if (isStrong || !isProtected)
+        {
+            PieceDestroy();
+        }
+    }
+
+    public Vector2Int DetectFloor(out bool isDetected)
     {
         RaycastHit hit;
         int layerMask = 1 << LayerMask.NameToLayer("ChessBoard");
         if (Physics.Raycast(transform.position, Vector3.down, out hit, 100, layerMask))
         {
             //Debug.LogWarning("hit, " + hit.point);
+            isDetected = true;
             return GameManager.inst.chessBoard.PosToNearIndex(hit.point.x, hit.point.z);
         }
         else
         {
+            isDetected = false;
             return new Vector2Int(-1, -1);
         }
     }
@@ -62,36 +90,51 @@ public abstract class Piece : MonoBehaviour
     {
         Vector2Int nextIdx = boardIdx;
         Vector3 nextPos = transform.position;
+        bool isDetected = false;
         col.enabled = false;
         while (isMoving)
         {
-            nextIdx = DetectFloor();
-            if (!(nextIdx.x < 0 || nextIdx.y < 0))
+            var tempIdx = DetectFloor(out isDetected);
+            if (isDetected)
             {
                 laserInst.SetActive(true);
-                if (GameManager.inst.chessBoard.GetPiece(nextIdx.x, nextIdx.y) != null) nextIdx = boardIdx;
-                nextPos = GameManager.inst.chessBoard.IndexToGlobalPos(nextIdx.x, nextIdx.y);
+                landingInst.SetActive(true);
+                if (Mathf.Abs(boardIdx.x - tempIdx.x) + Mathf.Abs(boardIdx.y - tempIdx.y) <= moveLimit)
+                {
+                    //Debug.Log(boardIdx + ", " + tempIdx);
+                    if (GameManager.inst.chessBoard.GetPiece(tempIdx.x, tempIdx.y) != null) nextIdx = boardIdx;
+                    else nextIdx = tempIdx;
+                }
+                nextPos = GameManager.inst.chessBoard.IndexToGlobalPos(nextIdx.x, nextIdx.y, landingZOffset);
                 laserInst.transform.position = Vector3.Lerp(transform.position, nextPos, 0.5f);
+                landingInst.transform.position = nextPos;
                 laserInst.transform.LookAt(transform.position);
+                landingInst.transform.rotation = Quaternion.Euler(90, 0, 0);
                 laserInst.transform.localScale = new Vector3(laserInst.transform.localScale.x, laserInst.transform.localScale.y, (transform.position - nextPos).magnitude / 2.5f);
             }
             else
             {
+                landingInst.SetActive(false);
                 laserInst.SetActive(false);
             }
             yield return null;
         }
         yield return null;
-        Debug.LogWarning(nextIdx + " " + nextPos);
-        if (nextIdx.x < 0 || nextIdx.y < 0)
+
+        //Debug.LogWarning(nextIdx + " " + nextPos);
+        laserInst.SetActive(false);
+        landingInst.SetActive(false);
+
+        yield return null;
+        if (!isDetected)
         {
             isActive = false; // dead
             col.enabled = true;
+            // PieceDestroy();
             yield break;
         }
         else
         {
-            laserInst.SetActive(false);
             nextPos = GameManager.inst.chessBoard.IndexToLocalPos(nextIdx.x, nextIdx.y);
             if (boardIdx != nextIdx) GameManager.inst.chessBoard.MovePiece(boardIdx, nextIdx);
             rb.velocity = Vector3.zero;

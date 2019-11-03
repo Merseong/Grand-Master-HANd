@@ -14,6 +14,17 @@ public class GameManager : MonoBehaviour
 
     public Boss boss;
     public ChessBoard chessBoard;
+    public TurnSystem turnSystem;
 
     public GameObject attackObj;
+
+    public void GameOver()
+    {
+
+    }
+
+    public void GameClear()
+    {
+
+    }
 }
