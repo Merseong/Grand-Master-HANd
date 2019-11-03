@@ -23,6 +23,10 @@ public class ChessBoard : MonoBehaviour
         }; // [right, up] from left-down
     public List<Piece> pieceList = new List<Piece>();
 
+    public delegate void PieceAction();
+    public PieceAction allAttack;
+    public PieceAction allReset;
+
     [Header("Show On Board")]
     public GameObject DangerAreaPrefab;
     public GameObject moveableAreaPrefab;
@@ -35,7 +39,7 @@ public class ChessBoard : MonoBehaviour
         else return true;
     }
 
-    public Vector3 IndexToLocalPos(int right, int up, float zOffset = 0)
+    public Vector2 IndexToLocalPos(int right, int up, float zOffset = 0)
     {
         if (!IsInBoardIdx(right, up))
         {
@@ -73,6 +77,8 @@ public class ChessBoard : MonoBehaviour
             piecesGrid[idx.x, idx.y] = p;
             p.boardIdx = idx;
             pieceList.Add(p);
+            allAttack += p.AutoAttack;
+            allReset += p.ResetAfterTurnEnd;
         }
         return true;
     }
@@ -150,8 +156,16 @@ public class ChessBoard : MonoBehaviour
         }
     }
 
-    private void Start()
+    private void Awake()
     {
         // init all pieces
+        allAttack = new PieceAction(() =>
+        {
+            Debug.Log("All attack");
+        });
+        allReset = new PieceAction(() =>
+        {
+            Debug.Log("All reset");
+        });
     }
 }

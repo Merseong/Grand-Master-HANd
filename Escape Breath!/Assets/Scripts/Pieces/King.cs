@@ -28,8 +28,9 @@ public class King : Piece
                         if (buffed != null) buffed.damage += buffAmount;
                         // buff effect
                     }
+                }
             }
-            }
+            damage = 0;
         }
     }
 }

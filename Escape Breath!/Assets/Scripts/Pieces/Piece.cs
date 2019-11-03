@@ -8,10 +8,10 @@ using Valve.VR;
 public abstract class Piece : MonoBehaviour
 {
     [Header("Piece Data")]
+    public bool isAttacker = true;
     public int damage = 3;
     private int originalDamage;
     public int moveLimit = 2;
-    public Vector3 attackPos = new Vector3();
     public Vector2Int boardIdx;
 
     [Header("Piece Status")]
@@ -26,7 +26,7 @@ public abstract class Piece : MonoBehaviour
     public GameObject landingPrefab;
     private GameObject landingInst;
     private float landingZOffset = 0.01f;
-
+    public Vector3 attackPos = new Vector3();
     private Rigidbody rb;
     private Collider col;
 
@@ -52,7 +52,7 @@ public abstract class Piece : MonoBehaviour
     public void AutoAttack()
     {
         BeforeAttack(); // 이거를 또 델리게이트로 만들어서 옮겨야될듯
-        if (damage != 0)
+        if (isAttacker && damage != 0 && !isMoving)
         {
             // auto attack
             var attackObj = Instantiate(GameManager.inst.attackObj, transform.position + attackPos, Quaternion.identity).GetComponent<AttackObj>();
@@ -66,6 +66,24 @@ public abstract class Piece : MonoBehaviour
         if (isStrong || !isProtected)
         {
             PieceDestroy();
+        }
+    }
+
+    public void ResetAfterTurnEnd()
+    {
+        if (isActive)
+        {
+            switch(GameManager.inst.turnSystem.currentTurn)
+            {
+                case TurnType.AttackReady:
+                case TurnType.Attack:
+                    canMove = false;
+                    break;
+                case TurnType.MovePiece:
+                    damage = originalDamage;
+                    canMove = true;
+                    break;
+            }
         }
     }
 
@@ -155,5 +173,4 @@ public abstract class Piece : MonoBehaviour
             yield break;
         }
     }
-    // 들고있을때 이것저것 표시 (어디에 옮겨질지나, 그런거)
 }
