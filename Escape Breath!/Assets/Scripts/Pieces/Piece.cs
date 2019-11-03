@@ -17,6 +17,7 @@ public abstract class Piece : MonoBehaviour
     public bool isActive = true;
     public bool canMove = true;
     public bool isMoving = false;
+    public bool isProtected = false;
 
     [Header("for User Interface")]
     public GameObject laserPrefab;
@@ -43,14 +44,25 @@ public abstract class Piece : MonoBehaviour
 
     public abstract void PieceDestroy();
 
+    public virtual void BeforeAttack() { }
+
     public void AutoAttack()
     {
+        BeforeAttack();
         if (damage != 0)
         {
             // auto attack
             var attackObj = Instantiate(GameManager.inst.attackObj, transform.position + attackPos, Quaternion.identity).GetComponent<AttackObj>();
             attackObj.damage = damage;
             attackObj.Init();
+        }
+    }
+
+    public void Damaged(bool isStrong = false)
+    {
+        if (isStrong || !isProtected)
+        {
+            PieceDestroy();
         }
     }
 
