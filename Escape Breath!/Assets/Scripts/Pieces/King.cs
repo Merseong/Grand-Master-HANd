@@ -30,7 +30,6 @@ public class King : Piece
                     }
                 }
             }
-            damage = 0;
         }
     }
 }

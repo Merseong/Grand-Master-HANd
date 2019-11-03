@@ -81,6 +81,7 @@ public abstract class Piece : MonoBehaviour
                     break;
                 case TurnType.MovePiece:
                     damage = originalDamage;
+                    isProtected = false;
                     canMove = true;
                     break;
             }

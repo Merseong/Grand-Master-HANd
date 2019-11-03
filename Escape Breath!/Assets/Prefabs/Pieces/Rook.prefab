@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 6172573664516546293}
   m_Layer: 0
   m_Name: Rook
-  m_TagString: Untagged
+  m_TagString: Piece
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -135,4 +135,4 @@ MonoBehaviour:
     type: 3}
   landingPrefab: {fileID: 2155337330694968365, guid: 4f4e207bec96e674b96fd123741e7a48,
     type: 3}
-  attackPos: {x: 0, y: 0, z: 0}
+  attackPos: {x: 0, y: 0.3, z: 0}
