@@ -15,7 +15,7 @@ public class TurnSystem : MonoBehaviour
     public TurnType currentTurn;
     public Dictionary<TurnType, float> turnTimers = new Dictionary<TurnType, float>()
     {
-        { TurnType.AttackReady, 1f }, { TurnType.MovePiece, 10f }, { TurnType.Attack, 1f }
+        { TurnType.AttackReady, 1f }, { TurnType.MovePiece, 5f }, { TurnType.Attack, 1f }
     };
 
     private float timeCounter;
@@ -71,6 +71,7 @@ public class TurnSystem : MonoBehaviour
 
     private void AttackPhase()
     {
+        GameManager.inst.chessBoard.allReset();
         GameManager.inst.chessBoard.allBeforeAttack();
         GameManager.inst.chessBoard.allAttack();
         Time.timeScale = 1;

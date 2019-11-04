@@ -40,7 +40,7 @@ public class ChessBoard : MonoBehaviour
         else return true;
     }
 
-    public Vector2 IndexToLocalPos(int right, int up, float zOffset = 0)
+    public Vector3 IndexToLocalPos(int right, int up, float zOffset = 0)
     {
         if (!IsInBoardIdx(right, up))
         {
@@ -85,6 +85,16 @@ public class ChessBoard : MonoBehaviour
         return true;
     }
 
+    public void TemporalyRemovePiece(Piece p)
+    {
+        piecesGrid[p.boardIdx.x, p.boardIdx.y] = null;
+    }
+
+    public void TemporalyReturnPiece(Piece p)
+    {
+        piecesGrid[p.boardIdx.x, p.boardIdx.y] = p;
+    }
+
     public Piece GetPiece(int right, int up)
     {
         if (!IsInBoardIdx(right, up))
@@ -93,6 +103,11 @@ public class ChessBoard : MonoBehaviour
             return null;
         }
         else return piecesGrid[right, up];
+    }
+
+    public Piece GetPiece(Vector2Int idx)
+    {
+        return GetPiece(idx.x, idx.y);
     }
 
     public void MovePiece(int fromRight, int fromUp, int toRight, int toUp)
@@ -108,8 +123,11 @@ public class ChessBoard : MonoBehaviour
             return;
         }
         piecesGrid[toRight, toUp] = piecesGrid[fromRight, fromUp];
-        piecesGrid[fromRight, fromUp] = null;
-        piecesGrid[toRight, toUp].boardIdx = new Vector2Int(toRight, toUp);
+        if (!(fromRight == toRight && fromUp == toUp))
+        {
+            piecesGrid[fromRight, fromUp] = null;
+            piecesGrid[toRight, toUp].boardIdx = new Vector2Int(toRight, toUp);
+        }
         StartCoroutine(piecesGrid[toRight, toUp].MovePieceCoroutine(IndexToLocalPos(toRight, toUp), 1f));
         return;
     }
@@ -119,9 +137,34 @@ public class ChessBoard : MonoBehaviour
         MovePiece(from.x, from.y, to.x, to.y);
     }
 
-    public void MovePieceWithDir(Vector2Int pieceIdx, Vector2 dir)
+    public bool MovePieceWithDir(Vector2Int pieceIdx, Vector2 dir)
     {
+        Vector2Int nextIdx = pieceIdx + (dir.x > dir.y ? new Vector2Int(1, 0) : new Vector2Int(0, 1));
 
+        if (IsInBoardIdx(nextIdx.x, nextIdx.y))
+        {
+            if (GetPiece(nextIdx))
+            {
+                if (MovePieceWithDir(nextIdx, dir))
+                {
+                    MovePiece(pieceIdx, nextIdx);
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                MovePiece(pieceIdx, nextIdx);
+                return true;
+            }
+        }
+        else
+        {
+            return false;
+        }
     }
 
     public void ShowAttackArea(int right, int up, float duration, bool isStrong = false)

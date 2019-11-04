@@ -52,7 +52,7 @@ public abstract class Piece : MonoBehaviour
     public void AutoAttack()
     {
         BeforeAttack(); // 이거를 또 델리게이트로 만들어서 옮겨야될듯
-        if (isAttacker && damage != 0 && !isMoving)
+        if (isActive && isAttacker && damage != 0)
         {
             // auto attack
             var attackObj = Instantiate(GameManager.inst.attackObj, transform.position + attackPos, Quaternion.identity).GetComponent<AttackObj>();
@@ -78,6 +78,8 @@ public abstract class Piece : MonoBehaviour
                 case TurnType.AttackReady:
                 case TurnType.Attack:
                     canMove = false;
+                    // 원래자리로 돌아가게 하는건데 쓸진 고민중
+                    if (!isMoving) StartCoroutine(MovePieceCoroutine(GameManager.inst.chessBoard.IndexToLocalPos(boardIdx.x, boardIdx.y), 0.2f));
                     break;
                 case TurnType.MovePiece:
                     damage = originalDamage;
@@ -154,7 +156,8 @@ public abstract class Piece : MonoBehaviour
         }
         else
         {
-            if (boardIdx != nextIdx) GameManager.inst.chessBoard.MovePiece(boardIdx, nextIdx);
+            GameManager.inst.chessBoard.TemporalyReturnPiece(this);
+            GameManager.inst.chessBoard.MovePiece(boardIdx, nextIdx);
             yield break;
         }
     }
@@ -162,18 +165,24 @@ public abstract class Piece : MonoBehaviour
     public IEnumerator MovePieceCoroutine(Vector3 nextLocalPos, float duration)
     {
         rb.velocity = Vector3.zero;
+        col.enabled = false;
+        isMoving = true;
         rb.isKinematic = true;
 
         float timer = 0;
-        while (timer < duration)
+        while (timer < duration * 0.8f)
         {
             timer += Time.unscaledDeltaTime;
             transform.localPosition = Vector3.Lerp(transform.localPosition, nextLocalPos, timer / duration);
             transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.identity, timer / duration);
             yield return null;
         }
+        transform.localPosition = nextLocalPos;
+        transform.localRotation = Quaternion.identity;
 
+        isMoving = false;
         rb.isKinematic = false;
         col.enabled = true;
+        //Debug.Log("End Moving");
     }
 }

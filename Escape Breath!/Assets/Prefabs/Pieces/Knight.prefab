@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 4505836675556112055}
   - component: {fileID: 4539166759128939639}
   - component: {fileID: 4529504492243495769}
-  - component: {fileID: 4507495982448693530}
   - component: {fileID: 4507495982448693529}
   - component: {fileID: 4507495982448693528}
+  - component: {fileID: -7552650308678006072}
   m_Layer: 0
   m_Name: Knight
   m_TagString: Piece
@@ -81,20 +81,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!64 &4507495982448693530
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4507495982448693535}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Convex: 1
-  m_CookingOptions: 14
-  m_Mesh: {fileID: 4300006, guid: f5edbe7e601e05143b29e56c2de68b97, type: 3}
 --- !u!54 &4507495982448693529
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -136,3 +122,16 @@ MonoBehaviour:
   landingPrefab: {fileID: 2155337330694968365, guid: 4f4e207bec96e674b96fd123741e7a48,
     type: 3}
   attackPos: {x: 0, y: 0.3, z: 0}
+--- !u!65 &-7552650308678006072
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4507495982448693535}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.03644439, y: 0.035075754, z: 0.06863545}
+  m_Center: {x: -0.0007172907, y: -9.313226e-10, z: 0.034418225}
