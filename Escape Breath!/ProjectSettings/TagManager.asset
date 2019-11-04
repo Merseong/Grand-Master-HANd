@@ -18,10 +18,10 @@ TagManager:
   - 
   - 
   - 
-  - CanTeleport
+  - Controller
   - ChessBoard
-  - 
-  - 
+  - Grabable
+  - Piece
   - 
   - 
   - 

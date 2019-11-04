@@ -139,7 +139,7 @@ public class ChessBoard : MonoBehaviour
 
     public bool MovePieceWithDir(Vector2Int pieceIdx, Vector2 dir)
     {
-        Vector2Int nextIdx = pieceIdx + (dir.x > dir.y ? new Vector2Int(1, 0) : new Vector2Int(0, 1));
+        Vector2Int nextIdx = pieceIdx + (Mathf.Abs(dir.x) > Mathf.Abs(dir.y) ? new Vector2Int(Mathf.RoundToInt(dir.x / Mathf.Abs(dir.x)), 0) : new Vector2Int(0, Mathf.RoundToInt(dir.y / Mathf.Abs(dir.y))));
 
         if (IsInBoardIdx(nextIdx.x, nextIdx.y))
         {
