@@ -7,6 +7,10 @@ public class Boss : MonoBehaviour
 {
     public int health;
     public int phase;
+    public List<GameObject> phasePatterns = new List<GameObject>();
+    public int[] phasePatternsLimit = new int[1];
+    public Transform patternStarter;
+
     public int attackType;
     public Transform bossTarget;
     public TextMesh testTextMesh;
@@ -41,6 +45,22 @@ public class Boss : MonoBehaviour
 
         }
     }
+
+    private BossPattern SelectPattern()
+    {
+        // select random pattern or biased pattern
+        int idx = Random.Range(0, phasePatternsLimit[phase] + 1);
+        return Instantiate(phasePatterns[idx], patternStarter).GetComponent<BossPattern>();
+    }
+
+    public void StartPattern()
+    {
+        var pattern = SelectPattern();
+        pattern.StartPattern();
+    }
+
+    // 이 아랫부분은 남겨둘테니 알아서 옮기셈
+
     public void readyAttack(int phase) //공격 준비 단계
     {
         int ran = Random.Range(0, 2);

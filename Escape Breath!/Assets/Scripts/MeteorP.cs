@@ -34,7 +34,7 @@ public class MeteorP : MonoBehaviour
         float projectile_Velocity = target_Distance / (Mathf.Sin(2 * firingAngle * Mathf.Deg2Rad) / gravity); //속도 계산 
         float Vx = Mathf.Sqrt(projectile_Velocity) * Mathf.Cos(firingAngle * Mathf.Deg2Rad);
         float Vy = Mathf.Sqrt(projectile_Velocity) * Mathf.Sin(firingAngle * Mathf.Deg2Rad);
-        
+
         float flightDuration = target_Distance / Vx; //체공 시간
         Projectile.rotation = Quaternion.LookRotation(Target.position - Projectile.position); //빙글빙글
 
@@ -48,5 +48,5 @@ public class MeteorP : MonoBehaviour
 
             yield return null;
         }
-​  }
+    }
 }
