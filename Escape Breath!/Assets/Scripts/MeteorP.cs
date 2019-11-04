@@ -16,9 +16,9 @@ public class MeteorP : MonoBehaviour
         myTransform = transform;
     }
 
-    public void Throw(Transform target)
+    public void Throw(Vector3 targetPosition)
     {
-        Target = target;
+        Target.position = targetPosition;
         StartCoroutine(ThrowMeteor());
     }
 

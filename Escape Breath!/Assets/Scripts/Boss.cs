@@ -12,7 +12,7 @@ public class Boss : MonoBehaviour
     public TextMesh testTextMesh;
     public Object attackArea;
 
-    public Object meteorP;
+    public MeteorP meteorPS;
     public Transform attackPoint;
 
     private void OnTriggerEnter(Collider other)
@@ -107,8 +107,9 @@ public class Boss : MonoBehaviour
                 x = (int)Random.Range(1, 8);
                 y = (int)Random.Range(1, 4);
                 Instantiate(attackArea, Board.IndexToGlobalPos(x, y), Quaternion.identity); //제대로 생성되는지 확인 요망
-                Object obj = Instantiate(meteorP, attackPoint);
-                StartCoroutine(throwAttack(obj, Board.IndexToGlobalPos(x, y)));
+                var obj = Instantiate(meteorPS.gameObject, attackPoint);
+                obj.GetComponent<MeteorP>().Throw(Board.IndexToGlobalPos(x, y)); //how to transform from vec3? 
+                //StartCoroutine(throwAttack(obj, Board.IndexToGlobalPos(x, y)));
             }
         }else
         {
@@ -124,12 +125,5 @@ public class Boss : MonoBehaviour
     {
         //랜덤으로 공격할 말 선택 -> 있는지 확인 -> 위치 가져옴 => 일자 공격
         //페이즈에 따른 변화 : 공격 말 개수 & 공격 해당 말
-    }
-
-    IEnumerator throwAttack (Object obj, Vector3 atkP)
-    {
-        //점차이동
-        //이거 metor에 적용하자
-        yield return null;
     }
 }
