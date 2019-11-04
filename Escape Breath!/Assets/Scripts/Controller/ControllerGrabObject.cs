@@ -71,6 +71,7 @@ public class ControllerGrabObject : MonoBehaviour
             {
                 piece.isMoving = true;
                 piece.canMove = false;
+                piece.isActive = false;
                 GameManager.inst.chessBoard.ShowMoveArea(piece.boardIdx, piece.moveLimit);
                 GameManager.inst.chessBoard.TemporalyRemovePiece(piece);
                 StartCoroutine(piece.WhenGrabedCoroutine());
@@ -106,6 +107,7 @@ public class ControllerGrabObject : MonoBehaviour
             {
                 var piece = objectInHand.GetComponent<Piece>();
                 piece.isMoving = false;
+                piece.isActive = true;
                 GameManager.inst.chessBoard.HideMoveArea();
             }
         }

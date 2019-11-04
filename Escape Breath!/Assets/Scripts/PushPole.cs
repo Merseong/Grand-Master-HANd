@@ -15,7 +15,7 @@ public class PushPole : MonoBehaviour
                 Vector2 dir = new Vector2(transform.forward.x, transform.forward.z);
                 //Debug.Log(dir);
                 GameManager.inst.chessBoard.MovePieceWithDir(piece.boardIdx, dir);
-                Destroy(parent, 0.5f);
+                Destroy(parent, 0.2f);
             }
         }
     }

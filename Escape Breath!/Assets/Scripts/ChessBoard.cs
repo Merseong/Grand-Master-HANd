@@ -132,6 +132,19 @@ public class ChessBoard : MonoBehaviour
         return;
     }
 
+    public void MovePiece(Piece p, int toRight, int toUp)
+    {
+        if (!IsInBoardIdx(toRight, toUp))
+        {
+            Debug.LogError("[ERR-MovePiece] to bound exceeded");
+            return;
+        }
+        piecesGrid[toRight, toUp] = p;
+        p.boardIdx = new Vector2Int(toRight, toUp);
+        StartCoroutine(p.MovePieceCoroutine(IndexToLocalPos(toRight, toUp), 1f));
+        return;
+    }
+
     public void MovePiece(Vector2Int from, Vector2Int to)
     {
         MovePiece(from.x, from.y, to.x, to.y);

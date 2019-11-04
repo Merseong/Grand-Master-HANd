@@ -15,6 +15,7 @@ public abstract class Piece : MonoBehaviour
     public Vector2Int boardIdx;
 
     [Header("Piece Status")]
+    public bool isAlive = true;
     public bool isActive = true;
     public bool canMove = true;
     public bool isMoving = false;
@@ -38,7 +39,7 @@ public abstract class Piece : MonoBehaviour
         laserInst = Instantiate(laserPrefab, transform);
         laserInst.SetActive(false);
         landingInst = Instantiate(landingPrefab, transform);
-        landingInst.SetActive(false);
+        landingInst.transform.localPosition = new Vector3(0, 0, landingZOffset * landingZOffset);
 
         GameManager.inst.chessBoard.AddPiece(this);
 
@@ -78,11 +79,14 @@ public abstract class Piece : MonoBehaviour
                 case TurnType.AttackReady:
                 case TurnType.Attack:
                     canMove = false;
+                    landingInst.SetActive(false);
                     // 원래자리로 돌아가게 하는건데 쓸진 고민중
                     if (!isMoving) StartCoroutine(MovePieceCoroutine(GameManager.inst.chessBoard.IndexToLocalPos(boardIdx.x, boardIdx.y), 0.2f));
                     break;
                 case TurnType.MovePiece:
                     damage = originalDamage;
+                    landingInst.transform.localPosition = new Vector3(0, 0, landingZOffset * landingZOffset);
+                    landingInst.SetActive(true);
                     isProtected = false;
                     canMove = true;
                     break;
@@ -149,15 +153,23 @@ public abstract class Piece : MonoBehaviour
         yield return null;
         if (!isDetected)
         {
-            isActive = false; // dead
+            isActive = false;
             col.enabled = true;
+            isMoving = false;
             // PieceDestroy();
             yield break;
         }
         else
         {
-            GameManager.inst.chessBoard.TemporalyReturnPiece(this);
-            GameManager.inst.chessBoard.MovePiece(boardIdx, nextIdx);
+            if (GameManager.inst.chessBoard.GetPiece(boardIdx) == null)
+            {
+                GameManager.inst.chessBoard.TemporalyReturnPiece(this);
+                GameManager.inst.chessBoard.MovePiece(boardIdx, nextIdx);
+            }
+            else
+            {
+                GameManager.inst.chessBoard.MovePiece(this, nextIdx.x, nextIdx.y);
+            }
             yield break;
         }
     }
