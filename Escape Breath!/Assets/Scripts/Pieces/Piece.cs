@@ -154,24 +154,26 @@ public abstract class Piece : MonoBehaviour
         }
         else
         {
-            nextPos = GameManager.inst.chessBoard.IndexToLocalPos(nextIdx.x, nextIdx.y);
             if (boardIdx != nextIdx) GameManager.inst.chessBoard.MovePiece(boardIdx, nextIdx);
-            rb.velocity = Vector3.zero;
-            rb.isKinematic = true;
-            
-            float time = 0.1f;
-            float timer = 0;
-            while (timer < time)
-            {
-                timer += Time.deltaTime;
-                transform.localPosition = Vector3.Lerp(transform.localPosition, nextPos, timer / time);
-                transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.identity, timer / time);
-                yield return null;
-            }
-
-            rb.isKinematic = false;
-            col.enabled = true;
             yield break;
         }
+    }
+
+    public IEnumerator MovePieceCoroutine(Vector3 nextLocalPos, float duration)
+    {
+        rb.velocity = Vector3.zero;
+        rb.isKinematic = true;
+
+        float timer = 0;
+        while (timer < duration)
+        {
+            timer += Time.unscaledDeltaTime;
+            transform.localPosition = Vector3.Lerp(transform.localPosition, nextLocalPos, timer / duration);
+            transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.identity, timer / duration);
+            yield return null;
+        }
+
+        rb.isKinematic = false;
+        col.enabled = true;
     }
 }

@@ -110,12 +110,18 @@ public class ChessBoard : MonoBehaviour
         piecesGrid[toRight, toUp] = piecesGrid[fromRight, fromUp];
         piecesGrid[fromRight, fromUp] = null;
         piecesGrid[toRight, toUp].boardIdx = new Vector2Int(toRight, toUp);
+        StartCoroutine(piecesGrid[toRight, toUp].MovePieceCoroutine(IndexToLocalPos(toRight, toUp), 1f));
         return;
     }
 
     public void MovePiece(Vector2Int from, Vector2Int to)
     {
         MovePiece(from.x, from.y, to.x, to.y);
+    }
+
+    public void MovePieceWithDir(Vector2Int pieceIdx, Vector2 dir)
+    {
+
     }
 
     public void ShowAttackArea(int right, int up, float duration, bool isStrong = false)
