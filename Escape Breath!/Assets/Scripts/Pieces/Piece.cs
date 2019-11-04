@@ -132,7 +132,7 @@ public abstract class Piece : MonoBehaviour
                 if (Mathf.Abs(boardIdx.x - tempIdx.x) + Mathf.Abs(boardIdx.y - tempIdx.y) <= moveLimit)
                 {
                     //Debug.Log(boardIdx + ", " + tempIdx);
-                    if (GameManager.inst.chessBoard.GetPiece(tempIdx.x, tempIdx.y) != null) nextIdx = boardIdx;
+                    if (GameManager.inst.chessBoard.CheckPiece(tempIdx)) nextIdx = boardIdx;
                     else nextIdx = tempIdx;
                 }
                 nextPos = GameManager.inst.chessBoard.IndexToGlobalPos(nextIdx.x, nextIdx.y, landingZOffset);
@@ -155,23 +155,16 @@ public abstract class Piece : MonoBehaviour
         laserInst.SetActive(false);
         landingInst.SetActive(false);
 
-        yield return null;
         if (!isDetected)
         {
             isActive = false;
             col.enabled = true;
             isMoving = false;
             // PieceDestroy();
-            yield break;
         }
         else
         {
-            //if (GameManager.inst.chessBoard.GetPiece(boardIdx) == null)
-            //{
-            //    GameManager.inst.chessBoard.TemporalyReturnPiece(this);
-            //}
-            GameManager.inst.chessBoard.MovePiece(this, nextIdx.x, nextIdx.y);
-            yield break;
+            GameManager.inst.chessBoard.MovePiece(this, nextIdx);
         }
     }
 

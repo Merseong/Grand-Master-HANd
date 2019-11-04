@@ -46,7 +46,7 @@ public class Boss : MonoBehaviour
         {
             for(int a = 0; a < 8; a++)
             {
-                if (GameManager.inst.chessBoard.GetPiece(a, b) == null)
+                if (!GameManager.inst.chessBoard.CheckPiece(a, b))
                     isClose = true;
             }
         }

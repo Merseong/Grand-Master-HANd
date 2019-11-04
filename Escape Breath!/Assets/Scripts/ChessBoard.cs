@@ -10,17 +10,7 @@ public class ChessBoard : MonoBehaviour
     private float indexOffset = 0.06f;
 
     [Header("Piece Set")]
-    private Piece[,] piecesGrid = new Piece[8, 8]
-        {
-            {null, null,null,null,null,null,null,null},
-            {null, null,null,null,null,null,null,null},
-            {null, null,null,null,null,null,null,null},
-            {null, null,null,null,null,null,null,null},
-            {null, null,null,null,null,null,null,null},
-            {null, null,null,null,null,null,null,null},
-            {null, null,null,null,null,null,null,null},
-            {null, null,null,null,null,null,null,null}
-        }; // [right, up] from left-down
+    private Dictionary<Vector2Int, Piece> piecesGrid = new Dictionary<Vector2Int, Piece>();
     public List<Piece> pieceList = new List<Piece>();
 
     public delegate void PieceAction();
@@ -32,12 +22,32 @@ public class ChessBoard : MonoBehaviour
     public GameObject DangerAreaPrefab;
     public GameObject moveableAreaPrefab;
     private List<GameObject> DangerAreaList = new List<GameObject>();
-    private List<GameObject> moveableAreaList = new List<GameObject>();
+    private List<GameObject> moveableAreaListR = new List<GameObject>();
+    private List<GameObject> moveableAreaListL = new List<GameObject>();
 
     public bool IsInBoardIdx(int right, int up)
     {
         if (0 > right || right > maxBoardIndex || 0 > up || up > maxBoardIndex) return false;
         else return true;
+    }
+    public bool IsInBoardIdx(Vector2Int idx)
+    {
+        return IsInBoardIdx(idx.x, idx.y);
+    }
+
+    public bool CheckPiece(Vector2Int idx)
+    {
+        return piecesGrid.ContainsKey(idx);
+    }
+    public bool CheckPiece(int right, int up)
+    {
+        return piecesGrid.ContainsKey(new Vector2Int(right, up));
+    }
+
+    public Piece GetPiece(Vector2Int idx)
+    {
+        piecesGrid.TryGetValue(idx, out Piece output);
+        return output;
     }
 
     public Vector3 IndexToLocalPos(int right, int up, float zOffset = 0)
@@ -58,98 +68,73 @@ public class ChessBoard : MonoBehaviour
     }
 
     // offset: 0.06f -> 0.18f, area -0.63 ~ 0.63
-    public Vector2Int PosToNearIndex(float x, float y)
+    public Vector2Int PosToNearIndex(float x, float z)
     {
         int i = Mathf.Clamp(Mathf.RoundToInt((x - zeroOffset.x * 3) / (indexOffset * 3)), 0, maxBoardIndex);
-        int j = Mathf.Clamp(Mathf.RoundToInt((y - zeroOffset.y * 3) / (indexOffset * 3)), 0, maxBoardIndex);
+        int j = Mathf.Clamp(Mathf.RoundToInt((z - zeroOffset.y * 3) / (indexOffset * 3)), 0, maxBoardIndex);
         return new Vector2Int(i, j);
     }
 
-    public bool AddPiece(Piece p)
+    public void AddPiece(Piece p)
     {
         var idx = PosToNearIndex(p.transform.position.x, p.transform.position.z);
-        if (GetPiece(idx.x, idx.y) != null)
+        if (CheckPiece(idx))
         {
             Debug.LogError("[ERR-AddPiece] already piece on " + idx);
-            return false;
         }
         else
         {
-            piecesGrid[idx.x, idx.y] = p;
+            piecesGrid.Add(idx, p);
             p.boardIdx = idx;
             pieceList.Add(p);
+
             allAttack += p.AutoAttack;
             allReset += p.ResetAfterTurnEnd;
             allBeforeAttack += p.BeforeAttack;
         }
-        return true;
     }
 
-    public void TemporalyRemovePiece(Piece p)
+    public void PermanantRemovePiece(Piece p)
     {
-        piecesGrid[p.boardIdx.x, p.boardIdx.y] = null;
+        piecesGrid.Remove(p.boardIdx);
+        allAttack -= p.AutoAttack;
+        allReset -= p.ResetAfterTurnEnd;
+        allBeforeAttack -= p.BeforeAttack;
+        Destroy(p.gameObject);
     }
 
-    public void TemporalyReturnPiece(Piece p)
+    public void RemovePieceFromBoard(Piece p)
     {
-        piecesGrid[p.boardIdx.x, p.boardIdx.y] = p;
+        piecesGrid.Remove(p.boardIdx);
     }
 
-    public Piece GetPiece(int right, int up)
+    public void MovePiece(Piece p, Vector2Int nextPos)
     {
-        if (!IsInBoardIdx(right, up))
+        if (!IsInBoardIdx(nextPos))
         {
-            Debug.LogError("[ERR-GetPiece] bound exceeded: " + right + ", " + up);
-            return null;
-        }
-        else return piecesGrid[right, up];
-    }
-
-    public Piece GetPiece(Vector2Int idx)
-    {
-        return GetPiece(idx.x, idx.y);
-    }
-
-    public void MovePiece(int fromRight, int fromUp, int toRight, int toUp)
-    {
-        if (!IsInBoardIdx(fromRight, fromUp))
-        {
-            Debug.LogError("[ERR-MovePiece] from bound exceeded");
+            Debug.LogError("[ERR-MovePiece] nextPos exeed range");
             return;
         }
-        if (!IsInBoardIdx(toRight, toUp))
+        else if (CheckPiece(nextPos))
         {
-            Debug.LogError("[ERR-MovePiece] to bound exceeded");
+            Debug.LogError("[ERR-MovePiece] already piece on nextPos");
             return;
         }
-        piecesGrid[toRight, toUp] = piecesGrid[fromRight, fromUp];
-        Debug.Log(piecesGrid[toRight, toUp]);
-        if (!(fromRight == toRight && fromUp == toUp))
+        
+        if (piecesGrid.TryGetValue(p.boardIdx, out Piece _p))
         {
-            piecesGrid[fromRight, fromUp] = null;
-            piecesGrid[toRight, toUp].boardIdx = new Vector2Int(toRight, toUp);
-            Debug.Log("Move from " + fromRight + ", " + fromUp + " to " + toRight + ", " + toUp);
+            RemovePieceFromBoard(_p);
         }
-        StartCoroutine(piecesGrid[toRight, toUp].MovePieceCoroutine(IndexToLocalPos(toRight, toUp), 1f));
-        return;
+        piecesGrid.Add(nextPos, p);
+        StartCoroutine(p.MovePieceCoroutine(IndexToLocalPos(nextPos.x, nextPos.y), 1f));
     }
 
-    public void MovePiece(Piece p, int toRight, int toUp)
+    public void MovePiece(Vector2Int fromIdx, Vector2Int toIdx)
     {
-        if (!IsInBoardIdx(toRight, toUp))
+        if (CheckPiece(fromIdx) && !CheckPiece(toIdx))
         {
-            Debug.LogError("[ERR-MovePiece] to bound exceeded");
-            return;
+            MovePiece(GetPiece(fromIdx), toIdx);
         }
-        piecesGrid[toRight, toUp] = p;
-        p.boardIdx = new Vector2Int(toRight, toUp);
-        StartCoroutine(p.MovePieceCoroutine(IndexToLocalPos(toRight, toUp), 1f));
-        return;
-    }
-
-    public void MovePiece(Vector2Int from, Vector2Int to)
-    {
-        MovePiece(from.x, from.y, to.x, to.y);
     }
 
     public bool MovePieceWithDir(Vector2Int pieceIdx, Vector2 dir)
@@ -158,7 +143,7 @@ public class ChessBoard : MonoBehaviour
 
         if (IsInBoardIdx(nextIdx.x, nextIdx.y))
         {
-            if (GetPiece(nextIdx))
+            if (CheckPiece(nextIdx))
             {
                 if (MovePieceWithDir(nextIdx, dir))
                 {
@@ -187,38 +172,49 @@ public class ChessBoard : MonoBehaviour
         // show attack mark on [right, up] for duration
     }
 
-    public void ShowMoveArea(int right, int up, int limit)
+    public void ShowMoveArea(int right, int up, int limit, bool isRightHand)
     {
         for (int i = -limit; i <= limit; ++i)
         {
             for (int j = -limit; j <= limit; ++j)
             {
-                if (IsInBoardIdx(right + i, up + j))
+                if (IsInBoardIdx(right + i, up + j) && !CheckPiece(right + i, up + j))
                 {
-                    var isPiece = GetPiece(right + i, up + j);
-                    Debug.Log((right + i) + ", " + (up + j) + ", " + isPiece);
-                    if (Mathf.Abs(i) + Mathf.Abs(j) <= limit && isPiece == null)
+                    Debug.Log((right + i) + ", " + (up + j));
+                    if (Mathf.Abs(i) + Mathf.Abs(j) <= limit)
                     {
                         var newMoveableArea = Instantiate(moveableAreaPrefab, transform);
                         newMoveableArea.transform.localPosition = IndexToLocalPos(right + i, up + j, 0.002f);
-                        moveableAreaList.Add(newMoveableArea);
+                        if (isRightHand) moveableAreaListR.Add(newMoveableArea);
+                        else moveableAreaListL.Add(newMoveableArea);
                     }
                 }
             }
         }
     }
 
-    public void ShowMoveArea(Vector2Int boardIdx, int limit)
+    public void ShowMoveArea(Vector2Int boardIdx, int limit, bool isRightHand)
     {
-        ShowMoveArea(boardIdx.x, boardIdx.y, limit);
+        ShowMoveArea(boardIdx.x, boardIdx.y, limit, isRightHand);
     }
 
-    public void HideMoveArea()
+    public void HideMoveArea(bool isRightHand)
     {
-        while (moveableAreaList.Count > 0)
+        if (isRightHand)
         {
-            Destroy(moveableAreaList[0]);
-            moveableAreaList.RemoveAt(0);
+            while (moveableAreaListR.Count > 0)
+            {
+                Destroy(moveableAreaListR[0]);
+                moveableAreaListR.RemoveAt(0);
+            }
+        }
+        else
+        {
+            while (moveableAreaListL.Count > 0)
+            {
+                Destroy(moveableAreaListL[0]);
+                moveableAreaListL.RemoveAt(0);
+            }
         }
     }
 
