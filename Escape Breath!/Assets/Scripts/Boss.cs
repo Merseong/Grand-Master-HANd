@@ -12,6 +12,9 @@ public class Boss : MonoBehaviour
     public TextMesh testTextMesh;
     public Object attackArea;
 
+    public Object meteorP;
+    public Transform attackPoint;
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Attack"))
@@ -63,15 +66,18 @@ public class Boss : MonoBehaviour
                     {
                         meteor(1);
                         attackType = 10;
+                        Debug.Log("attackType:" + attackType);
                     }
                     else if (ran == 1)
                     {
                         lazer(1);
                         attackType = 11;
+                        Debug.Log("attackType:" + attackType);
                     }
                     else if (ran == 2)
                     {
                         attackType = 12;
+                        Debug.Log("attackType:" + attackType);
                     }
                     break;
             }
@@ -101,6 +107,8 @@ public class Boss : MonoBehaviour
                 x = (int)Random.Range(1, 8);
                 y = (int)Random.Range(1, 4);
                 Instantiate(attackArea, Board.IndexToGlobalPos(x, y), Quaternion.identity); //제대로 생성되는지 확인 요망
+                Object obj = Instantiate(meteorP, attackPoint);
+                StartCoroutine(throwAttack(obj, Board.IndexToGlobalPos(x, y)));
             }
         }else
         {
@@ -114,6 +122,14 @@ public class Boss : MonoBehaviour
     }
     public void lazer(int phase)
     {
+        //랜덤으로 공격할 말 선택 -> 있는지 확인 -> 위치 가져옴 => 일자 공격
+        //페이즈에 따른 변화 : 공격 말 개수 & 공격 해당 말
+    }
 
+    IEnumerator throwAttack (Object obj, Vector3 atkP)
+    {
+        //점차이동
+        //이거 metor에 적용하자
+        yield return null;
     }
 }
