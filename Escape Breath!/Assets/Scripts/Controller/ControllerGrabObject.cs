@@ -70,7 +70,7 @@ public class ControllerGrabObject : MonoBehaviour
             else
             {
                 piece.isMoving = true;
-                //piece.canMove = false;
+                piece.canMove = false;
                 GameManager.inst.chessBoard.ShowMoveArea(piece.boardIdx, piece.moveLimit);
                 StartCoroutine(piece.WhenGrabedCoroutine());
             }

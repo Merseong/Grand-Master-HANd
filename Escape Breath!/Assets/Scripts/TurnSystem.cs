@@ -59,7 +59,7 @@ public class TurnSystem : MonoBehaviour
 
     private void AttackReadyPhase()
     {
-        // show boss pattern
+        // show boss pattern, boss attack
         turnCount++;
     }
 
@@ -71,8 +71,8 @@ public class TurnSystem : MonoBehaviour
 
     private void AttackPhase()
     {
+        GameManager.inst.chessBoard.allBeforeAttack();
         GameManager.inst.chessBoard.allAttack();
-        // Boss Attack
         Time.timeScale = 1;
     }
 }

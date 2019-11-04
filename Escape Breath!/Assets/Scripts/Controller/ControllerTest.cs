@@ -19,12 +19,12 @@ public class ControllerTest : MonoBehaviour
         //    Time.timeScale = (touchPositionAction.GetAxis(handType).y + 1) / 2;
         //}
         //else Time.timeScale = 1;
-        if (grabGripAction.GetStateDown(handType))
-        {
-            GameManager.inst.chessBoard.pieceList.ForEach((Piece p) =>
-            {
-                p.AutoAttack();
-            });
-        }
+        //if (grabGripAction.GetStateDown(handType))
+        //{
+        //    GameManager.inst.chessBoard.pieceList.ForEach((Piece p) =>
+        //    {
+        //        p.AutoAttack();
+        //    });
+        //}
     }
 }

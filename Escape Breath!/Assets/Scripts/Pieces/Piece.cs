@@ -159,7 +159,7 @@ public abstract class Piece : MonoBehaviour
             rb.velocity = Vector3.zero;
             rb.isKinematic = true;
             
-            float time = 1;
+            float time = 0.1f;
             float timer = 0;
             while (timer < time)
             {

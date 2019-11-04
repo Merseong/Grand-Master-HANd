@@ -26,6 +26,7 @@ public class ChessBoard : MonoBehaviour
     public delegate void PieceAction();
     public PieceAction allAttack;
     public PieceAction allReset;
+    public PieceAction allBeforeAttack;
 
     [Header("Show On Board")]
     public GameObject DangerAreaPrefab;
@@ -79,6 +80,7 @@ public class ChessBoard : MonoBehaviour
             pieceList.Add(p);
             allAttack += p.AutoAttack;
             allReset += p.ResetAfterTurnEnd;
+            allBeforeAttack += p.BeforeAttack;
         }
         return true;
     }
@@ -134,7 +136,7 @@ public class ChessBoard : MonoBehaviour
                     if ((i == 0 && j == 0) || (Mathf.Abs(i) + Mathf.Abs(j) <= limit && isPiece == null))
                     {
                         var newMoveableArea = Instantiate(moveableAreaPrefab, transform);
-                        newMoveableArea.transform.localPosition = IndexToLocalPos(right + i, up + j, 0.001f);
+                        newMoveableArea.transform.localPosition = IndexToLocalPos(right + i, up + j, 0.002f);
                         moveableAreaList.Add(newMoveableArea);
                     }
                 }
@@ -159,6 +161,10 @@ public class ChessBoard : MonoBehaviour
     private void Awake()
     {
         // init all pieces
+        allBeforeAttack = new PieceAction(() =>
+        {
+            Debug.Log("All beforeAttack");
+        });
         allAttack = new PieceAction(() =>
         {
             Debug.Log("All attack");
