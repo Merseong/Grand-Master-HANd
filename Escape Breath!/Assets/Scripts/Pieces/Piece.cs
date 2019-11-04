@@ -86,11 +86,16 @@ public abstract class Piece : MonoBehaviour
                 case TurnType.MovePiece:
                     damage = originalDamage;
                     landingInst.transform.localPosition = new Vector3(0, 0, landingZOffset * landingZOffset);
+                    landingInst.transform.localRotation = Quaternion.identity;
                     landingInst.SetActive(true);
                     isProtected = false;
                     canMove = true;
                     break;
             }
+        }
+        else
+        {
+            canMove = true;
         }
     }
 
@@ -114,7 +119,7 @@ public abstract class Piece : MonoBehaviour
     public IEnumerator WhenGrabedCoroutine()
     {
         Vector2Int nextIdx = boardIdx;
-        Vector3 nextPos = transform.position;
+        Vector3 nextPos;
         bool isDetected = false;
         col.enabled = false;
         while (isMoving)
@@ -161,15 +166,11 @@ public abstract class Piece : MonoBehaviour
         }
         else
         {
-            if (GameManager.inst.chessBoard.GetPiece(boardIdx) == null)
-            {
-                GameManager.inst.chessBoard.TemporalyReturnPiece(this);
-                GameManager.inst.chessBoard.MovePiece(boardIdx, nextIdx);
-            }
-            else
-            {
-                GameManager.inst.chessBoard.MovePiece(this, nextIdx.x, nextIdx.y);
-            }
+            //if (GameManager.inst.chessBoard.GetPiece(boardIdx) == null)
+            //{
+            //    GameManager.inst.chessBoard.TemporalyReturnPiece(this);
+            //}
+            GameManager.inst.chessBoard.MovePiece(this, nextIdx.x, nextIdx.y);
             yield break;
         }
     }

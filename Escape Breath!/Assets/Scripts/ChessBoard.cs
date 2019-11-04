@@ -123,10 +123,12 @@ public class ChessBoard : MonoBehaviour
             return;
         }
         piecesGrid[toRight, toUp] = piecesGrid[fromRight, fromUp];
+        Debug.Log(piecesGrid[toRight, toUp]);
         if (!(fromRight == toRight && fromUp == toUp))
         {
             piecesGrid[fromRight, fromUp] = null;
             piecesGrid[toRight, toUp].boardIdx = new Vector2Int(toRight, toUp);
+            Debug.Log("Move from " + fromRight + ", " + fromUp + " to " + toRight + ", " + toUp);
         }
         StartCoroutine(piecesGrid[toRight, toUp].MovePieceCoroutine(IndexToLocalPos(toRight, toUp), 1f));
         return;
@@ -193,9 +195,9 @@ public class ChessBoard : MonoBehaviour
             {
                 if (IsInBoardIdx(right + i, up + j))
                 {
-                    //Debug.Log(i + ", " + j);
                     var isPiece = GetPiece(right + i, up + j);
-                    if ((i == 0 && j == 0) || (Mathf.Abs(i) + Mathf.Abs(j) <= limit && isPiece == null))
+                    Debug.Log((right + i) + ", " + (up + j) + ", " + isPiece);
+                    if (Mathf.Abs(i) + Mathf.Abs(j) <= limit && isPiece == null)
                     {
                         var newMoveableArea = Instantiate(moveableAreaPrefab, transform);
                         newMoveableArea.transform.localPosition = IndexToLocalPos(right + i, up + j, 0.002f);

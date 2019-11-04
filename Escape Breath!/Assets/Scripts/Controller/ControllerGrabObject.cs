@@ -5,10 +5,14 @@ using Valve.VR;
 
 public class ControllerGrabObject : MonoBehaviour
 {
+    [Header("Controller Actions")]
     public SteamVR_Input_Sources handType;
     public SteamVR_Behaviour_Pose controllerPose;
+    public SteamVR_Action_Vector2 touchPositionAction;
     public SteamVR_Action_Boolean grabAction;
 
+    [Header("Else")]
+    public GameObject contModel;
     private GameObject collidingObject;
     private GameObject objectInHand;
 
@@ -16,7 +20,7 @@ public class ControllerGrabObject : MonoBehaviour
     {
         if (grabAction.GetLastStateDown(handType))
         {
-            if (collidingObject)
+            if (collidingObject && !objectInHand)
             {
                 GrabObject();
             }
@@ -72,8 +76,8 @@ public class ControllerGrabObject : MonoBehaviour
                 piece.isMoving = true;
                 piece.canMove = false;
                 piece.isActive = false;
-                GameManager.inst.chessBoard.ShowMoveArea(piece.boardIdx, piece.moveLimit);
                 GameManager.inst.chessBoard.TemporalyRemovePiece(piece);
+                GameManager.inst.chessBoard.ShowMoveArea(piece.boardIdx, piece.moveLimit);
                 StartCoroutine(piece.WhenGrabedCoroutine());
             }
         }
