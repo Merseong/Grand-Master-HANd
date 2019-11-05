@@ -17,14 +17,26 @@ public class Boss : MonoBehaviour
         if (other.CompareTag("Attack"))
         {
             var obj = other.GetComponent<AttackObj>();
-            health = Mathf.Max(0, health - obj.damage);
-            if (health > 0) testTextMesh.text = health.ToString();
-            else GameEnd(true);
+            Damaged(obj.damage);
 
             obj.rb.isKinematic = true;
             obj.rb.velocity = Vector3.zero;
             obj.transform.position = transform.position;
         }
+        else if (other.CompareTag("Piece"))
+        {
+            var obj = other.GetComponent<Piece>();
+            Damaged(obj.damage);
+
+            GameManager.inst.chessBoard.PermanantRemovePiece(obj);
+        }
+    }
+
+    private void Damaged(int damage)
+    {
+        health = Mathf.Max(0, health - damage * 3);
+        if (health > 0) testTextMesh.text = health.ToString();
+        else GameEnd(true);
     }
 
     private void GameEnd(bool isClear)

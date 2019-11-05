@@ -7,8 +7,6 @@ public class Attacker : Piece
     public override void PieceDestroy()
     {
         // remove piece from board
-        GameManager.inst.chessBoard.allAttack -= AutoAttack;
-        GameManager.inst.chessBoard.allReset -= ResetAfterTurnEnd;
-        Destroy(this);
+        isAlive = false;
     }
 }

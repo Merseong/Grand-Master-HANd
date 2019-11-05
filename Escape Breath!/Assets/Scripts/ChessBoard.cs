@@ -106,10 +106,11 @@ public class ChessBoard : MonoBehaviour
 
     public void PermanantRemovePiece(Piece p)
     {
-        piecesGrid.Remove(p.boardIdx);
+        if (piecesGrid.ContainsKey(p.boardIdx)) piecesGrid.Remove(p.boardIdx);
         allAttack -= p.AutoAttack;
         allReset -= p.ResetAfterTurnEnd;
         allBeforeAttack -= p.BeforeAttack;
+        p.PieceDestroy();
         Destroy(p.gameObject);
     }
 
@@ -251,8 +252,6 @@ public class ChessBoard : MonoBehaviour
     public Vector2Int GetNearestIndex(Vector2Int boardidx)
     {
         int dist = 0;
-        int xDiff = 0;
-        int yDiff = 0;
         Vector2Int output = boardidx;
         while (true)
         {
