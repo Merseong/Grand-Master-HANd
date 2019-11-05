@@ -37,10 +37,20 @@ public class ChessBoard : MonoBehaviour
 
     public bool CheckPiece(Vector2Int idx)
     {
-        return piecesGrid.ContainsKey(idx);
+        return CheckPiece(idx.x, idx.y);
     }
     public bool CheckPiece(int right, int up)
     {
+        string newStr = "\n";
+        for (int i = 0; i < maxBoardIndex; i++)
+        {
+            for (int j = 0; j < maxBoardIndex; j++)
+            {
+                newStr += piecesGrid.ContainsKey(new Vector2Int(i, j)) ? "1" : "0";
+            }
+            newStr += "\n";
+        }
+        Debug.LogError(newStr);
         return piecesGrid.ContainsKey(new Vector2Int(right, up));
     }
 
@@ -105,7 +115,8 @@ public class ChessBoard : MonoBehaviour
 
     public void RemovePieceFromBoard(Piece p)
     {
-        piecesGrid.Remove(p.boardIdx);
+        if (p.isActive)
+            piecesGrid.Remove(p.boardIdx);
     }
 
     public void MovePiece(Piece p, Vector2Int nextPos)
@@ -128,6 +139,7 @@ public class ChessBoard : MonoBehaviour
         piecesGrid.Add(nextPos, p);
         p.boardIdx = nextPos;
         StartCoroutine(p.MovePieceCoroutine(IndexToLocalPos(nextPos.x, nextPos.y), 1f));
+        //Debug.Log("Move " + p + " to " + nextPos);
     }
 
     public void MovePiece(Vector2Int fromIdx, Vector2Int toIdx)
@@ -184,10 +196,11 @@ public class ChessBoard : MonoBehaviour
                     //Debug.Log((right + i) + ", " + (up + j));
                     if (Mathf.Abs(i) + Mathf.Abs(j) <= limit)
                     {
+                        Vector2Int newIdx = new Vector2Int(right + i, up + j);
                         var newMoveableArea = Instantiate(moveableAreaPrefab, transform);
                         newMoveableArea.transform.localPosition = IndexToLocalPos(right + i, up + j, 0.002f);
-                        if (isRightHand) moveableAreaListR.Add(new Vector2Int(right + i, up + j), newMoveableArea);
-                        else moveableAreaListL.Add(new Vector2Int(right + i, up + j), newMoveableArea);
+                        if (isRightHand) moveableAreaListR.Add(newIdx, newMoveableArea);
+                        else moveableAreaListL.Add(newIdx, newMoveableArea);
                     }
                 }
             }

@@ -75,8 +75,8 @@ public class ControllerGrabObject : MonoBehaviour
             {
                 piece.isMoving = true;
                 piece.canMove = false;
-                piece.isActive = false;
                 GameManager.inst.chessBoard.RemovePieceFromBoard(piece);
+                piece.isActive = false;
                 GameManager.inst.chessBoard.ShowMoveArea(piece.boardIdx, piece.moveLimit, handType == SteamVR_Input_Sources.RightHand);
                 StartCoroutine(piece.WhenGrabedCoroutine());
             }
