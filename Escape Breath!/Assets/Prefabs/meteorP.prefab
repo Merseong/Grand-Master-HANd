@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5966317058663393496}
   - component: {fileID: 3429380607072998126}
   - component: {fileID: 8983293764616908311}
-  - component: {fileID: 7248477740912532168}
+  - component: {fileID: 4774133957067613830}
   m_Layer: 0
   m_Name: meteorP
   m_TagString: Untagged
@@ -79,7 +79,7 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!114 &7248477740912532168
+--- !u!114 &4774133957067613830
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -88,6 +88,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 7248477740912532171}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2719dbeb78257e2488c9ff116e2d3477, type: 3}
+  m_Script: {fileID: 11500000, guid: 37123f4dc509bec44b144e916003bc5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Target: {fileID: 0}
+  firingAngle: 45
+  gravity: 9.8
+  Projectile: {fileID: 0}
+  startPos: {x: 0, y: 0, z: 0}

@@ -5,9 +5,14 @@ using UnityEngine;
 public class MeteorP : BossPattern
 {
     public GameObject meteorPiece;
-    int phase = GameManager.inst.boss.phase;
+    int phase;
 
     protected Queue<Vector2Int> targets = new Queue<Vector2Int>();
+
+    private void Start()
+    {
+        phase = GameManager.inst.boss.phase;
+    }
 
 
     public override void StartPattern()
@@ -37,7 +42,7 @@ public class MeteorP : BossPattern
             var atkPos = targets.Dequeue();
             float disappearTime = Random.Range(2, 2.5f);
             boss.AttackOnBoard(atkPos, disappearTime, true);
-            GameObject obj = Instantiate(meteorPiece, boss.attackPoint);
+            GameObject obj = Instantiate(meteorPiece, boss.attackPoint.position, Quaternion.identity);
             obj.GetComponent<MeteorPiece>().Throw(board.IndexToGlobalPos(atkPos.x, atkPos.y), disappearTime); //구현 확인 요망
         }
     }

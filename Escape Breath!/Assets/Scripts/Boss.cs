@@ -98,17 +98,18 @@ public class Boss : MonoBehaviour
 
     IEnumerator AttackPiece(Vector2Int pos, float time, bool isStrong)
     {
-        float Ntime = 0;
+        /*float Ntime = 0;
 
         while(Ntime < time)
         {
             Ntime += Time.deltaTime;
             yield return null;
-        }
+        }*/
         if (GameManager.inst.chessBoard.GetPiece(pos.x, pos.y) != null)
         {
             GameManager.inst.chessBoard.GetPiece(pos.x, pos.y).Damaged(); //강공격 약공격도 처리 해줘야 함
         }
+        yield return null;
     }
 
     //갈갈
