@@ -41,16 +41,16 @@ public class ChessBoard : MonoBehaviour
     }
     public bool CheckPiece(int right, int up)
     {
-        string newStr = "\n";
-        for (int i = 0; i < maxBoardIndex; i++)
-        {
-            for (int j = 0; j < maxBoardIndex; j++)
-            {
-                newStr += piecesGrid.ContainsKey(new Vector2Int(i, j)) ? "1" : "0";
-            }
-            newStr += "\n";
-        }
-        Debug.LogError(newStr);
+        //string newStr = "\n";
+        //for (int i = 0; i < maxBoardIndex; i++)
+        //{
+        //    for (int j = 0; j < maxBoardIndex; j++)
+        //    {
+        //        newStr += piecesGrid.ContainsKey(new Vector2Int(i, j)) ? "1" : "0";
+        //    }
+        //    newStr += "\n";
+        //}
+        //Debug.LogError(newStr);
         return piecesGrid.ContainsKey(new Vector2Int(right, up));
     }
 
@@ -245,6 +245,36 @@ public class ChessBoard : MonoBehaviour
         {
             Destroy(valb);
             moveableAreaListR.Remove(pos);
+        }
+    }
+
+    public Vector2Int GetNearestIndex(Vector2Int boardidx)
+    {
+        int dist = 0;
+        int xDiff = 0;
+        int yDiff = 0;
+        Vector2Int output = boardidx;
+        while (true)
+        {
+            for (int i = -dist; i <= dist; ++i)
+            {
+                int j = -(dist - Mathf.Abs(i));
+                output.x = boardidx.x + i;
+                output.y = boardidx.y + j;
+                if (IsInBoardIdx(output) && !CheckPiece(output))
+                {
+                    return output;
+                }
+
+                j = (dist - Mathf.Abs(i));
+                output.x = boardidx.x + i;
+                output.y = boardidx.y + j;
+                if (IsInBoardIdx(output) && !CheckPiece(output))
+                {
+                    return output;
+                }
+            }
+            dist++;
         }
     }
 
