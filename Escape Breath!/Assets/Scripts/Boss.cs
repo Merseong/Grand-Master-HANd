@@ -7,7 +7,7 @@ public class Boss : MonoBehaviour
 {
     public int health;
     public int phase;
-    public List<GameObject> phasePatterns = new List<GameObject>();
+    public List<GameObject> phasePatterns = new List<GameObject>(); //list가 아니라 그냥 겜오브젝트 하나면 되지않냥
     public int[] phasePatternsLimit = new int[1];
     public Transform patternStarter;
 
@@ -16,8 +16,10 @@ public class Boss : MonoBehaviour
     public TextMesh testTextMesh;
     public Object attackArea;
 
-    public MeteorP meteorPS;
+    public GameObject meteorPS;
     public Transform attackPoint;
+
+    bool isClose = false;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -49,8 +51,14 @@ public class Boss : MonoBehaviour
     private BossPattern SelectPattern()
     {
         // select random pattern or biased pattern
-        int idx = Random.Range(0, phasePatternsLimit[phase] + 1);
-        return Instantiate(phasePatterns[idx], patternStarter).GetComponent<BossPattern>();
+
+        if (isClose)
+            return Instantiate(phasePatterns[0], patternStarter).GetComponent<BossPattern>(); //근접 공격 phasepatterns 임시 숫자임
+        else
+        {
+            int idx = Random.Range(0, phasePatternsLimit[phase] + 1); //이게뭐임
+            return Instantiate(phasePatterns[idx], patternStarter).GetComponent<BossPattern>();
+        }
     }
 
     public void StartPattern()
@@ -58,10 +66,21 @@ public class Boss : MonoBehaviour
         var pattern = SelectPattern();
         pattern.StartPattern();
     }
+    
+    public void CheckClose()
+    {
+        for (int b = 5; b < 8; b++)
+        {
+            for (int a = 0; a < 8; a++)
+            {
+                if (GameManager.inst.chessBoard.GetPiece(a, b) != null)
+                    isClose = true;
+            }
+        }
+    }
+    //갈갈
 
-    // 이 아랫부분은 남겨둘테니 알아서 옮기셈
-
-    public void readyAttack(int phase) //공격 준비 단계
+    /*public void readyAttack(int phase) //공격 준비 단계
     {
         int ran = Random.Range(0, 2);
         bool isClose = false;
@@ -114,36 +133,9 @@ public class Boss : MonoBehaviour
                 break;
         }
     }
-
-    public void meteor(int phase)
-    {
-        int x, y;
-        var Board = GameManager.inst.chessBoard;
-
-        if(phase == 0)
-        {
-            for(int i =0; i <4; i++)
-            {
-                x = (int)Random.Range(1, 8);
-                y = (int)Random.Range(1, 4);
-                Instantiate(attackArea, Board.IndexToGlobalPos(x, y), Quaternion.identity); //제대로 생성되는지 확인 요망
-                var obj = Instantiate(meteorPS.gameObject, attackPoint);
-                obj.GetComponent<MeteorP>().Throw(Board.IndexToGlobalPos(x, y)); //how to transform from vec3? 
-                //StartCoroutine(throwAttack(obj, Board.IndexToGlobalPos(x, y)));
-            }
-        }else
-        {
-            for (int i = 0; i < 8; i++)
-            {
-                x = (int)Random.Range(1, 8);
-                y = (int)Random.Range(1, 4);
-                Instantiate(attackArea, Board.IndexToGlobalPos(x, y), Quaternion.identity); //제대로 생성되는지 확인 요망
-            }
-        }
-    }
     public void lazer(int phase)
     {
         //랜덤으로 공격할 말 선택 -> 있는지 확인 -> 위치 가져옴 => 일자 공격
         //페이즈에 따른 변화 : 공격 말 개수 & 공격 해당 말
-    }
+    }*/
 }

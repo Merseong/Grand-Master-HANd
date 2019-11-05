@@ -1423,12 +1423,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 100
   phase: 0
+  phasePatterns:
+  - {fileID: 0}
+  phasePatternsLimit: 00000000
+  patternStarter: {fileID: 0}
   attackType: 0
   bossTarget: {fileID: 894777917}
   testTextMesh: {fileID: 1486424726}
   attackArea: {fileID: 8725821484534599373, guid: 300f26acfef3584489939e14fda7c16c,
     type: 3}
-  meteorP: {fileID: 0}
+  meteorPS: {fileID: 0}
   attackPoint: {fileID: 1327850024}
 --- !u!65 &1674070870
 BoxCollider:

@@ -50,7 +50,7 @@ public class ChessBoard : MonoBehaviour
         return new Vector3(zeroOffset.y + up * indexOffset, zeroOffset.x + right * indexOffset, zOffset);
     }
 
-    public Vector3 IndexToGlobalPos(int right, int up, float zOffset = 0)
+    public Vector3 IndexToGlobalPos(int right, int up, float zOffset = 0) //vector2int 로 하면 안되냐 안됨말고
     {
         var lPos = 3 * IndexToLocalPos(right, up);
         return new Vector3(lPos.y, zOffset, lPos.x) + transform.position;
@@ -116,7 +116,7 @@ public class ChessBoard : MonoBehaviour
         MovePiece(from.x, from.y, to.x, to.y);
     }
 
-    public void ShowAttackArea(int right, int up, float duration, bool isStrong = false)
+    public void ShowAttackArea(Vector2Int pos, float duration, bool isStrong = false) //ㅎ right, up => Vector2Int
     {
         // show attack mark on [right, up] for duration
     }

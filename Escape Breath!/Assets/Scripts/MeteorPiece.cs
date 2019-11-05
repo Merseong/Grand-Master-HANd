@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MeteorP : MonoBehaviour
+public class MeteorPiece : MonoBehaviour
 {
     public Transform Target;
     public float firingAngle = 45.0f;
     public float gravity = 9.8f;
 
+    public GameObject metoerP;
     public Transform Projectile;
     private Transform myTransform;
 
@@ -15,7 +16,6 @@ public class MeteorP : MonoBehaviour
     {
         myTransform = transform;
     }
-
     public void Throw(Vector3 targetPosition)
     {
         Target.position = targetPosition;
@@ -23,7 +23,7 @@ public class MeteorP : MonoBehaviour
     }
 
 
-    IEnumerator ThrowMeteor()
+    IEnumerator ThrowMeteor() //주어진건 출발 위치, 도착 위치 = 거리, 턴 타이머 = 체공 시간 => 속력에 변화를 줘야함. 
     {
         yield return new WaitForSeconds(1.5f);
 
