@@ -17,6 +17,8 @@ public class GameManager : MonoBehaviour
     public TurnSystem turnSystem;
 
     public GameObject attackObj;
+    public Material whiteMat;
+    public Material blackMat;
 
     public void GameOver()
     {

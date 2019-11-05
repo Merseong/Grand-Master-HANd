@@ -13,6 +13,7 @@ public abstract class Piece : MonoBehaviour
     private int originalDamage;
     public int moveLimit = 2;
     public Vector2Int boardIdx;
+    public float rechargePoint = 0;
 
     [Header("Piece Status")]
     public bool isAlive = true;
@@ -48,12 +49,21 @@ public abstract class Piece : MonoBehaviour
 
     public abstract void PieceDestroy();
 
+    public void Resurrection()
+    {
+        if (!isAlive)
+        {
+            isAlive = true;
+            rechargePoint = 0;
+            GetComponent<MeshRenderer>().material = GameManager.inst.whiteMat;
+        }
+    }
+
     public virtual void BeforeAttack() { }
 
     public void AutoAttack()
     {
-        BeforeAttack(); // 이거를 또 델리게이트로 만들어서 옮겨야될듯
-        if (isActive && isAttacker && damage != 0)
+        if (isAlive && isActive && isAttacker && damage != 0)
         {
             // auto attack
             var attackObj = Instantiate(GameManager.inst.attackObj, transform.position + attackPos, Quaternion.identity).GetComponent<AttackObj>();

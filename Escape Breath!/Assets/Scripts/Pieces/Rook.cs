@@ -6,12 +6,12 @@ public class Rook : Piece
 {
     public override void PieceDestroy()
     {
-        throw new System.NotImplementedException();
+        isAlive = false;
     }
 
     public override void BeforeAttack()
     {
-        if (isActive)
+        if (isActive && isAlive)
         {
             // guard this and backside
             isProtected = true;

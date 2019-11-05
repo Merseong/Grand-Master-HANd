@@ -8,13 +8,13 @@ public class ControllerGrabObject : MonoBehaviour
     [Header("Controller Actions")]
     public SteamVR_Input_Sources handType;
     public SteamVR_Behaviour_Pose controllerPose;
-    public SteamVR_Action_Vector2 touchPositionAction;
     public SteamVR_Action_Boolean grabAction;
 
     [Header("Else")]
     public GameObject contModel;
     private GameObject collidingObject;
     private GameObject objectInHand;
+    public Piece pieceInHand;
 
     private void Update()
     {
@@ -79,6 +79,7 @@ public class ControllerGrabObject : MonoBehaviour
                 piece.isActive = false;
                 GameManager.inst.chessBoard.ShowMoveArea(piece.boardIdx, piece.moveLimit, handType == SteamVR_Input_Sources.RightHand);
                 StartCoroutine(piece.WhenGrabedCoroutine());
+                pieceInHand = piece;
             }
         }
 
@@ -115,5 +116,6 @@ public class ControllerGrabObject : MonoBehaviour
             }
         }
         objectInHand = null;
+        pieceInHand = null;
     }
 }

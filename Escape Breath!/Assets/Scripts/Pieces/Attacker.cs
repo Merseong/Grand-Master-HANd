@@ -6,7 +6,12 @@ public class Attacker : Piece
 {
     public override void PieceDestroy()
     {
-        // remove piece from board
+        GetComponent<MeshRenderer>().material = GameManager.inst.blackMat;
         isAlive = false;
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.A)) PieceDestroy();
     }
 }
