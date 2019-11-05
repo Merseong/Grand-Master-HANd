@@ -118,6 +118,7 @@ public abstract class Piece : MonoBehaviour
 
     public IEnumerator WhenGrabedCoroutine()
     {
+        Debug.Log(GameManager.inst.chessBoard.GetPiece(boardIdx));
         Vector2Int nextIdx = boardIdx;
         Vector3 nextPos;
         bool isDetected = false;
@@ -164,7 +165,9 @@ public abstract class Piece : MonoBehaviour
         }
         else
         {
+            isActive = true;
             GameManager.inst.chessBoard.MovePiece(this, nextIdx);
+            GameManager.inst.chessBoard.HideMoveArea(boardIdx);
         }
     }
 

@@ -22,8 +22,8 @@ public class ChessBoard : MonoBehaviour
     public GameObject DangerAreaPrefab;
     public GameObject moveableAreaPrefab;
     private List<GameObject> DangerAreaList = new List<GameObject>();
-    private List<GameObject> moveableAreaListR = new List<GameObject>();
-    private List<GameObject> moveableAreaListL = new List<GameObject>();
+    private Dictionary<Vector2Int, GameObject> moveableAreaListR = new Dictionary<Vector2Int, GameObject>();
+    private Dictionary<Vector2Int, GameObject> moveableAreaListL = new Dictionary<Vector2Int, GameObject>();
 
     public bool IsInBoardIdx(int right, int up)
     {
@@ -121,11 +121,12 @@ public class ChessBoard : MonoBehaviour
             return;
         }
         
-        if (piecesGrid.TryGetValue(p.boardIdx, out Piece _p))
+        if (piecesGrid.TryGetValue(p.boardIdx, out Piece _p) && p == _p)
         {
             RemovePieceFromBoard(_p);
         }
         piecesGrid.Add(nextPos, p);
+        p.boardIdx = nextPos;
         StartCoroutine(p.MovePieceCoroutine(IndexToLocalPos(nextPos.x, nextPos.y), 1f));
     }
 
@@ -180,13 +181,13 @@ public class ChessBoard : MonoBehaviour
             {
                 if (IsInBoardIdx(right + i, up + j) && !CheckPiece(right + i, up + j))
                 {
-                    Debug.Log((right + i) + ", " + (up + j));
+                    //Debug.Log((right + i) + ", " + (up + j));
                     if (Mathf.Abs(i) + Mathf.Abs(j) <= limit)
                     {
                         var newMoveableArea = Instantiate(moveableAreaPrefab, transform);
                         newMoveableArea.transform.localPosition = IndexToLocalPos(right + i, up + j, 0.002f);
-                        if (isRightHand) moveableAreaListR.Add(newMoveableArea);
-                        else moveableAreaListL.Add(newMoveableArea);
+                        if (isRightHand) moveableAreaListR.Add(new Vector2Int(right + i, up + j), newMoveableArea);
+                        else moveableAreaListL.Add(new Vector2Int(right + i, up + j), newMoveableArea);
                     }
                 }
             }
@@ -198,23 +199,39 @@ public class ChessBoard : MonoBehaviour
         ShowMoveArea(boardIdx.x, boardIdx.y, limit, isRightHand);
     }
 
-    public void HideMoveArea(bool isRightHand)
+    public void HideMoveArea(bool isRightHand, Piece droped)
     {
         if (isRightHand)
         {
-            while (moveableAreaListR.Count > 0)
+            List<GameObject> values = new List<GameObject>(moveableAreaListR.Values);
+            for (int i = 0; i < values.Count; ++i)
             {
-                Destroy(moveableAreaListR[0]);
-                moveableAreaListR.RemoveAt(0);
+                Destroy(values[i]);
             }
+            moveableAreaListR.Clear();
         }
         else
         {
-            while (moveableAreaListL.Count > 0)
+            List<GameObject> values = new List<GameObject>(moveableAreaListL.Values);
+            for (int i = 0; i < values.Count; ++i)
             {
-                Destroy(moveableAreaListL[0]);
-                moveableAreaListL.RemoveAt(0);
+                Destroy(values[i]);
             }
+            moveableAreaListL.Clear();
+        }
+    }
+
+    public void HideMoveArea(Vector2Int pos)
+    {
+        if (moveableAreaListL.TryGetValue(pos, out GameObject vala))
+        {
+            Destroy(vala);
+            moveableAreaListL.Remove(pos);
+        }
+        if (moveableAreaListR.TryGetValue(pos, out GameObject valb))
+        {
+            Destroy(valb);
+            moveableAreaListR.Remove(pos);
         }
     }
 
