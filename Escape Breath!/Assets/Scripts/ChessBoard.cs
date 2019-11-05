@@ -29,6 +29,7 @@ public class ChessBoard : MonoBehaviour
 
     [Header("Show On Board")]
     public GameObject DangerAreaPrefab;
+    public GameObject WeakDangerAreaPrefab;
     public GameObject moveableAreaPrefab;
     private List<GameObject> DangerAreaList = new List<GameObject>();
     private List<GameObject> moveableAreaList = new List<GameObject>();
@@ -118,7 +119,19 @@ public class ChessBoard : MonoBehaviour
 
     public void ShowAttackArea(Vector2Int pos, float duration, bool isStrong = false) //ㅎ right, up => Vector2Int
     {
-        // show attack mark on [right, up] for duration
+        if (isStrong)
+        {
+            var newDangerArea = Instantiate(DangerAreaPrefab, transform);
+            newDangerArea.transform.localPosition = IndexToLocalPos(pos.x, pos.y, 0.001f);
+            Destroy(newDangerArea, duration);
+        }
+        else
+        {
+            var newWeakDangerArea = Instantiate(WeakDangerAreaPrefab, transform);
+            newWeakDangerArea.transform.localPosition = IndexToLocalPos(pos.x, pos.y, 0.001f);
+            Destroy(newWeakDangerArea, duration);
+        }
+        Debug.Log("danger area one appear");
     }
 
     public void ShowMoveArea(int right, int up, int limit)
@@ -153,6 +166,14 @@ public class ChessBoard : MonoBehaviour
         {
             Destroy(moveableAreaList[0]);
             moveableAreaList.RemoveAt(0);
+        }
+    }
+    public void HideDangerArea()
+    {
+        while(DangerAreaList.Count > 0)
+        {
+            Destroy(DangerAreaList[0]);
+            DangerAreaList.RemoveAt(0);
         }
     }
 

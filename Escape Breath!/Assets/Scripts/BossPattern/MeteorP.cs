@@ -4,14 +4,15 @@ using UnityEngine;
 
 public class MeteorP : BossPattern
 {
-    private GameObject meteorPiece;
+    public GameObject meteorPiece;
     int phase = GameManager.inst.boss.phase;
 
-    protected Queue<Vector2Int> targets;
+    protected Queue<Vector2Int> targets = new Queue<Vector2Int>();
 
 
     public override void StartPattern()
     {
+        SelectTarget();
         AttackReady();
     }
 
@@ -20,10 +21,11 @@ public class MeteorP : BossPattern
         for (int i = 0; i < (phase + 1) * 4; i++)
         {
             Vector2Int pos = new Vector2Int();
-            pos.x = (int)Random.Range(1, 8);
-            pos.y = (int)Random.Range(1, 4);
+            pos.x = Random.Range(1, 8);
+            pos.y = Random.Range(1, 4);
             targets.Enqueue(pos);
         }
+        Debug.Log("Target select done");
     }
     public void AttackReady()
     {
@@ -33,11 +35,11 @@ public class MeteorP : BossPattern
         for (int i = 0; i < (phase + 1) * 4; i++)
         {
             var atkPos = targets.Dequeue();
-            board.ShowAttackArea(atkPos, 1, true); //지속시간 변경해야댐 임시 숫자임
+            float disappearTime = Random.Range(2, 2.5f);
+            boss.AttackOnBoard(atkPos, disappearTime, true);
             GameObject obj = Instantiate(meteorPiece, boss.attackPoint);
-            obj.GetComponent<MeteorPiece>().Throw(board.IndexToGlobalPos(atkPos.x, atkPos.y)); //구현 확인 요망
+            obj.GetComponent<MeteorPiece>().Throw(board.IndexToGlobalPos(atkPos.x, atkPos.y), disappearTime); //구현 확인 요망
         }
-        
     }
     public void Attack()
     {

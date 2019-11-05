@@ -8,7 +8,7 @@ public class Boss : MonoBehaviour
     public int health;
     public int phase;
     public List<GameObject> phasePatterns = new List<GameObject>(); //list가 아니라 그냥 겜오브젝트 하나면 되지않냥
-    public int[] phasePatternsLimit = new int[1];
+    //public int[] phasePatternsLimit = new int[1]; //날려야해
     public Transform patternStarter;
 
     public int attackType;
@@ -21,6 +21,17 @@ public class Boss : MonoBehaviour
 
     bool isClose = false;
 
+    //test
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Debug.Log("test Space");
+            var A = Instantiate(phasePatterns[0], patternStarter).GetComponent<BossPattern>();
+            A.StartPattern();
+        }
+    }
+    //test
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Attack"))
@@ -56,7 +67,7 @@ public class Boss : MonoBehaviour
             return Instantiate(phasePatterns[0], patternStarter).GetComponent<BossPattern>(); //근접 공격 phasepatterns 임시 숫자임
         else
         {
-            int idx = Random.Range(0, phasePatternsLimit[phase] + 1); //이게뭐임
+            int idx = Random.Range(0, phasePatterns.Count);
             return Instantiate(phasePatterns[idx], patternStarter).GetComponent<BossPattern>();
         }
     }
@@ -78,8 +89,30 @@ public class Boss : MonoBehaviour
             }
         }
     }
-    //갈갈
 
+    public void AttackOnBoard(Vector2Int pos, float duration, bool isStrong = false)
+    {
+        StartCoroutine(AttackPiece(pos, duration, isStrong));
+        GameManager.inst.chessBoard.ShowAttackArea(pos, duration, isStrong);
+    }
+
+    IEnumerator AttackPiece(Vector2Int pos, float time, bool isStrong)
+    {
+        float Ntime = 0;
+
+        while(Ntime < time)
+        {
+            Ntime += Time.deltaTime;
+            yield return null;
+        }
+        if (GameManager.inst.chessBoard.GetPiece(pos.x, pos.y) != null)
+        {
+            GameManager.inst.chessBoard.GetPiece(pos.x, pos.y).Damaged(); //강공격 약공격도 처리 해줘야 함
+        }
+    }
+
+    //갈갈
+    //타겟 정하기, 데미지 입히기
     /*public void readyAttack(int phase) //공격 준비 단계
     {
         int ran = Random.Range(0, 2);
