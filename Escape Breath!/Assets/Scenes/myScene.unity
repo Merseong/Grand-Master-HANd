@@ -97,7 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
   m_LightingDataAsset: {fileID: 0}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -1175,7 +1175,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1327850023}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.49999997, z: 0.50000006}
+  m_LocalPosition: {x: 0, y: 0.517, z: -0.503}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1674070873}
@@ -1424,8 +1424,7 @@ MonoBehaviour:
   health: 100
   phase: 0
   phasePatterns:
-  - {fileID: 0}
-  phasePatternsLimit: 00000000
+  - {fileID: 5303393613228015808, guid: f89e0c6625e792846adb04a41a2e5bd9, type: 3}
   patternStarter: {fileID: 0}
   attackType: 0
   bossTarget: {fileID: 894777917}
@@ -2634,6 +2633,7 @@ MonoBehaviour:
   pieceList: []
   DangerAreaPrefab: {fileID: 8789928703322235254, guid: e9315a94ee7b8c7428dee35dc71bba46,
     type: 3}
+  WeakDangerAreaPrefab: {fileID: 0}
   moveableAreaPrefab: {fileID: 5245811782846782765, guid: b99d3d69dd91fe34997ad23afed2538f,
     type: 3}
 --- !u!1 &8389949103934917151
