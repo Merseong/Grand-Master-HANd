@@ -49,7 +49,7 @@ public class MeteorPiece : MonoBehaviour
         {
             transform.Translate(0, (Vy - (gravity * elapse_time))  * Time.deltaTime, Vx  * Time.deltaTime);
             elapse_time += Time.deltaTime;
-            Debug.Log("helo" + transform.position);
+            //Debug.Log("helo" + transform.position);
 
             yield return null;
         }
