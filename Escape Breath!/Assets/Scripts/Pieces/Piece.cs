@@ -13,8 +13,10 @@ public abstract class Piece : MonoBehaviour
     private int originalDamage;
     public int moveLimit = 2;
     public Vector2Int boardIdx;
+    public float rechargePoint = 0;
 
     [Header("Piece Status")]
+    public bool isAlive = true;
     public bool isActive = true;
     public bool canMove = true;
     public bool isMoving = false;
@@ -38,7 +40,7 @@ public abstract class Piece : MonoBehaviour
         laserInst = Instantiate(laserPrefab, transform);
         laserInst.SetActive(false);
         landingInst = Instantiate(landingPrefab, transform);
-        landingInst.SetActive(false);
+        landingInst.transform.localPosition = new Vector3(0, 0, landingZOffset * landingZOffset);
 
         GameManager.inst.chessBoard.AddPiece(this);
 
@@ -47,12 +49,21 @@ public abstract class Piece : MonoBehaviour
 
     public abstract void PieceDestroy();
 
+    public void Resurrection()
+    {
+        if (!isAlive)
+        {
+            isAlive = true;
+            rechargePoint = 0;
+            GetComponent<MeshRenderer>().material = GameManager.inst.whiteMat;
+        }
+    }
+
     public virtual void BeforeAttack() { }
 
     public void AutoAttack()
     {
-        BeforeAttack(); // 이거를 또 델리게이트로 만들어서 옮겨야될듯
-        if (isAttacker && damage != 0 && !isMoving)
+        if (isAlive && isActive && isAttacker && damage != 0)
         {
             // auto attack
             var attackObj = Instantiate(GameManager.inst.attackObj, transform.position + attackPos, Quaternion.identity).GetComponent<AttackObj>();
@@ -78,12 +89,23 @@ public abstract class Piece : MonoBehaviour
                 case TurnType.AttackReady:
                 case TurnType.Attack:
                     canMove = false;
+                    landingInst.SetActive(false);
+                    // 원래자리로 돌아가게 하는건데 쓸진 고민중
+                    if (!isMoving) StartCoroutine(MovePieceCoroutine(GameManager.inst.chessBoard.IndexToLocalPos(boardIdx.x, boardIdx.y), 0.2f));
                     break;
                 case TurnType.MovePiece:
                     damage = originalDamage;
+                    landingInst.transform.localPosition = new Vector3(0, 0, landingZOffset * landingZOffset);
+                    landingInst.transform.localRotation = Quaternion.identity;
+                    landingInst.SetActive(true);
+                    isProtected = false;
                     canMove = true;
                     break;
             }
+        }
+        else
+        {
+            canMove = true;
         }
     }
 
@@ -106,8 +128,9 @@ public abstract class Piece : MonoBehaviour
 
     public IEnumerator WhenGrabedCoroutine()
     {
+        //Debug.Log(GameManager.inst.chessBoard.GetPiece(boardIdx));
         Vector2Int nextIdx = boardIdx;
-        Vector3 nextPos = transform.position;
+        Vector3 nextPos;
         bool isDetected = false;
         col.enabled = false;
         while (isMoving)
@@ -120,7 +143,7 @@ public abstract class Piece : MonoBehaviour
                 if (Mathf.Abs(boardIdx.x - tempIdx.x) + Mathf.Abs(boardIdx.y - tempIdx.y) <= moveLimit)
                 {
                     //Debug.Log(boardIdx + ", " + tempIdx);
-                    if (GameManager.inst.chessBoard.GetPiece(tempIdx.x, tempIdx.y) != null) nextIdx = boardIdx;
+                    if (GameManager.inst.chessBoard.CheckPiece(tempIdx)) nextIdx = GameManager.inst.chessBoard.GetNearestIndex(boardIdx);
                     else nextIdx = tempIdx;
                 }
                 nextPos = GameManager.inst.chessBoard.IndexToGlobalPos(nextIdx.x, nextIdx.y, landingZOffset);
@@ -143,34 +166,43 @@ public abstract class Piece : MonoBehaviour
         laserInst.SetActive(false);
         landingInst.SetActive(false);
 
-        yield return null;
         if (!isDetected)
         {
-            isActive = false; // dead
+            isActive = false;
             col.enabled = true;
+            isMoving = false;
             // PieceDestroy();
-            yield break;
+            Debug.Log(this + " go outside");
         }
         else
         {
-            nextPos = GameManager.inst.chessBoard.IndexToLocalPos(nextIdx.x, nextIdx.y);
-            if (boardIdx != nextIdx) GameManager.inst.chessBoard.MovePiece(boardIdx, nextIdx);
-            rb.velocity = Vector3.zero;
-            rb.isKinematic = true;
-            
-            float time = 1;
-            float timer = 0;
-            while (timer < time)
-            {
-                timer += Time.deltaTime;
-                transform.localPosition = Vector3.Lerp(transform.localPosition, nextPos, timer / time);
-                transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.identity, timer / time);
-                yield return null;
-            }
-
-            rb.isKinematic = false;
-            col.enabled = true;
-            yield break;
+            isActive = true;
+            GameManager.inst.chessBoard.MovePiece(this, nextIdx);
+            GameManager.inst.chessBoard.HideMoveArea(boardIdx);
         }
+    }
+
+    public IEnumerator MovePieceCoroutine(Vector3 nextLocalPos, float duration)
+    {
+        rb.velocity = Vector3.zero;
+        col.enabled = false;
+        isMoving = true;
+        rb.isKinematic = true;
+
+        float timer = 0;
+        while (timer < duration * 0.8f)
+        {
+            timer += Time.unscaledDeltaTime;
+            transform.localPosition = Vector3.Lerp(transform.localPosition, nextLocalPos, timer / duration);
+            transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.identity, timer / duration);
+            yield return null;
+        }
+        transform.localPosition = nextLocalPos;
+        transform.localRotation = Quaternion.identity;
+
+        isMoving = false;
+        rb.isKinematic = false;
+        col.enabled = true;
+        //Debug.Log("End Moving");
     }
 }

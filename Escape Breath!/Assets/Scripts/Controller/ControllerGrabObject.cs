@@ -5,18 +5,22 @@ using Valve.VR;
 
 public class ControllerGrabObject : MonoBehaviour
 {
+    [Header("Controller Actions")]
     public SteamVR_Input_Sources handType;
     public SteamVR_Behaviour_Pose controllerPose;
     public SteamVR_Action_Boolean grabAction;
 
+    [Header("Else")]
+    public GameObject contModel;
     private GameObject collidingObject;
     private GameObject objectInHand;
+    public Piece pieceInHand;
 
     private void Update()
     {
         if (grabAction.GetLastStateDown(handType))
         {
-            if (collidingObject)
+            if (collidingObject && !objectInHand)
             {
                 GrabObject();
             }
@@ -70,9 +74,12 @@ public class ControllerGrabObject : MonoBehaviour
             else
             {
                 piece.isMoving = true;
-                //piece.canMove = false;
-                GameManager.inst.chessBoard.ShowMoveArea(piece.boardIdx, piece.moveLimit);
+                piece.canMove = false;
+                GameManager.inst.chessBoard.RemovePieceFromBoard(piece);
+                piece.isActive = false;
+                GameManager.inst.chessBoard.ShowMoveArea(piece.boardIdx, piece.moveLimit, handType == SteamVR_Input_Sources.RightHand);
                 StartCoroutine(piece.WhenGrabedCoroutine());
+                pieceInHand = piece;
             }
         }
 
@@ -105,9 +112,10 @@ public class ControllerGrabObject : MonoBehaviour
             {
                 var piece = objectInHand.GetComponent<Piece>();
                 piece.isMoving = false;
-                GameManager.inst.chessBoard.HideMoveArea();
+                GameManager.inst.chessBoard.HideMoveArea(handType == SteamVR_Input_Sources.RightHand, piece);
             }
         }
         objectInHand = null;
+        pieceInHand = null;
     }
 }

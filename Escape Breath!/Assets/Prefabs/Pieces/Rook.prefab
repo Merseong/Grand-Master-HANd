@@ -12,11 +12,11 @@ GameObject:
   - component: {fileID: 3321178423328330819}
   - component: {fileID: 3331300277019677895}
   - component: {fileID: 7112548142819626111}
-  - component: {fileID: 7789193379394296810}
   - component: {fileID: 6172573664516546293}
-  m_Layer: 0
+  - component: {fileID: 5957458454934426818}
+  m_Layer: 12
   m_Name: Rook
-  m_TagString: Untagged
+  m_TagString: Piece
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -97,20 +97,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!64 &7789193379394296810
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3344991279260486615}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Convex: 1
-  m_CookingOptions: 14
-  m_Mesh: {fileID: 4300008, guid: f5edbe7e601e05143b29e56c2de68b97, type: 3}
 --- !u!114 &6172573664516546293
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -135,4 +121,17 @@ MonoBehaviour:
     type: 3}
   landingPrefab: {fileID: 2155337330694968365, guid: 4f4e207bec96e674b96fd123741e7a48,
     type: 3}
-  attackPos: {x: 0, y: 0, z: 0}
+  attackPos: {x: 0, y: 0.3, z: 0}
+--- !u!65 &5957458454934426818
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3344991279260486615}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.04, y: 0.04, z: 0.058841415}
+  m_Center: {x: 0, y: 0, z: 0.029420711}

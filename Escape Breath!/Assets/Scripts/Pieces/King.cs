@@ -22,15 +22,14 @@ public class King : Piece
             {
                 for (int j = -buffRange; j <= buffRange; ++j)
                 {
-                    if (GameManager.inst.chessBoard.IsInBoardIdx(boardIdx.x + i, boardIdx.y + j))
+                    if (GameManager.inst.chessBoard.IsInBoardIdx(boardIdx.x + i, boardIdx.y + j) && GameManager.inst.chessBoard.CheckPiece(boardIdx.x + i, boardIdx.y + j))
                     {
-                        var buffed = GameManager.inst.chessBoard.GetPiece(boardIdx.x + i, boardIdx.y + j);
+                        var buffed = GameManager.inst.chessBoard.GetPiece(new Vector2Int(boardIdx.x + i, boardIdx.y + j));
                         if (buffed != null) buffed.damage += buffAmount;
                         // buff effect
                     }
                 }
             }
-            damage = 0;
         }
     }
 }

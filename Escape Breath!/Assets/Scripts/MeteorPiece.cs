@@ -44,6 +44,7 @@ public class MeteorPiece : MonoBehaviour
         float elapse_time = 0;
 
         Debug.Log("real start throw");
+        Destroy(gameObject, flightDuration);
         while (elapse_time < flightDuration)
         {
             transform.Translate(0, (Vy - (gravity * elapse_time))  * Time.deltaTime, Vx  * Time.deltaTime);

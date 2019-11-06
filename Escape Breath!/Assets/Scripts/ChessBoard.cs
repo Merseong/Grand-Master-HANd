@@ -10,37 +10,63 @@ public class ChessBoard : MonoBehaviour
     private float indexOffset = 0.06f;
 
     [Header("Piece Set")]
-    private Piece[,] piecesGrid = new Piece[8, 8]
-        {
-            {null, null,null,null,null,null,null,null},
-            {null, null,null,null,null,null,null,null},
-            {null, null,null,null,null,null,null,null},
-            {null, null,null,null,null,null,null,null},
-            {null, null,null,null,null,null,null,null},
-            {null, null,null,null,null,null,null,null},
-            {null, null,null,null,null,null,null,null},
-            {null, null,null,null,null,null,null,null}
-        }; // [right, up] from left-down
+    private Dictionary<Vector2Int, Piece> piecesGrid = new Dictionary<Vector2Int, Piece>();
     public List<Piece> pieceList = new List<Piece>();
 
     public delegate void PieceAction();
     public PieceAction allAttack;
     public PieceAction allReset;
+    public PieceAction allBeforeAttack;
 
     [Header("Show On Board")]
     public GameObject DangerAreaPrefab;
     public GameObject WeakDangerAreaPrefab;
     public GameObject moveableAreaPrefab;
     private List<GameObject> DangerAreaList = new List<GameObject>();
-    private List<GameObject> moveableAreaList = new List<GameObject>();
+    private Dictionary<Vector2Int, GameObject> moveableAreaListR = new Dictionary<Vector2Int, GameObject>();
+    private Dictionary<Vector2Int, GameObject> moveableAreaListL = new Dictionary<Vector2Int, GameObject>();
 
     public bool IsInBoardIdx(int right, int up)
     {
         if (0 > right || right > maxBoardIndex || 0 > up || up > maxBoardIndex) return false;
         else return true;
     }
+    public bool IsInBoardIdx(Vector2Int idx)
+    {
+        return IsInBoardIdx(idx.x, idx.y);
+    }
 
-    public Vector2 IndexToLocalPos(int right, int up, float zOffset = 0)
+    public bool CheckPiece(Vector2Int idx)
+    {
+        return CheckPiece(idx.x, idx.y);
+    }
+    public bool CheckPiece(int right, int up)
+    {
+        //string newStr = "\n";
+        //for (int i = 0; i < maxBoardIndex; i++)
+        //{
+        //    for (int j = 0; j < maxBoardIndex; j++)
+        //    {
+        //        newStr += piecesGrid.ContainsKey(new Vector2Int(i, j)) ? "1" : "0";
+        //    }
+        //    newStr += "\n";
+        //}
+        //Debug.LogError(newStr);
+        return piecesGrid.ContainsKey(new Vector2Int(right, up));
+    }
+
+    public Piece GetPiece(Vector2Int idx)
+    {
+        piecesGrid.TryGetValue(idx, out Piece output);
+        return output;
+    }
+
+    public Piece GetPiece(int right, int up)
+    {
+        return GetPiece(new Vector2Int(right, up));
+    }
+
+    public Vector3 IndexToLocalPos(int right, int up, float zOffset = 0)
     {
         if (!IsInBoardIdx(right, up))
         {
@@ -58,63 +84,107 @@ public class ChessBoard : MonoBehaviour
     }
 
     // offset: 0.06f -> 0.18f, area -0.63 ~ 0.63
-    public Vector2Int PosToNearIndex(float x, float y)
+    public Vector2Int PosToNearIndex(float x, float z)
     {
         int i = Mathf.Clamp(Mathf.RoundToInt((x - zeroOffset.x * 3) / (indexOffset * 3)), 0, maxBoardIndex);
-        int j = Mathf.Clamp(Mathf.RoundToInt((y - zeroOffset.y * 3) / (indexOffset * 3)), 0, maxBoardIndex);
+        int j = Mathf.Clamp(Mathf.RoundToInt((z - zeroOffset.y * 3) / (indexOffset * 3)), 0, maxBoardIndex);
         return new Vector2Int(i, j);
     }
 
-    public bool AddPiece(Piece p)
+    public void AddPiece(Piece p)
     {
         var idx = PosToNearIndex(p.transform.position.x, p.transform.position.z);
-        if (GetPiece(idx.x, idx.y) != null)
+        if (CheckPiece(idx))
         {
             Debug.LogError("[ERR-AddPiece] already piece on " + idx);
-            return false;
         }
         else
         {
-            piecesGrid[idx.x, idx.y] = p;
+            piecesGrid.Add(idx, p);
             p.boardIdx = idx;
             pieceList.Add(p);
+
             allAttack += p.AutoAttack;
             allReset += p.ResetAfterTurnEnd;
+            allBeforeAttack += p.BeforeAttack;
         }
-        return true;
     }
 
-    public Piece GetPiece(int right, int up)
+    public void PermanantRemovePiece(Piece p)
     {
-        if (!IsInBoardIdx(right, up))
-        {
-            Debug.LogError("[ERR-GetPiece] bound exceeded: " + right + ", " + up);
-            return null;
-        }
-        else return piecesGrid[right, up];
+        if (piecesGrid.ContainsKey(p.boardIdx)) piecesGrid.Remove(p.boardIdx);
+        allAttack -= p.AutoAttack;
+        allReset -= p.ResetAfterTurnEnd;
+        allBeforeAttack -= p.BeforeAttack;
+        p.PieceDestroy();
+        Destroy(p.gameObject);
     }
 
-    public void MovePiece(int fromRight, int fromUp, int toRight, int toUp)
+    public void RemovePieceFromBoard(Piece p)
     {
-        if (!IsInBoardIdx(fromRight, fromUp))
+        if (p.isActive)
+            piecesGrid.Remove(p.boardIdx);
+    }
+
+    public void MovePiece(Piece p, Vector2Int nextPos)
+    {
+        if (!IsInBoardIdx(nextPos))
         {
-            Debug.LogError("[ERR-MovePiece] from bound exceeded");
+            Debug.LogError("[ERR-MovePiece] nextPos exeed range");
             return;
         }
-        if (!IsInBoardIdx(toRight, toUp))
+        else if (CheckPiece(nextPos))
         {
-            Debug.LogError("[ERR-MovePiece] to bound exceeded");
+            Debug.LogError("[ERR-MovePiece] already piece on nextPos");
             return;
         }
-        piecesGrid[toRight, toUp] = piecesGrid[fromRight, fromUp];
-        piecesGrid[fromRight, fromUp] = null;
-        piecesGrid[toRight, toUp].boardIdx = new Vector2Int(toRight, toUp);
-        return;
+        
+        if (piecesGrid.TryGetValue(p.boardIdx, out Piece _p) && p == _p)
+        {
+            RemovePieceFromBoard(_p);
+        }
+        piecesGrid.Add(nextPos, p);
+        p.boardIdx = nextPos;
+        StartCoroutine(p.MovePieceCoroutine(IndexToLocalPos(nextPos.x, nextPos.y), 1f));
+        //Debug.Log("Move " + p + " to " + nextPos);
     }
 
-    public void MovePiece(Vector2Int from, Vector2Int to)
+    public void MovePiece(Vector2Int fromIdx, Vector2Int toIdx)
     {
-        MovePiece(from.x, from.y, to.x, to.y);
+        if (CheckPiece(fromIdx) && !CheckPiece(toIdx))
+        {
+            MovePiece(GetPiece(fromIdx), toIdx);
+        }
+    }
+
+    public bool MovePieceWithDir(Vector2Int pieceIdx, Vector2 dir)
+    {
+        Vector2Int nextIdx = pieceIdx + (Mathf.Abs(dir.x) > Mathf.Abs(dir.y) ? new Vector2Int(Mathf.RoundToInt(dir.x / Mathf.Abs(dir.x)), 0) : new Vector2Int(0, Mathf.RoundToInt(dir.y / Mathf.Abs(dir.y))));
+
+        if (IsInBoardIdx(nextIdx.x, nextIdx.y))
+        {
+            if (CheckPiece(nextIdx))
+            {
+                if (MovePieceWithDir(nextIdx, dir))
+                {
+                    MovePiece(pieceIdx, nextIdx);
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                MovePiece(pieceIdx, nextIdx);
+                return true;
+            }
+        }
+        else
+        {
+            return false;
+        }
     }
 
     public void ShowAttackArea(Vector2Int pos, float duration, bool isStrong = false) //ㅎ right, up => Vector2Int
@@ -134,38 +204,94 @@ public class ChessBoard : MonoBehaviour
         Debug.Log("danger area one appear");
     }
 
-    public void ShowMoveArea(int right, int up, int limit)
+    public void ShowMoveArea(int right, int up, int limit, bool isRightHand)
     {
         for (int i = -limit; i <= limit; ++i)
         {
             for (int j = -limit; j <= limit; ++j)
             {
-                if (IsInBoardIdx(right + i, up + j))
+                if (IsInBoardIdx(right + i, up + j) && !CheckPiece(right + i, up + j))
                 {
-                    //Debug.Log(i + ", " + j);
-                    var isPiece = GetPiece(right + i, up + j);
-                    if ((i == 0 && j == 0) || (Mathf.Abs(i) + Mathf.Abs(j) <= limit && isPiece == null))
+                    //Debug.Log((right + i) + ", " + (up + j));
+                    if (Mathf.Abs(i) + Mathf.Abs(j) <= limit)
                     {
+                        Vector2Int newIdx = new Vector2Int(right + i, up + j);
                         var newMoveableArea = Instantiate(moveableAreaPrefab, transform);
-                        newMoveableArea.transform.localPosition = IndexToLocalPos(right + i, up + j, 0.001f);
-                        moveableAreaList.Add(newMoveableArea);
+                        newMoveableArea.transform.localPosition = IndexToLocalPos(right + i, up + j, 0.002f);
+                        if (isRightHand) moveableAreaListR.Add(newIdx, newMoveableArea);
+                        else moveableAreaListL.Add(newIdx, newMoveableArea);
                     }
                 }
             }
         }
     }
 
-    public void ShowMoveArea(Vector2Int boardIdx, int limit)
+    public void ShowMoveArea(Vector2Int boardIdx, int limit, bool isRightHand)
     {
-        ShowMoveArea(boardIdx.x, boardIdx.y, limit);
+        ShowMoveArea(boardIdx.x, boardIdx.y, limit, isRightHand);
     }
 
-    public void HideMoveArea()
+    public void HideMoveArea(bool isRightHand, Piece droped)
     {
-        while (moveableAreaList.Count > 0)
+        if (isRightHand)
         {
-            Destroy(moveableAreaList[0]);
-            moveableAreaList.RemoveAt(0);
+            List<GameObject> values = new List<GameObject>(moveableAreaListR.Values);
+            for (int i = 0; i < values.Count; ++i)
+            {
+                Destroy(values[i]);
+            }
+            moveableAreaListR.Clear();
+        }
+        else
+        {
+            List<GameObject> values = new List<GameObject>(moveableAreaListL.Values);
+            for (int i = 0; i < values.Count; ++i)
+            {
+                Destroy(values[i]);
+            }
+            moveableAreaListL.Clear();
+        }
+    }
+
+    public void HideMoveArea(Vector2Int pos)
+    {
+        if (moveableAreaListL.TryGetValue(pos, out GameObject vala))
+        {
+            Destroy(vala);
+            moveableAreaListL.Remove(pos);
+        }
+        if (moveableAreaListR.TryGetValue(pos, out GameObject valb))
+        {
+            Destroy(valb);
+            moveableAreaListR.Remove(pos);
+        }
+    }
+
+    public Vector2Int GetNearestIndex(Vector2Int boardidx)
+    {
+        int dist = 0;
+        Vector2Int output = boardidx;
+        while (true)
+        {
+            for (int i = -dist; i <= dist; ++i)
+            {
+                int j = -(dist - Mathf.Abs(i));
+                output.x = boardidx.x + i;
+                output.y = boardidx.y + j;
+                if (IsInBoardIdx(output) && !CheckPiece(output))
+                {
+                    return output;
+                }
+
+                j = (dist - Mathf.Abs(i));
+                output.x = boardidx.x + i;
+                output.y = boardidx.y + j;
+                if (IsInBoardIdx(output) && !CheckPiece(output))
+                {
+                    return output;
+                }
+            }
+            dist++;
         }
     }
     public void HideDangerArea()
@@ -180,6 +306,10 @@ public class ChessBoard : MonoBehaviour
     private void Awake()
     {
         // init all pieces
+        allBeforeAttack = new PieceAction(() =>
+        {
+            Debug.Log("All beforeAttack");
+        });
         allAttack = new PieceAction(() =>
         {
             Debug.Log("All attack");

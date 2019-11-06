@@ -19,11 +19,12 @@ public class AttackObj : MonoBehaviour
 
     public void Init()
     {
-        Material material = new Material(trail.material);
-        Color color = Color.Lerp(Color.white, Color.yellow, damage / 10);
-        material.SetColor("_BaseColor", color);
-        material.SetColor("_EmissionColor", color);
-        trail.material = material;
+        //Material material = new Material(trail.material);
+        Color color = Color.Lerp(Color.white, Color.yellow, damage / 10f);
+        trail.material.SetColor("_BaseColor", color);
+        trail.material.SetColor("_EmissionColor", color);
+        //trail.material = material;
+        GetComponent<MeshRenderer>().material.SetColor("_BaseColor", color);
 
         Vector3 direction = GameManager.inst.boss.bossTarget.position - transform.position;
         float distance = direction.magnitude;
@@ -32,6 +33,6 @@ public class AttackObj : MonoBehaviour
         direction.y = 2 * height / time + 2.5f;
         rb.AddForce(direction, ForceMode.VelocityChange);
 
-        Destroy(gameObject, 5);
+        Destroy(gameObject, 3);
     }
 }

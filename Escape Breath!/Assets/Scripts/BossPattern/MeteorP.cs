@@ -7,8 +7,6 @@ public class MeteorP : BossPattern
     public GameObject meteorPiece;
     int phase;
 
-    protected Queue<Vector2Int> targets = new Queue<Vector2Int>();
-
     private void Start()
     {
         phase = GameManager.inst.boss.phase;

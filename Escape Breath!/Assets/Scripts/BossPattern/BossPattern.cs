@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class BossPattern : MonoBehaviour
 {
-    protected List<Vector2Int> targets;
+    protected Queue<Vector2Int> targets = new Queue<Vector2Int>();
 
     public abstract void StartPattern();
 
