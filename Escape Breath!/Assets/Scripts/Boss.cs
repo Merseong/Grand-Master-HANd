@@ -15,8 +15,7 @@ public class Boss : MonoBehaviour
     public Transform bossTarget;
     public TextMesh testTextMesh;
     public Object attackArea;
-
-    public GameObject meteorPS;
+    
     public Transform attackPoint;
 
     bool isClose = false;
@@ -105,11 +104,13 @@ public class Boss : MonoBehaviour
     public void AttackOnBoard(Vector2Int pos, float duration, bool isStrong = false)
     {
         StartCoroutine(AttackPiece(pos, duration, isStrong));
-        GameManager.inst.chessBoard.ShowAttackArea(pos, duration, isStrong);
+        GameManager.inst.chessBoard.ShowAttackArea(pos, duration - 0.1f, isStrong);
     }
 
     IEnumerator AttackPiece(Vector2Int pos, float time, bool isStrong)
     {
+        //시간 지나야 연산 들어가는거 구현 필요
+
         /*float Ntime = 0;
 
         while(Ntime < time)
