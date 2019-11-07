@@ -1,10 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 public class Boss : MonoBehaviour
 {
+    private float maxHealth;
     public int health;
     public int phase;
     public List<GameObject> phasePatterns = new List<GameObject>(); //list가 아니라 그냥 겜오브젝트 하나면 되지않냥
@@ -13,13 +15,25 @@ public class Boss : MonoBehaviour
 
     public int attackType;
     public Transform bossTarget;
-    public TextMesh testTextMesh;
+    [SerializeField]
+    private Slider redHealth;
+    private float redValue = 1;
+    [SerializeField]
+    private Slider yellowHealth;
+    private float yellowValue = 1;
     public Object attackArea;
 
     public GameObject meteorPS;
     public Transform attackPoint;
+    public Rigidbody rb;
 
     bool isClose = false;
+
+    private void Awake()
+    {
+        rb = GetComponent<Rigidbody>();
+        maxHealth = health;
+    }
 
     //test
     private void Update()
@@ -55,20 +69,18 @@ public class Boss : MonoBehaviour
     private void Damaged(int damage)
     {
         health = Mathf.Max(0, health - damage * 3);
-        if (health > 0) testTextMesh.text = health.ToString();
-        else GameEnd(true);
+        if (health > 0)
+        {
+            redValue = health / maxHealth;
+            redHealth.value = redValue;
+        }
+        else GameManager.inst.GameClear();
     }
 
-    private void GameEnd(bool isClear)
+    public void ResetYellowHealth()
     {
-        if (isClear)
-        {
-            testTextMesh.text = "클리어!";
-        }
-        else
-        {
-
-        }
+        yellowValue = redValue;
+        yellowHealth.value = yellowValue;
     }
 
     private BossPattern SelectPattern()

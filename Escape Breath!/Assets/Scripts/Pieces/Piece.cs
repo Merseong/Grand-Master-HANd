@@ -29,7 +29,7 @@ public abstract class Piece : MonoBehaviour
     private GameObject landingInst;
     private float landingZOffset = 0.01f;
     public Vector3 attackPos = new Vector3();
-    private Rigidbody rb;
+    public Rigidbody rb;
     private Collider col;
 
     private void Start()

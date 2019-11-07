@@ -11,6 +11,7 @@ public enum TurnType
 
 public class TurnSystem : MonoBehaviour
 {
+    public bool isGameEnd = false;
     public int turnCount = 0;
     public TurnType currentTurn;
     public Dictionary<TurnType, float> turnTimers = new Dictionary<TurnType, float>()
@@ -29,7 +30,6 @@ public class TurnSystem : MonoBehaviour
 
     private void Update()
     {
-        timeCounter += Time.unscaledDeltaTime;
         if (timeCounter > turnTimers[currentTurn])
         {
             // invoke when turn timer end
@@ -54,7 +54,11 @@ public class TurnSystem : MonoBehaviour
             timeCounter = 0;
         }
 
-        timeText.text = turnCount.ToString() + "th " + currentTurn.ToString() + "\n" + timeCounter.ToString("f1");
+        if (!isGameEnd)
+        {
+            timeCounter += Time.unscaledDeltaTime;
+            timeText.text = turnCount.ToString() + "th " + currentTurn.ToString() + "\n" + timeCounter.ToString("f1");
+        }
     }
 
     private void AttackReadyPhase()
@@ -72,6 +76,7 @@ public class TurnSystem : MonoBehaviour
 
     private void AttackPhase()
     {
+        GameManager.inst.boss.ResetYellowHealth();
         GameManager.inst.chessBoard.allReset();
         GameManager.inst.chessBoard.allBeforeAttack();
         GameManager.inst.chessBoard.allAttack();

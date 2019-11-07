@@ -22,11 +22,21 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
-
+        Debug.LogError("Game Over!");
+        turnSystem.isGameEnd = true;
+        turnSystem.timeText.text = "Game Over!";
+        Time.timeScale = 1;
+        for (int i = 0; i < chessBoard.pieceList.Count; ++i)
+        {
+            chessBoard.pieceList[i].rb.AddExplosionForce(1000f, Vector3.zero, 1000f);
+        }
     }
 
     public void GameClear()
     {
-
+        Debug.LogError("Game Clear!");
+        turnSystem.isGameEnd = true;
+        turnSystem.timeText.text = "Game Clear!";
+        Time.timeScale = 1;
     }
 }
