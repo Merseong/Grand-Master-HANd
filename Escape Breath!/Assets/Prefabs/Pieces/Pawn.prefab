@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1136107293175113648}
   - component: {fileID: 1123304824801258649}
   - component: {fileID: 6676759668033594009}
-  - component: {fileID: -2155714653339759541}
+  - component: {fileID: 6458205431132857024}
   m_Layer: 12
   m_Name: Pawn
   m_TagString: Piece
@@ -97,6 +97,8 @@ MonoBehaviour:
   damage: 3
   moveLimit: 2
   boardIdx: {x: 0, y: 0}
+  rechargePoint: 0
+  isAlive: 1
   isActive: 1
   canMove: 1
   isMoving: 0
@@ -122,8 +124,8 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!65 &-2155714653339759541
-BoxCollider:
+--- !u!64 &6458205431132857024
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -132,6 +134,7 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.029699191, y: 0.029699195, z: 0.047496747}
-  m_Center: {x: 4.656613e-10, y: 0.0000000013969839, z: 0.023748374}
+  serializedVersion: 3
+  m_Convex: 1
+  m_CookingOptions: 14
+  m_Mesh: {fileID: 4300010, guid: f5edbe7e601e05143b29e56c2de68b97, type: 3}

@@ -74,11 +74,11 @@ public class ControllerGrabObject : MonoBehaviour
             else
             {
                 piece.isMoving = true;
-                piece.canMove = false;
+                //piece.canMove = false;
                 GameManager.inst.chessBoard.RemovePieceFromBoard(piece);
-                piece.isActive = false;
-                GameManager.inst.chessBoard.ShowMoveArea(piece.boardIdx, piece.moveLimit, handType == SteamVR_Input_Sources.RightHand);
-                StartCoroutine(piece.WhenGrabedCoroutine());
+                //piece.isActive = false;
+                //GameManager.inst.chessBoard.ShowMoveArea(piece.boardIdx, piece.moveLimit, handType == SteamVR_Input_Sources.RightHand);
+                //StartCoroutine(piece.WhenGrabedCoroutine());
                 pieceInHand = piece;
             }
         }
@@ -112,7 +112,7 @@ public class ControllerGrabObject : MonoBehaviour
             {
                 var piece = objectInHand.GetComponent<Piece>();
                 piece.isMoving = false;
-                GameManager.inst.chessBoard.HideMoveArea(handType == SteamVR_Input_Sources.RightHand, piece);
+                //GameManager.inst.chessBoard.HideMoveArea(handType == SteamVR_Input_Sources.RightHand, piece);
             }
         }
         objectInHand = null;

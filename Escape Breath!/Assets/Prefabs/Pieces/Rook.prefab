@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3331300277019677895}
   - component: {fileID: 7112548142819626111}
   - component: {fileID: 6172573664516546293}
-  - component: {fileID: 5957458454934426818}
+  - component: {fileID: 7720179567243818788}
   m_Layer: 12
   m_Name: Rook
   m_TagString: Piece
@@ -113,6 +113,8 @@ MonoBehaviour:
   damage: 0
   moveLimit: 6
   boardIdx: {x: 0, y: 0}
+  rechargePoint: 0
+  isAlive: 1
   isActive: 1
   canMove: 1
   isMoving: 0
@@ -122,8 +124,8 @@ MonoBehaviour:
   landingPrefab: {fileID: 2155337330694968365, guid: 4f4e207bec96e674b96fd123741e7a48,
     type: 3}
   attackPos: {x: 0, y: 0.3, z: 0}
---- !u!65 &5957458454934426818
-BoxCollider:
+--- !u!64 &7720179567243818788
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -132,6 +134,7 @@ BoxCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.04, y: 0.04, z: 0.058841415}
-  m_Center: {x: 0, y: 0, z: 0.029420711}
+  serializedVersion: 3
+  m_Convex: 1
+  m_CookingOptions: 14
+  m_Mesh: {fileID: 4300008, guid: f5edbe7e601e05143b29e56c2de68b97, type: 3}

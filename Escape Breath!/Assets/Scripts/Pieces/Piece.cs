@@ -90,6 +90,18 @@ public abstract class Piece : MonoBehaviour
                 case TurnType.Attack:
                     canMove = false;
                     landingInst.SetActive(false);
+
+                    // testcode start
+                    Vector2Int nextIdx;
+                    var tempIdx = DetectFloor(out isActive);
+                    if (isActive)
+                    {
+                        GameManager.inst.chessBoard.RemovePieceFromBoard(this);
+                        nextIdx = GameManager.inst.chessBoard.GetNearestIndex(tempIdx);
+                        GameManager.inst.chessBoard.MovePiece(this, nextIdx);
+                    }
+                    // testcode end
+
                     // 원래자리로 돌아가게 하는건데 쓸진 고민중
                     if (!isMoving) StartCoroutine(MovePieceCoroutine(GameManager.inst.chessBoard.IndexToLocalPos(boardIdx.x, boardIdx.y), 0.2f));
                     break;
@@ -105,6 +117,7 @@ public abstract class Piece : MonoBehaviour
         }
         else
         {
+            DetectFloor(out isActive);
             canMove = true;
         }
     }
