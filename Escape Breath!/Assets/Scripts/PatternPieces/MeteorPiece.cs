@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MeteorPiece : MonoBehaviour
 {
-    public Vector3 Target;
+    public Vector3 TargetPos;
     public float firingAngle = 45.0f;
     public float gravity = 9.8f;
     
@@ -17,16 +17,16 @@ public class MeteorPiece : MonoBehaviour
     public void Throw(Vector3 targetPosition, float time)
     {
         Debug.Log("throw!");
-        Target = targetPosition;
+        TargetPos = targetPosition;
         StartCoroutine(ThrowMeteor(time));
     }
 
 
-    IEnumerator ThrowMeteor(float durationTime) //주어진건 출발 위치, 도착 위치 = 거리, 턴 타이머 = 체공 시간 => 속력에 변화를 줘야함. 
+    IEnumerator ThrowMeteor(float durationTime)
     {
         transform.position = startPos;
 
-        float distance2Target = Vector3.Distance(transform.position, Target); //거리 계산
+        float distance2Target = Vector3.Distance(transform.position, TargetPos); //거리 계산
          //Debug.Log("distance calculating");
 
         float Velocity = distance2Target / (Mathf.Sin(2 * firingAngle * Mathf.Deg2Rad) / gravity); //속도 계산 
@@ -37,7 +37,7 @@ public class MeteorPiece : MonoBehaviour
         float flightDuration = distance2Target / Vx; //체공 시간
         float timeScale = flightDuration / durationTime;
 
-        transform.rotation = Quaternion.LookRotation(Target - transform.position); //폰 바라보게
+        transform.rotation = Quaternion.LookRotation(TargetPos - transform.position); //폰 바라보게
 
         float elapseTime = 0;
 
