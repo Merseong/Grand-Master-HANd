@@ -23,7 +23,7 @@ public class Boss : MonoBehaviour
     //test
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space)) //meteor test
         {
             Debug.Log("test Space");
             var A = Instantiate(phasePatterns[0], patternStarter).GetComponent<BossPattern>();
@@ -109,15 +109,8 @@ public class Boss : MonoBehaviour
 
     IEnumerator AttackPiece(Vector2Int pos, float time, bool isStrong)
     {
-        //시간 지나야 연산 들어가는거 구현 필요
+        yield return new WaitForSeconds(time);
 
-        /*float Ntime = 0;
-
-        while(Ntime < time)
-        {
-            Ntime += Time.deltaTime;
-            yield return null;
-        }*/
         if (GameManager.inst.chessBoard.GetPiece(pos.x, pos.y) != null)
         {
             GameManager.inst.chessBoard.GetPiece(pos.x, pos.y).Damaged(); //강공격 약공격도 처리 해줘야 함
