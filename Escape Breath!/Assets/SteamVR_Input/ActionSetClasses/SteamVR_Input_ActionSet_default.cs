@@ -17,22 +17,6 @@ namespace Valve.VR
     public class SteamVR_Input_ActionSet_default : Valve.VR.SteamVR_ActionSet
     {
         
-        public virtual SteamVR_Action_Boolean InteractUI
-        {
-            get
-            {
-                return SteamVR_Actions.default_InteractUI;
-            }
-        }
-        
-        public virtual SteamVR_Action_Boolean Teleport
-        {
-            get
-            {
-                return SteamVR_Actions.default_Teleport;
-            }
-        }
-        
         public virtual SteamVR_Action_Boolean GrabPinch
         {
             get
@@ -89,22 +73,6 @@ namespace Valve.VR
             }
         }
         
-        public virtual SteamVR_Action_Boolean SnapTurnLeft
-        {
-            get
-            {
-                return SteamVR_Actions.default_SnapTurnLeft;
-            }
-        }
-        
-        public virtual SteamVR_Action_Boolean SnapTurnRight
-        {
-            get
-            {
-                return SteamVR_Actions.default_SnapTurnRight;
-            }
-        }
-        
         public virtual SteamVR_Action_Boolean TouchPad
         {
             get
@@ -118,6 +86,14 @@ namespace Valve.VR
             get
             {
                 return SteamVR_Actions.default_TouchPosition;
+            }
+        }
+        
+        public virtual SteamVR_Action_Boolean TouchClick
+        {
+            get
+            {
+                return SteamVR_Actions.default_TouchClick;
             }
         }
         

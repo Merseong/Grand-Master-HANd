@@ -18,6 +18,11 @@ public class ChessBoard : MonoBehaviour
     public PieceAction allReset;
     public PieceAction allBeforeAttack;
 
+    [Space(10)]
+    public Transform pieceSetTransform;
+    [Tooltip("0: queen, 1: knight, 2: bishop, 3: rook")]
+    public GameObject[] pieceGameObjects;
+
     [Header("Show On Board")]
     public GameObject DangerAreaPrefab;
     public GameObject WeakDangerAreaPrefab;
@@ -107,6 +112,23 @@ public class ChessBoard : MonoBehaviour
             allAttack += p.AutoAttack;
             allReset += p.ResetAfterTurnEnd;
             allBeforeAttack += p.BeforeAttack;
+        }
+    }
+
+    public void PromotePawns(bool isRight, int targetNum)
+    {
+        int targetX = isRight ? 6 : 0;
+        if (CheckPiece(targetX, 7))
+        {
+            Piece p = GetPiece(targetX, 7);
+            Instantiate(pieceGameObjects[targetNum], IndexToGlobalPos(p.boardIdx.x, p.boardIdx.y), Quaternion.Euler(-90, 0, 0), pieceSetTransform);
+            PermanantRemovePiece(p);
+        }
+        if (CheckPiece(targetX + 1, 7))
+        {
+            Piece p = GetPiece(targetX + 1, 7);
+            Instantiate(pieceGameObjects[targetNum], IndexToGlobalPos(p.boardIdx.x, p.boardIdx.y), Quaternion.Euler(-90, 0, 0), pieceSetTransform);
+            PermanantRemovePiece(p);
         }
     }
 

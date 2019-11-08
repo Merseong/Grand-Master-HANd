@@ -6,6 +6,7 @@ public class Rook : Piece
 {
     public override void PieceDestroy()
     {
+        GetComponent<MeshRenderer>().material = GameManager.inst.blackMat;
         isAlive = false;
     }
 

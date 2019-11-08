@@ -10,6 +10,8 @@ public class King : Piece
     public override void PieceDestroy()
     {
         // when king destroyed, Game Over Action
+        GetComponent<MeshRenderer>().material = GameManager.inst.blackMat;
+        isAlive = false;
         GameManager.inst.GameOver();
     }
 

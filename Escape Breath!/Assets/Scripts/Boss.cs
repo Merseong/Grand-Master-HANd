@@ -16,10 +16,10 @@ public class Boss : MonoBehaviour
     public int attackType;
     public Transform bossTarget;
     [SerializeField]
-    private Slider redHealth;
+    private Slider redHealth = null;
     private float redValue = 1;
     [SerializeField]
-    private Slider yellowHealth;
+    private Slider yellowHealth = null;
     private float yellowValue = 1;
     public Object attackArea;
 
