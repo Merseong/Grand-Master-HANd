@@ -64,7 +64,7 @@ public class TurnSystem : MonoBehaviour
     private void AttackReadyPhase()
     {
         // show boss pattern, boss attack
-        //GameManager.inst.boss.TESTSTARTATTACK();
+        GameManager.inst.boss.StartPattern();
         turnCount++;
     }
 
