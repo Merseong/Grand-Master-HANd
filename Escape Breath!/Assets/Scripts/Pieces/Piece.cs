@@ -94,6 +94,7 @@ public abstract class Piece : MonoBehaviour
                     if (!isMoving) StartCoroutine(MovePieceCoroutine(GameManager.inst.chessBoard.IndexToLocalPos(boardIdx.x, boardIdx.y), 0.2f));
                     break;
                 case TurnType.MovePiece:
+                    SpecialReset();
                     damage = originalDamage;
                     landingInst.transform.localPosition = new Vector3(0, 0, landingZOffset * landingZOffset);
                     landingInst.transform.localRotation = Quaternion.identity;
@@ -108,6 +109,8 @@ public abstract class Piece : MonoBehaviour
             canMove = true;
         }
     }
+
+    protected virtual void SpecialReset() { } 
 
     public Vector2Int DetectFloor(out bool isDetected)
     {
