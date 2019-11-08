@@ -15,8 +15,7 @@ public class Boss : MonoBehaviour
     public Transform bossTarget;
     public TextMesh testTextMesh;
     public Object attackArea;
-
-    public GameObject meteorPS;
+    
     public Transform attackPoint;
 
     bool isClose = false;
@@ -24,7 +23,7 @@ public class Boss : MonoBehaviour
     //test
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space)) //meteor test
         {
             Debug.Log("test Space");
             var A = Instantiate(phasePatterns[0], patternStarter).GetComponent<BossPattern>();
@@ -105,18 +104,13 @@ public class Boss : MonoBehaviour
     public void AttackOnBoard(Vector2Int pos, float duration, bool isStrong = false)
     {
         StartCoroutine(AttackPiece(pos, duration, isStrong));
-        GameManager.inst.chessBoard.ShowAttackArea(pos, duration, isStrong);
+        GameManager.inst.chessBoard.ShowAttackArea(pos, duration - 0.1f, isStrong);
     }
 
     IEnumerator AttackPiece(Vector2Int pos, float time, bool isStrong)
     {
-        /*float Ntime = 0;
+        yield return new WaitForSeconds(time);
 
-        while(Ntime < time)
-        {
-            Ntime += Time.deltaTime;
-            yield return null;
-        }*/
         if (GameManager.inst.chessBoard.GetPiece(pos.x, pos.y) != null)
         {
             GameManager.inst.chessBoard.GetPiece(pos.x, pos.y).Damaged(); //강공격 약공격도 처리 해줘야 함

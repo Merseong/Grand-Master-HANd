@@ -303,6 +303,12 @@ public class ChessBoard : MonoBehaviour
         }
     }
 
+    public Vector2Int GetKingPos()
+    {
+
+        return new Vector2Int(-1,-1);
+    }
+
     private void Awake()
     {
         // init all pieces

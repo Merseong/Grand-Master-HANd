@@ -15,6 +15,7 @@ public class MeteorP : BossPattern
 
     public override void StartPattern()
     {
+        phase = GameManager.inst.boss.phase;
         SelectTarget();
         AttackReady();
     }
@@ -41,11 +42,7 @@ public class MeteorP : BossPattern
             float disappearTime = Random.Range(2, 2.5f);
             boss.AttackOnBoard(atkPos, disappearTime, true);
             GameObject obj = Instantiate(meteorPiece, boss.attackPoint.position, Quaternion.identity);
-            obj.GetComponent<MeteorPiece>().Throw(board.IndexToGlobalPos(atkPos.x, atkPos.y), disappearTime); //구현 확인 요망
+            obj.GetComponent<MeteorPiece>().Throw(board.IndexToGlobalPos(atkPos.x, atkPos.y), disappearTime);
         }
-    }
-    public void Attack()
-    {
-
     }
 }
