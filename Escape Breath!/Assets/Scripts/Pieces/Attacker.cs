@@ -9,9 +9,4 @@ public class Attacker : Piece
         GetComponent<MeshRenderer>().material = GameManager.inst.blackMat;
         isAlive = false;
     }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.A)) PieceDestroy();
-    }
 }
