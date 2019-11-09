@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
     public GameObject attackObj;
     public Material whiteMat;
     public Material blackMat;
+    public Light spotLight;
 
     public void GameOver()
     {
@@ -39,5 +40,22 @@ public class GameManager : MonoBehaviour
         turnSystem.isGameEnd = true;
         turnSystem.timeText.text = "Game Clear!";
         Time.timeScale = 1;
+        boss.rb.isKinematic = false;
+        boss.rb.AddExplosionForce(10f, Vector3.zero, 100f);
+        StartCoroutine(LightWiderCoroutine());
+    }
+
+    IEnumerator LightWiderCoroutine()
+    {
+        float timer = 0;
+        while (timer < 1)
+        {
+            timer += Time.deltaTime;
+            spotLight.spotAngle = 30 + 150 * timer;
+            spotLight.range = 10 + 14 * timer;
+            yield return null;
+        }
+        spotLight.spotAngle = 180;
+        spotLight.range = 24;
     }
 }

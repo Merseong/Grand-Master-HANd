@@ -68,12 +68,9 @@ public class Boss : MonoBehaviour
     private void Damaged(int damage)
     {
         health = Mathf.Max(0, health - damage * 3);
-        if (health > 0)
-        {
-            redValue = health / maxHealth;
-            redHealth.value = redValue;
-        }
-        else GameManager.inst.GameClear();
+        redValue = health / maxHealth;
+        redHealth.value = redValue;
+        if (health == 0) GameManager.inst.GameClear();
     }
 
     public void ResetYellowHealth()
