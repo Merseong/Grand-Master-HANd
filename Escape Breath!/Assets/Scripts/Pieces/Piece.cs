@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// for test
-using Valve.VR;
-
 public abstract class Piece : MonoBehaviour
 {
     [Header("Piece Data")]
@@ -40,7 +37,7 @@ public abstract class Piece : MonoBehaviour
         laserInst = Instantiate(laserPrefab, transform);
         laserInst.SetActive(false);
         landingInst = Instantiate(landingPrefab, transform);
-        landingInst.transform.localPosition = new Vector3(0, 0, landingZOffset * landingZOffset);
+        landingInst.transform.localPosition = new Vector3(0, 0, landingZOffset * 0.15f);
 
         GameManager.inst.chessBoard.AddPiece(this);
 
@@ -96,7 +93,7 @@ public abstract class Piece : MonoBehaviour
                 case TurnType.MovePiece:
                     SpecialReset();
                     damage = originalDamage;
-                    landingInst.transform.localPosition = new Vector3(0, 0, landingZOffset * landingZOffset);
+                    landingInst.transform.localPosition = new Vector3(0, 0, landingZOffset * 0.15f);
                     landingInst.transform.localRotation = Quaternion.identity;
                     landingInst.SetActive(true);
                     isProtected = false;
