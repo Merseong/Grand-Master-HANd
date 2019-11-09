@@ -5,9 +5,21 @@ using UnityEngine;
 // for test
 using Valve.VR;
 
+public enum PieceType
+{
+    NULL,
+    Pawn,
+    Rook,
+    Knight,
+    Bishop,
+    Queen,
+    King
+}
+
 public abstract class Piece : MonoBehaviour
 {
     [Header("Piece Data")]
+    public PieceType pieceType;
     public bool isAttacker = true;
     public int damage = 3;
     private int originalDamage;

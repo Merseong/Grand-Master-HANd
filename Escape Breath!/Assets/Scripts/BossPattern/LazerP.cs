@@ -15,7 +15,7 @@ public class LazerP : BossPattern
     }
     protected override void SelectTarget()
     {
-        Vector2Int kingPos = board.GetKingPos();
+        Vector2Int kingPos = board.GetRandomPiece(PieceType.King);
 
         if (kingPos.x <0&& kingPos.y<0)
         {

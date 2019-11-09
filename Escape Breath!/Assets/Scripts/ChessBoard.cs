@@ -325,10 +325,34 @@ public class ChessBoard : MonoBehaviour
         }
     }
 
-    public Vector2Int GetKingPos()
+    public Vector2Int GetRandomPiece(PieceType type = PieceType.NULL)
     {
-
-        return new Vector2Int(-1,-1);
+        if (type != PieceType.NULL)
+        {
+            var newList = pieceList.FindAll((element) =>
+            {
+                return element.isActive && element.pieceType == type;
+            });
+            if (newList.Count > 0)
+            {
+                int randIdx = Random.Range(0, newList.Count);
+                return newList[randIdx].boardIdx;
+            }
+            else return new Vector2Int(-1, -1);
+        }
+        else
+        {
+            var newList = pieceList.FindAll((element) =>
+            {
+                return element.isActive;
+            });
+            if (newList.Count > 0)
+            {
+                int randIdx = Random.Range(0, newList.Count);
+                return newList[randIdx].boardIdx;
+            }
+            else return new Vector2Int(-1, -1);
+        }
     }
 
     private void Awake()
