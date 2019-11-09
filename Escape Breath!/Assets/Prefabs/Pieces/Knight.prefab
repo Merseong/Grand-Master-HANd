@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 4507495982448693529}
   - component: {fileID: 4507495982448693528}
   - component: {fileID: -7552650308678006072}
+  - component: {fileID: -7736649085118002701}
   m_Layer: 12
   m_Name: Knight
   m_TagString: Piece
@@ -113,6 +114,8 @@ MonoBehaviour:
   damage: 5
   moveLimit: 6
   boardIdx: {x: 0, y: 0}
+  rechargePoint: 0
+  isAlive: 1
   isActive: 1
   canMove: 1
   isMoving: 0
@@ -122,6 +125,7 @@ MonoBehaviour:
   landingPrefab: {fileID: 2155337330694968365, guid: 4f4e207bec96e674b96fd123741e7a48,
     type: 3}
   attackPos: {x: 0, y: 0.3, z: 0}
+  rb: {fileID: 0}
 --- !u!65 &-7552650308678006072
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -135,3 +139,21 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.03644439, y: 0.035075754, z: 0.06863545}
   m_Center: {x: -0.0007172907, y: -9.313226e-10, z: 0.034418225}
+--- !u!114 &-7736649085118002701
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4507495982448693535}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 0, g: 1, b: 0, a: 1}
+  outlineWidth: 2
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []

@@ -38,6 +38,7 @@ public abstract class Piece : MonoBehaviour
         laserInst.SetActive(false);
         landingInst = Instantiate(landingPrefab, transform);
         landingInst.transform.localPosition = new Vector3(0, 0, landingZOffset * 0.15f);
+        GetComponent<Outline>().enabled = false;
 
         GameManager.inst.chessBoard.AddPiece(this);
 
@@ -98,6 +99,7 @@ public abstract class Piece : MonoBehaviour
                     landingInst.SetActive(true);
                     isProtected = false;
                     canMove = true;
+                    GetComponent<Outline>().OutlineColor = Color.green;
                     break;
             }
         }
@@ -177,6 +179,7 @@ public abstract class Piece : MonoBehaviour
         else
         {
             isActive = true;
+            GetComponent<Outline>().OutlineColor = Color.red;
             GameManager.inst.chessBoard.MovePiece(this, nextIdx);
             GameManager.inst.chessBoard.HideMoveArea(boardIdx);
         }

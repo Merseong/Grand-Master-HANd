@@ -51,6 +51,10 @@ public class ControllerGrabObject : MonoBehaviour
         {
             return;
         }
+        if (collidingObject.GetComponent<Outline>())
+        {
+            collidingObject.GetComponent<Outline>().enabled = false;
+        }
         collidingObject = null;
     }
 
@@ -60,7 +64,10 @@ public class ControllerGrabObject : MonoBehaviour
         {
             return;
         }
-
+        if (col.GetComponent<Outline>())
+        {
+            col.GetComponent<Outline>().enabled = true;
+        }
         collidingObject = col.gameObject;
     }
 
