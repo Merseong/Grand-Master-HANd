@@ -138,6 +138,7 @@ public class ChessBoard : MonoBehaviour
         allAttack -= p.AutoAttack;
         allReset -= p.ResetAfterTurnEnd;
         allBeforeAttack -= p.BeforeAttack;
+        pieceList.Remove(p);
         p.PieceDestroy();
         Destroy(p.gameObject);
     }

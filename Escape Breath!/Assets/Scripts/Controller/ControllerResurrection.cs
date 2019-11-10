@@ -15,7 +15,7 @@ public class ControllerResurrection : MonoBehaviour
     [Header("Else")]
     public ParticleSystem particle;
 
-    private float rechargeEnd = 50f;
+    private float rechargeEnd = 30f;
     private Vector2 beforeTouchPosition = new Vector2();
     private Vector3 beforeControllerPosition;
 
@@ -32,8 +32,10 @@ public class ControllerResurrection : MonoBehaviour
             {
                 Piece p = contGrab.pieceInHand;
                 float nextPoint = 0;
-                nextPoint += Vector2.Distance(beforeTouchPosition, touchPositionAction.axis);
+                nextPoint += Vector2.Distance(beforeTouchPosition, touchPositionAction.GetAxis(handType));
+                Debug.Log(nextPoint);
                 nextPoint += Vector3.Distance(beforeControllerPosition, controllerPose.transform.position);
+                Debug.LogError(nextPoint);
                 if (nextPoint > 0)
                 {
                     p.rechargePoint += nextPoint;
@@ -41,6 +43,7 @@ public class ControllerResurrection : MonoBehaviour
                 }
 
                 if (!particle.isPlaying) particle.Play();
+                //Debug.Log(p.rechargePoint);
                 if (p.rechargePoint > rechargeEnd)
                 {
                     p.Resurrection();
@@ -50,7 +53,7 @@ public class ControllerResurrection : MonoBehaviour
             {
                 particle.Stop();
             }
-            beforeTouchPosition = touchPositionAction.axis;
+            beforeTouchPosition = touchPositionAction.GetAxis(handType);
             beforeControllerPosition = controllerPose.transform.position;
         }
         else

@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
     public ChessBoard chessBoard;
     public TurnSystem turnSystem;
     public BossBackUI bossBackUI;
+    public HMDUI hmdUI;
 
     public GameObject attackObj;
     public Material whiteMat;
@@ -29,7 +30,7 @@ public class GameManager : MonoBehaviour
         Debug.LogError("Game Over!");
         turnSystem.isGameEnd = true;
         isPlaying = false;
-        turnSystem.timeText.text = "Game Over!";
+        hmdUI.turnText.text = "Game Over!";
         StartCoroutine(PieceFlyingCoroutine());
     }
 
@@ -38,7 +39,7 @@ public class GameManager : MonoBehaviour
         Debug.LogError("Game Clear!");
         turnSystem.isGameEnd = true;
         isPlaying = false;
-        turnSystem.timeText.text = "Game Clear!";
+        hmdUI.turnText.text = "Game Clear!";
         Time.timeScale = 1;
         boss.rb.isKinematic = false;
         boss.rb.AddExplosionForce(10f, Vector3.zero, 100f);

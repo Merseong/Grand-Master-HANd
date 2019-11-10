@@ -16,11 +16,10 @@ public class TurnSystem : MonoBehaviour
     public TurnType currentTurn;
     public Dictionary<TurnType, float> turnTimers = new Dictionary<TurnType, float>()
     {
-        { TurnType.AttackReady, 0.1f }, { TurnType.MovePiece, 5f }, { TurnType.Attack, 1f }
+        { TurnType.AttackReady, 1f }, { TurnType.MovePiece, 5f }, { TurnType.Attack, 1f }
     };
 
     private float timeCounter;
-    public TextMesh timeText;
 
     private void Start()
     {
@@ -57,7 +56,7 @@ public class TurnSystem : MonoBehaviour
         if (!isGameEnd)
         {
             timeCounter += Time.unscaledDeltaTime;
-            timeText.text = turnCount.ToString() + "th " + currentTurn.ToString() + "\n" + timeCounter.ToString("f1");
+            GameManager.inst.hmdUI.ShowTurn(currentTurn, timeCounter);
         }
     }
 

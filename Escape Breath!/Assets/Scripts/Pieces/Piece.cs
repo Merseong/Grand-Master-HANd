@@ -45,7 +45,12 @@ public abstract class Piece : MonoBehaviour
         originalDamage = damage;
     }
 
-    public abstract void PieceDestroy();
+    public virtual void PieceDestroy()
+    {
+        GetComponent<MeshRenderer>().material = GameManager.inst.blackMat;
+        rechargePoint = 0;
+        isAlive = false;
+    }
 
     public void Resurrection()
     {
