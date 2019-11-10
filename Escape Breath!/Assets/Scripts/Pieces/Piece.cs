@@ -80,7 +80,13 @@ public abstract class Piece : MonoBehaviour
 
     public void ResetAfterTurnEnd()
     {
-        if (isActive)
+        if (!GameManager.inst.isPlaying)
+        {
+            canMove = true;
+            landingInst.SetActive(false);
+            isActive = false;
+        }
+        else if (isActive)
         {
             switch(GameManager.inst.turnSystem.currentTurn)
             {

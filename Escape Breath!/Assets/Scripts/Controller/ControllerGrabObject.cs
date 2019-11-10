@@ -78,7 +78,7 @@ public class ControllerGrabObject : MonoBehaviour
         {
             piece = collidingObject.GetComponent<Piece>();
             if (!piece.canMove) return;
-            else
+            else if (GameManager.inst.isPlaying)
             {
                 piece.isMoving = true;
                 piece.canMove = false;
@@ -115,11 +115,15 @@ public class ControllerGrabObject : MonoBehaviour
             objectInHand.GetComponent<Rigidbody>().velocity = controllerPose.GetVelocity();
             objectInHand.GetComponent<Rigidbody>().angularVelocity = controllerPose.GetAngularVelocity();
 
-            if (objectInHand.CompareTag("Piece"))
+            if (objectInHand.CompareTag("Piece") && GameManager.inst.isPlaying)
             {
                 var piece = objectInHand.GetComponent<Piece>();
                 piece.isMoving = false;
                 GameManager.inst.chessBoard.HideMoveArea(handType == SteamVR_Input_Sources.RightHand, piece);
+            }
+            if (objectInHand.GetComponent<Outline>())
+            {
+                objectInHand.GetComponent<Outline>().enabled = false;
             }
         }
         objectInHand = null;

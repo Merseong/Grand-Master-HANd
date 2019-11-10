@@ -22,27 +22,39 @@ public class GameManager : MonoBehaviour
     public Material blackMat;
     public Light spotLight;
 
+    public bool isPlaying = true;
+
     public void GameOver()
     {
         Debug.LogError("Game Over!");
         turnSystem.isGameEnd = true;
+        isPlaying = false;
         turnSystem.timeText.text = "Game Over!";
-        Time.timeScale = 1;
-        for (int i = 0; i < chessBoard.pieceList.Count; ++i)
-        {
-            chessBoard.pieceList[i].rb.AddExplosionForce(1000f, Vector3.zero, 1000f);
-        }
+        StartCoroutine(PieceFlyingCoroutine());
     }
 
     public void GameClear()
     {
         Debug.LogError("Game Clear!");
         turnSystem.isGameEnd = true;
+        isPlaying = false;
         turnSystem.timeText.text = "Game Clear!";
         Time.timeScale = 1;
         boss.rb.isKinematic = false;
         boss.rb.AddExplosionForce(10f, Vector3.zero, 100f);
         StartCoroutine(LightWiderCoroutine());
+    }
+
+    IEnumerator PieceFlyingCoroutine()
+    {
+        Time.timeScale = 0.5f;
+        chessBoard.allReset();
+        for (int i = 0; i < chessBoard.pieceList.Count; ++i)
+        {
+            chessBoard.pieceList[i].rb.AddExplosionForce(600f, Vector3.zero, 1000f);
+        }
+        yield return new WaitForSecondsRealtime(3f);
+        Time.timeScale = 1;
     }
 
     IEnumerator LightWiderCoroutine()
