@@ -42,7 +42,7 @@ public class GameManager : MonoBehaviour
         hmdUI.turnText.text = "Game Clear!";
         Time.timeScale = 1;
         boss.rb.isKinematic = false;
-        boss.rb.AddExplosionForce(10f, Vector3.zero, 100f);
+        boss.rb.AddExplosionForce(400f, Vector3.zero, 100f);
         StartCoroutine(LightWiderCoroutine());
     }
 

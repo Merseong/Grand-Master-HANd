@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Valve.VR;
+using Valve.VR.InteractionSystem;
 
 public class ControllerGrabObject : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class ControllerGrabObject : MonoBehaviour
     public SteamVR_Input_Sources handType;
     public SteamVR_Behaviour_Pose controllerPose;
     public SteamVR_Action_Boolean grabAction;
+    public SteamVR_Action_Vibration hapticAction;
 
     [Header("Else")]
     public GameObject contModel;
@@ -87,6 +89,7 @@ public class ControllerGrabObject : MonoBehaviour
                 GameManager.inst.chessBoard.ShowMoveArea(piece.boardIdx, piece.moveLimit, handType == SteamVR_Input_Sources.RightHand);
                 StartCoroutine(piece.WhenGrabedCoroutine());
                 pieceInHand = piece;
+                StartCoroutine(DetectedHapticCoroutine());
             }
         }
 
@@ -95,6 +98,18 @@ public class ControllerGrabObject : MonoBehaviour
 
         var joint = AddFixedJoint();
         joint.connectedBody = objectInHand.GetComponent<Rigidbody>();
+    }
+
+    IEnumerator DetectedHapticCoroutine()
+    {
+        while (pieceInHand != null)
+        {
+            if (!pieceInHand.isFloorDetected)
+            {
+                hapticAction.Execute(0, 0.1f, 20, 10, handType);
+            }
+            yield return null;
+        }
     }
 
     private FixedJoint AddFixedJoint()

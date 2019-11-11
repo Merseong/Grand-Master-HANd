@@ -22,8 +22,8 @@ TagManager:
   - ChessBoard
   - Grabable
   - Piece
-  - 
-  - 
+  - MovingPiece
+  - AttackTrigger
   - 
   - 
   - 
