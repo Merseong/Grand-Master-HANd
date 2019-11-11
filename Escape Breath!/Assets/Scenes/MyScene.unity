@@ -421,10 +421,13 @@ MonoBehaviour:
   chessBoard: {fileID: 8389902350753501742}
   turnSystem: {fileID: 201556483}
   bossBackUI: {fileID: 0}
+  hmdUI: {fileID: 0}
   attackObj: {fileID: 2150090243928437135, guid: 759b4ebfaa3b16b4c995dea42d225412,
     type: 3}
   whiteMat: {fileID: 2100000, guid: c5556a1bbe88cd845aca9dfd375d688e, type: 2}
   blackMat: {fileID: 2100000, guid: 2d875356790e5104cabb826f845d1898, type: 2}
+  spotLight: {fileID: 0}
+  isPlaying: 1
 --- !u!114 &201556483
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -440,7 +443,6 @@ MonoBehaviour:
   isGameEnd: 0
   turnCount: 0
   currentTurn: 0
-  timeText: {fileID: 1845038185}
 --- !u!1001 &208030159
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -549,6 +551,9 @@ MonoBehaviour:
   controllerPose: {fileID: 968384714}
   grabAction:
     actionPath: /actions/default/in/GrabPinch
+    needsReinit: 0
+  hapticAction:
+    actionPath: 
     needsReinit: 0
   contModel: {fileID: 0}
   pieceInHand: {fileID: 0}
@@ -1955,9 +1960,10 @@ MonoBehaviour:
   health: 1000
   phase: 0
   phasePatterns:
-  - {fileID: 5303393613228015808, guid: f89e0c6625e792846adb04a41a2e5bd9, type: 3}
+  - {fileID: 0}
   - {fileID: 1985843426806431976, guid: 14ce8cf5b53e1d1408f568b3fe53b376, type: 3}
-  patternStarter: {fileID: 0}
+  outsideAttackerObj: {fileID: 3395381006109346755, guid: 9c57397be6d75aa4c9307386c954a6d9,
+    type: 3}
   attackType: 0
   bossTarget: {fileID: 894777917}
   redHealth: {fileID: 0}
@@ -3156,7 +3162,8 @@ MonoBehaviour:
   pieceGameObjects: []
   DangerAreaPrefab: {fileID: 8789928703322235254, guid: e9315a94ee7b8c7428dee35dc71bba46,
     type: 3}
-  WeakDangerAreaPrefab: {fileID: 0}
+  WeakDangerAreaPrefab: {fileID: 8789928703322235254, guid: b30ed031779f4954abe17f8d57af516a,
+    type: 3}
   moveableAreaPrefab: {fileID: 5245811782846782765, guid: b99d3d69dd91fe34997ad23afed2538f,
     type: 3}
 --- !u!1 &8390021394942409021

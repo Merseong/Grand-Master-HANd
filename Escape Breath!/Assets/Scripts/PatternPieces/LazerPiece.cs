@@ -4,32 +4,32 @@ using UnityEngine;
 
 public class LazerPiece : MonoBehaviour
 {
-    //시간을 받아서, 거리 계산 
     public Vector3 targetPos;
-    public float gravity = 9.8f;
+    public float gravity = 2.9f;
 
     public Vector3 startPos;
 
     public void Throw(float time)
     {
+        Debug.Log("던져 던저");
         StartCoroutine(ThrowPiece(time));
     }
     IEnumerator ThrowPiece(float durationTime)
     {
         float distance = gravity * durationTime * durationTime / 2;
 
-        transform.Translate(0, distance, 0);
+        transform.Translate(0, 0, - distance);
         startPos = transform.position;
-        
+        Debug.Log(startPos);
         float Velocity = 0; //속도 계산 
 
         float elapseTime = 0;
 
         //Debug.Log("real start throw");
-        Destroy(gameObject, durationTime - 0.1f);
+        Destroy(gameObject, durationTime);
         while (elapseTime < durationTime)
         {
-            transform.Translate(0, (Velocity -(gravity * elapseTime)) * Time.deltaTime , 0);
+            transform.Translate(0, 0, - (Velocity -(gravity * elapseTime)) * Time.deltaTime);
             elapseTime += (Time.deltaTime );
             //Debug.Log("helo" + transform.position);
 

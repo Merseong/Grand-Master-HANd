@@ -129,7 +129,7 @@ public class Boss : MonoBehaviour
     public void AttackOnBoard(Vector2Int pos, float duration, bool isStrong = false)
     {
         StartCoroutine(AttackPiece(pos, duration, isStrong));
-        GameManager.inst.chessBoard.ShowAttackArea(pos, duration - 0.1f, isStrong);
+        GameManager.inst.chessBoard.ShowAttackArea(pos, duration - 0.05f, isStrong);
     }
 
     IEnumerator AttackPiece(Vector2Int pos, float time, bool isStrong)
@@ -138,7 +138,7 @@ public class Boss : MonoBehaviour
 
         if (GameManager.inst.chessBoard.GetPiece(pos.x, pos.y) != null)
         {
-            GameManager.inst.chessBoard.GetPiece(pos.x, pos.y).Damaged(); //강공격 약공격도 처리 해줘야 함
+            GameManager.inst.chessBoard.GetPiece(pos.x, pos.y).Damaged();
         }
         yield return null;
     }
