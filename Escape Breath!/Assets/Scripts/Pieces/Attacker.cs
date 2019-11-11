@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class Attacker : Piece
 {
-    public override void PieceDestroy()
-    {
-        GetComponent<MeshRenderer>().material = GameManager.inst.blackMat;
-        isAlive = false;
-    }
+    //public override void PieceDestroy()
+    //{
+    //    GetComponent<MeshRenderer>().material = GameManager.inst.blackMat;
+    //    isAlive = false;
+    //}
 }

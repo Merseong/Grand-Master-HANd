@@ -16,28 +16,59 @@ public class GameManager : MonoBehaviour
     public ChessBoard chessBoard;
     public TurnSystem turnSystem;
     public BossBackUI bossBackUI;
+    public HMDUI hmdUI;
 
     public GameObject attackObj;
     public Material whiteMat;
     public Material blackMat;
+    public Light spotLight;
+
+    public bool isPlaying = true;
 
     public void GameOver()
     {
         Debug.LogError("Game Over!");
         turnSystem.isGameEnd = true;
-        turnSystem.timeText.text = "Game Over!";
-        Time.timeScale = 1;
-        for (int i = 0; i < chessBoard.pieceList.Count; ++i)
-        {
-            chessBoard.pieceList[i].rb.AddExplosionForce(1000f, Vector3.zero, 1000f);
-        }
+        isPlaying = false;
+        hmdUI.turnText.text = "Game Over!";
+        StartCoroutine(PieceFlyingCoroutine());
     }
 
     public void GameClear()
     {
         Debug.LogError("Game Clear!");
         turnSystem.isGameEnd = true;
-        turnSystem.timeText.text = "Game Clear!";
+        isPlaying = false;
+        hmdUI.turnText.text = "Game Clear!";
         Time.timeScale = 1;
+        boss.rb.isKinematic = false;
+        boss.rb.AddExplosionForce(400f, Vector3.zero, 100f);
+        StartCoroutine(LightWiderCoroutine());
+    }
+
+    IEnumerator PieceFlyingCoroutine()
+    {
+        Time.timeScale = 0.5f;
+        chessBoard.allReset();
+        for (int i = 0; i < chessBoard.pieceList.Count; ++i)
+        {
+            chessBoard.pieceList[i].rb.AddExplosionForce(600f, Vector3.zero, 1000f);
+        }
+        yield return new WaitForSecondsRealtime(3f);
+        Time.timeScale = 1;
+    }
+
+    IEnumerator LightWiderCoroutine()
+    {
+        float timer = 0;
+        while (timer < 1)
+        {
+            timer += Time.deltaTime;
+            spotLight.spotAngle = 30 + 150 * timer;
+            spotLight.range = 10 + 14 * timer;
+            yield return null;
+        }
+        spotLight.spotAngle = 180;
+        spotLight.range = 24;
     }
 }

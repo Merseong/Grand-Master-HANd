@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 7112548142819626111}
   - component: {fileID: 6172573664516546293}
   - component: {fileID: 5957458454934426818}
+  - component: {fileID: 2665752814740865284}
   m_Layer: 12
   m_Name: Rook
   m_TagString: Piece
@@ -144,6 +145,24 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.04, y: 0.04, z: 0.058841415}
   m_Center: {x: 0, y: 0, z: 0.029420711}
+--- !u!114 &2665752814740865284
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3344991279260486615}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 0, g: 1, b: 0, a: 1}
+  outlineWidth: 4
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &7741097150645316851
 GameObject:
   m_ObjectHideFlags: 0

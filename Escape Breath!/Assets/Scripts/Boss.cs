@@ -13,6 +13,10 @@ public class Boss : MonoBehaviour
     //public int[] phasePatternsLimit = new int[1]; //날려야해
     public Transform patternStarter;
 
+    [Space(10)]
+    public GameObject outsideAttackerObj;
+
+    [Space(10)]
     public int attackType;
     public Transform bossTarget;
     [SerializeField]
@@ -24,6 +28,7 @@ public class Boss : MonoBehaviour
     public Object attackArea;
     
     public Transform attackPoint;
+    [HideInInspector]
     public Rigidbody rb;
 
     bool isClose = false;
@@ -67,13 +72,11 @@ public class Boss : MonoBehaviour
 
     private void Damaged(int damage)
     {
+        if (!GameManager.inst.isPlaying) return;
         health = Mathf.Max(0, health - damage * 3);
-        if (health > 0)
-        {
-            redValue = health / maxHealth;
-            redHealth.value = redValue;
-        }
-        else GameManager.inst.GameClear();
+        redValue = health / maxHealth;
+        redHealth.value = redValue;
+        if (health == 0) GameManager.inst.GameClear();
     }
 
     public void ResetYellowHealth()
@@ -84,8 +87,13 @@ public class Boss : MonoBehaviour
 
     private BossPattern SelectPattern()
     {
-        // select random pattern or biased pattern
+        // randomly make outside attacker
+        if (Random.Range(0f, 1f) < 0.8f)
+        {
+            SpawnOutsideAttacker();
+        }
 
+        // select random pattern or biased pattern
         if (isClose)
             return Instantiate(phasePatterns[0], patternStarter).GetComponent<BossPattern>(); //근접 공격 phasepatterns 임시 숫자임
         else
@@ -99,6 +107,13 @@ public class Boss : MonoBehaviour
     {
         var pattern = SelectPattern();
         pattern.StartPattern();
+    }
+
+    void SpawnOutsideAttacker()
+    {
+        Vector3 randomPos = new Vector3(Random.Range(-3f, 3f), Random.Range(1f, 3f), Random.Range(-3f, 3f));
+        var outside = Instantiate(outsideAttackerObj, randomPos, Quaternion.identity).GetComponent<OutsideEnemy>();
+        outside.target = GameManager.inst.chessBoard.pieceList[0].transform;
     }
     
     public void CheckClose()

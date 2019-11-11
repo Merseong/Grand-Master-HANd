@@ -2,9 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// for test
-using Valve.VR;
-
 public abstract class Piece : MonoBehaviour
 {
     [Header("Piece Data")]
@@ -29,25 +26,32 @@ public abstract class Piece : MonoBehaviour
     private GameObject landingInst;
     private float landingZOffset = 0.01f;
     public Vector3 attackPos = new Vector3();
+    [HideInInspector]
     public Rigidbody rb;
-    private Collider col;
+    [HideInInspector]
+    public bool isFloorDetected = false;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
-        col = GetComponent<Collider>();
 
         laserInst = Instantiate(laserPrefab, transform);
         laserInst.SetActive(false);
         landingInst = Instantiate(landingPrefab, transform);
-        landingInst.transform.localPosition = new Vector3(0, 0, landingZOffset * landingZOffset);
+        landingInst.transform.localPosition = new Vector3(0, 0, landingZOffset * 0.15f);
+        GetComponent<Outline>().enabled = false;
 
         GameManager.inst.chessBoard.AddPiece(this);
 
         originalDamage = damage;
     }
 
-    public abstract void PieceDestroy();
+    public virtual void PieceDestroy()
+    {
+        GetComponent<MeshRenderer>().material = GameManager.inst.blackMat;
+        rechargePoint = 0;
+        isAlive = false;
+    }
 
     public void Resurrection()
     {
@@ -82,7 +86,13 @@ public abstract class Piece : MonoBehaviour
 
     public void ResetAfterTurnEnd()
     {
-        if (isActive)
+        if (!GameManager.inst.isPlaying)
+        {
+            canMove = true;
+            landingInst.SetActive(false);
+            isActive = false;
+        }
+        else if (isActive)
         {
             switch(GameManager.inst.turnSystem.currentTurn)
             {
@@ -90,17 +100,19 @@ public abstract class Piece : MonoBehaviour
                 case TurnType.Attack:
                     canMove = false;
                     landingInst.SetActive(false);
+                    GetComponent<Outline>().OutlineColor = Color.red;
                     // 원래자리로 돌아가게 하는건데 쓸진 고민중
                     if (!isMoving) StartCoroutine(MovePieceCoroutine(GameManager.inst.chessBoard.IndexToLocalPos(boardIdx.x, boardIdx.y), 0.2f));
                     break;
                 case TurnType.MovePiece:
                     SpecialReset();
                     damage = originalDamage;
-                    landingInst.transform.localPosition = new Vector3(0, 0, landingZOffset * landingZOffset);
+                    landingInst.transform.localPosition = new Vector3(0, 0, landingZOffset * 0.15f);
                     landingInst.transform.localRotation = Quaternion.identity;
                     landingInst.SetActive(true);
                     isProtected = false;
                     canMove = true;
+                    GetComponent<Outline>().OutlineColor = Color.green;
                     break;
             }
         }
@@ -112,19 +124,19 @@ public abstract class Piece : MonoBehaviour
 
     protected virtual void SpecialReset() { } 
 
-    public Vector2Int DetectFloor(out bool isDetected)
+    public Vector2Int DetectFloor(out bool isFloorDetected)
     {
         RaycastHit hit;
         int layerMask = 1 << LayerMask.NameToLayer("ChessBoard");
         if (Physics.Raycast(transform.position, Vector3.down, out hit, 100, layerMask))
         {
             //Debug.LogWarning("hit, " + hit.point);
-            isDetected = true;
+            isFloorDetected = true;
             return GameManager.inst.chessBoard.PosToNearIndex(hit.point.x, hit.point.z);
         }
         else
         {
-            isDetected = false;
+            isFloorDetected = false;
             return new Vector2Int(-1, -1);
         }
     }
@@ -134,12 +146,12 @@ public abstract class Piece : MonoBehaviour
         //Debug.Log(GameManager.inst.chessBoard.GetPiece(boardIdx));
         Vector2Int nextIdx = boardIdx;
         Vector3 nextPos;
-        bool isDetected = false;
-        col.enabled = false;
+        gameObject.layer = LayerMask.NameToLayer("MovingPiece");
+        isFloorDetected = false;
         while (isMoving)
         {
-            var tempIdx = DetectFloor(out isDetected);
-            if (isDetected)
+            var tempIdx = DetectFloor(out isFloorDetected);
+            if (isFloorDetected)
             {
                 laserInst.SetActive(true);
                 landingInst.SetActive(true);
@@ -169,17 +181,19 @@ public abstract class Piece : MonoBehaviour
         laserInst.SetActive(false);
         landingInst.SetActive(false);
 
-        if (!isDetected)
+        if (!isFloorDetected)
         {
             isActive = false;
-            col.enabled = true;
+            gameObject.layer = LayerMask.NameToLayer("Piece");
             isMoving = false;
+            GetComponent<Outline>().OutlineColor = Color.red;
             // PieceDestroy();
-            Debug.Log(this + " go outside");
+            //Debug.Log(this + " go outside");
         }
         else
         {
             isActive = true;
+            GetComponent<Outline>().OutlineColor = Color.red;
             GameManager.inst.chessBoard.MovePiece(this, nextIdx);
             GameManager.inst.chessBoard.HideMoveArea(boardIdx);
         }
@@ -188,7 +202,7 @@ public abstract class Piece : MonoBehaviour
     public IEnumerator MovePieceCoroutine(Vector3 nextLocalPos, float duration)
     {
         rb.velocity = Vector3.zero;
-        col.enabled = false;
+        gameObject.layer = LayerMask.NameToLayer("MovingPiece");
         isMoving = true;
         rb.isKinematic = true;
 
@@ -205,7 +219,7 @@ public abstract class Piece : MonoBehaviour
 
         isMoving = false;
         rb.isKinematic = false;
-        col.enabled = true;
+        gameObject.layer = LayerMask.NameToLayer("Piece");
         //Debug.Log("End Moving");
     }
 }

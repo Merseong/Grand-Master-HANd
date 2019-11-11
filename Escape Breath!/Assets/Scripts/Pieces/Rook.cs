@@ -12,11 +12,6 @@ public class Rook : Piece
     public Vector3 originPos = new Vector3(0, 0, 0.03f);
     public Vector3 longScale = new Vector3(0.06f, 0.06f, 0.07f);
     public Vector3 longPos = new Vector3(-0.03f, 0, 0.03f);
-    public override void PieceDestroy()
-    {
-        GetComponent<MeshRenderer>().material = GameManager.inst.blackMat;
-        isAlive = false;
-    }
 
     protected override void SpecialReset()
     {

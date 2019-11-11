@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 7797173772640885772}
   - component: {fileID: 7797173772640885770}
   - component: {fileID: -790151231081493537}
+  - component: {fileID: -711089153329017517}
   m_Layer: 12
   m_Name: Bishop
   m_TagString: Piece
@@ -113,6 +114,8 @@ MonoBehaviour:
   damage: 4
   moveLimit: 5
   boardIdx: {x: 0, y: 0}
+  rechargePoint: 0
+  isAlive: 1
   isActive: 1
   canMove: 1
   isMoving: 0
@@ -122,6 +125,7 @@ MonoBehaviour:
   landingPrefab: {fileID: 2155337330694968365, guid: 4f4e207bec96e674b96fd123741e7a48,
     type: 3}
   attackPos: {x: 0, y: 0.3, z: 0}
+  rb: {fileID: 0}
 --- !u!65 &-790151231081493537
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -135,3 +139,21 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.04, y: 0.04, z: 0.077350445}
   m_Center: {x: 0, y: 0, z: 0.038675223}
+--- !u!114 &-711089153329017517
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7797173772640885775}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 0, g: 1, b: 0, a: 1}
+  outlineWidth: 4
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
