@@ -40,7 +40,7 @@ public class Boss : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space)) //meteor test
         {
             Debug.Log("test Space");
-            var A = Instantiate(phasePatterns[0], patternStarter).GetComponent<BossPattern>();
+            var A = Instantiate(phasePatterns[1], patternStarter).GetComponent<BossPattern>();
             A.StartPattern();
         }
     }
