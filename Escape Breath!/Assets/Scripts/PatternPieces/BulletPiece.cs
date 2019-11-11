@@ -14,7 +14,7 @@ public class BulletPiece : MonoBehaviour
             GameManager.inst.chessBoard.RemovePieceFromBoard(p);
             p.isActive = false;
             p.Damaged(true);
-            p.rb.AddForce(transform.forward * 500f);
+            p.rb.AddForce(transform.forward.normalized * 1300f);
             Destroy(shooter);
         }
     }
