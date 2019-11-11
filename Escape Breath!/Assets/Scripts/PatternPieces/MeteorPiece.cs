@@ -16,7 +16,7 @@ public class MeteorPiece : MonoBehaviour
     }
     public void Throw(Vector3 targetPosition, float time)
     {
-        Debug.Log("throw!");
+        //Debug.Log("throw!");
         TargetPos = targetPosition;
         StartCoroutine(ThrowMeteor(time));
     }

@@ -224,7 +224,7 @@ public class ChessBoard : MonoBehaviour
             newWeakDangerArea.transform.localPosition = IndexToLocalPos(pos.x, pos.y, 0.001f);
             Destroy(newWeakDangerArea, duration);
         }
-        Debug.Log("danger area one appear");
+        //Debug.Log("danger area one appear");
     }
 
     public void ShowMoveArea(int right, int up, int limit, bool isRightHand)
@@ -326,26 +326,41 @@ public class ChessBoard : MonoBehaviour
         }
     }
 
-    public Vector2Int GetKingPos()
+    public Piece GetRandomPiece(PieceType type = PieceType.NULL)
     {
-
-        return new Vector2Int(-1,-1);
+        if (type != PieceType.NULL)
+        {
+            var newList = pieceList.FindAll((element) =>
+            {
+                return element.isActive && element.pieceType == type;
+            });
+            if (newList.Count > 0)
+            {
+                int randIdx = Random.Range(0, newList.Count);
+                return newList[randIdx];
+            }
+            else return null;
+        }
+        else
+        {
+            var newList = pieceList.FindAll((element) =>
+            {
+                return element.isActive;
+            });
+            if (newList.Count > 0)
+            {
+                int randIdx = Random.Range(0, newList.Count);
+                return newList[randIdx];
+            }
+            else return null;
+        }
     }
 
     private void Awake()
     {
         // init all pieces
-        allBeforeAttack = new PieceAction(() =>
-        {
-            Debug.Log("All beforeAttack");
-        });
-        allAttack = new PieceAction(() =>
-        {
-            Debug.Log("All attack");
-        });
-        allReset = new PieceAction(() =>
-        {
-            Debug.Log("All reset");
-        });
+        allBeforeAttack = new PieceAction(() => { });
+        allAttack = new PieceAction(() => { });
+        allReset = new PieceAction(() => { });
     }
 }

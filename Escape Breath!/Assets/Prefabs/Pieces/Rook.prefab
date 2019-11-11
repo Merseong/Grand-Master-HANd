@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 3331300277019677895}
   - component: {fileID: 7112548142819626111}
   - component: {fileID: 6172573664516546293}
-  - component: {fileID: 5957458454934426818}
   - component: {fileID: 2665752814740865284}
+  - component: {fileID: 7570921509710472524}
   m_Layer: 12
   m_Name: Rook
   m_TagString: Piece
@@ -111,6 +111,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 992ff985671f39c449e64f8f4a3eacf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pieceType: 0
   isAttacker: 0
   damage: 0
   moveLimit: 6
@@ -127,24 +128,12 @@ MonoBehaviour:
     type: 3}
   attackPos: {x: 0, y: 0.3, z: 0}
   rb: {fileID: 0}
+  isFloorDetected: 0
   protectEffect: {fileID: 7741097150645316851}
   originScale: {x: 0.06, y: 0.03, z: 0.07}
   originPos: {x: 0, y: 0, z: 0.03}
   longScale: {x: 0.06, y: 0.06, z: 0.07}
   longPos: {x: -0.03, y: 0, z: 0.03}
---- !u!65 &5957458454934426818
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3344991279260486615}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.04, y: 0.04, z: 0.058841415}
-  m_Center: {x: 0, y: 0, z: 0.029420711}
 --- !u!114 &2665752814740865284
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -163,6 +152,20 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+--- !u!64 &7570921509710472524
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3344991279260486615}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 1
+  m_CookingOptions: 14
+  m_Mesh: {fileID: 4300008, guid: f5edbe7e601e05143b29e56c2de68b97, type: 3}
 --- !u!1 &7741097150645316851
 GameObject:
   m_ObjectHideFlags: 0

@@ -91,8 +91,8 @@ GameObject:
   - component: {fileID: 8314442787678551939}
   - component: {fileID: 8300799167627759380}
   - component: {fileID: 8300799167627759386}
-  - component: {fileID: 8348047586717845496}
   - component: {fileID: 3264397642185930567}
+  - component: {fileID: -7631530718929568113}
   m_Layer: 12
   m_Name: King
   m_TagString: Piece
@@ -173,6 +173,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ab4aa464f53be744ac87a2468345b2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pieceType: 0
   isAttacker: 0
   damage: 0
   moveLimit: 2
@@ -189,6 +190,7 @@ MonoBehaviour:
     type: 3}
   attackPos: {x: 0, y: 0.4, z: 0}
   rb: {fileID: 0}
+  isFloorDetected: 0
   buffRange: 1
   buffAmount: 2
   buffCube: {fileID: 277665634651395546}
@@ -210,19 +212,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!65 &8348047586717845496
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8300799167627759383}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.044999994, y: 0.044999994, z: 0.101998955}
-  m_Center: {x: 0, y: 0, z: 0.050999478}
 --- !u!114 &3264397642185930567
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -241,3 +230,17 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+--- !u!64 &-7631530718929568113
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8300799167627759383}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 1
+  m_CookingOptions: 14
+  m_Mesh: {fileID: 4300000, guid: f5edbe7e601e05143b29e56c2de68b97, type: 3}

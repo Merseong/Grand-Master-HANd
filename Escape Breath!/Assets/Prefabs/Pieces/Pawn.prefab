@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 1145506963691449640}
   - component: {fileID: 1136107293175113648}
   - component: {fileID: 6676759668033594009}
-  - component: {fileID: -2155714653339759541}
   - component: {fileID: 184621858211062103}
   - component: {fileID: -7677659424572609099}
+  - component: {fileID: -5276632282608289242}
   m_Layer: 12
   m_Name: Pawn
   m_TagString: Piece
@@ -98,19 +98,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!65 &-2155714653339759541
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1123304824801258650}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.029699191, y: 0.029699195, z: 0.047496747}
-  m_Center: {x: 4.656613e-10, y: 0.0000000013969839, z: 0.023748374}
 --- !u!114 &184621858211062103
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -123,6 +110,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1036829f40585df40b9ba080ec569fb3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pieceType: 0
   isAttacker: 1
   damage: 3
   moveLimit: 2
@@ -139,6 +127,7 @@ MonoBehaviour:
     type: 3}
   attackPos: {x: 0, y: 0.2, z: 0}
   rb: {fileID: 0}
+  isFloorDetected: 0
 --- !u!114 &-7677659424572609099
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -157,3 +146,17 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+--- !u!64 &-5276632282608289242
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1123304824801258650}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 1
+  m_CookingOptions: 14
+  m_Mesh: {fileID: 4300010, guid: f5edbe7e601e05143b29e56c2de68b97, type: 3}
