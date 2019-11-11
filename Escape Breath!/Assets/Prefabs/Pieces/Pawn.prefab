@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 184621858211062103}
   - component: {fileID: -7677659424572609099}
   - component: {fileID: -5276632282608289242}
+  - component: {fileID: -4438162466291563990}
   m_Layer: 12
   m_Name: Pawn
   m_TagString: Piece
@@ -160,3 +161,16 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 14
   m_Mesh: {fileID: 4300010, guid: f5edbe7e601e05143b29e56c2de68b97, type: 3}
+--- !u!65 &-4438162466291563990
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1123304824801258650}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.029699191, y: 0.029699195, z: 0.047496747}
+  m_Center: {x: 4.656613e-10, y: 0.0000000013969839, z: 0.023748374}
