@@ -42,17 +42,18 @@ public class GameManager : MonoBehaviour
         hmdUI.turnText.text = "Game Clear!";
         Time.timeScale = 1;
         boss.rb.isKinematic = false;
-        boss.rb.AddExplosionForce(400f, Vector3.zero, 100f);
+        boss.rb.AddExplosionForce(5f, Vector3.zero, 500f, 1, ForceMode.Impulse);
         StartCoroutine(LightWiderCoroutine());
     }
 
     IEnumerator PieceFlyingCoroutine()
     {
+        yield return new WaitForFixedUpdate();
         Time.timeScale = 0.5f;
         chessBoard.allReset();
         for (int i = 0; i < chessBoard.pieceList.Count; ++i)
         {
-            chessBoard.pieceList[i].rb.AddExplosionForce(600f, Vector3.zero, 1000f);
+            chessBoard.pieceList[i].rb.AddExplosionForce(5f, Vector3.zero, 500f, 1, ForceMode.Impulse);
         }
         yield return new WaitForSecondsRealtime(3f);
         Time.timeScale = 1;

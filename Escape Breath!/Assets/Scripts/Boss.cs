@@ -8,11 +8,12 @@ public class Boss : MonoBehaviour
 {
     private float maxHealth;
     public int health;
-    public int phase;
+    public int phase = 0;
     public List<GameObject> phasePatterns = new List<GameObject>();
 
     [Space(10)]
     public GameObject outsideAttackerObj;
+    private float outsiderRate = 0.1f;
 
     [Space(10)]
     public int attackType;
@@ -75,6 +76,24 @@ public class Boss : MonoBehaviour
         redValue = health / maxHealth;
         redHealth.value = redValue;
         if (health == 0) GameManager.inst.GameClear();
+        else if (health < 500)
+        {
+            phase = 2;
+            outsiderRate = 0.5f;
+            GameManager.inst.turnSystem.turnTimers[TurnType.MovePiece] = 4f;
+        }
+        else if (health < 2000)
+        {
+            phase = 1;
+            outsiderRate = 0.3f;
+            GameManager.inst.turnSystem.turnTimers[TurnType.MovePiece] = 6f;
+        }
+        else
+        {
+            phase = 0;
+            outsiderRate = 0.1f;
+            GameManager.inst.turnSystem.turnTimers[TurnType.MovePiece] = 5f;
+        }
     }
 
     public void ResetYellowHealth()

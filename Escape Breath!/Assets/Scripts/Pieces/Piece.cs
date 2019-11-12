@@ -220,15 +220,19 @@ public abstract class Piece : MonoBehaviour
         rb.isKinematic = true;
 
         float timer = 0;
-        while (timer < duration * 0.8f)
+        while (GameManager.inst.isPlaying && timer < duration * 0.8f)
         {
             timer += Time.unscaledDeltaTime;
             transform.localPosition = Vector3.Lerp(transform.localPosition, nextLocalPos, timer / duration);
             transform.localRotation = Quaternion.Lerp(transform.localRotation, Quaternion.identity, timer / duration);
             yield return null;
         }
-        transform.localPosition = nextLocalPos;
-        transform.localRotation = Quaternion.identity;
+        if (GameManager.inst.isPlaying)
+        {
+            transform.localPosition = nextLocalPos;
+            transform.localRotation = Quaternion.identity;
+        }
+        
 
         isMoving = false;
         rb.isKinematic = false;
