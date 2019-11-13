@@ -34,7 +34,7 @@ public class LazerP : BossPattern
             targets.Enqueue(king.boardIdx);
             checkKing = 1;
         }
-        for (int i = 0; i < (phase + 1); i++)
+        for (int i = 0; i < (phase); i++)
         {
             Vector2Int pos = new Vector2Int();
             pos = board.GetRandomPiece().boardIdx;
