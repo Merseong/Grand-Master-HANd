@@ -36,19 +36,24 @@ public class Boss : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         maxHealth = health;
+
+        // first phase
+        phase = 0;
+        outsiderRate = 0.1f;
+        GameManager.inst.turnSystem.turnTimers[TurnType.MovePiece] = 5f;
     }
 
-    //test
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space)) //meteor test
-        {
-            Debug.Log("test Space");
-            var A = Instantiate(phasePatterns[1]).GetComponent<BossPattern>();
-            A.StartPattern();
-        }
-    }
-    //test
+    ////test
+    //private void Update()
+    //{
+    //    if (Input.GetKeyDown(KeyCode.Space)) //meteor test
+    //    {
+    //        Debug.Log("test Space");
+    //        var A = Instantiate(phasePatterns[1]).GetComponent<BossPattern>();
+    //        A.StartPattern();
+    //    }
+    //}
+    ////test
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Attack"))

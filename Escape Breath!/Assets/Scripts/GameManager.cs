@@ -23,7 +23,21 @@ public class GameManager : MonoBehaviour
     public Material blackMat;
     public Light spotLight;
 
-    public bool isPlaying = true;
+    public bool isPlaying = false;
+
+    public void StartGame()
+    {
+        turnSystem.isGameEnd = false;
+        isPlaying = true;
+    }
+
+    private void Update()
+    {
+        if (!isPlaying && Input.GetKeyDown(KeyCode.Space))
+        {
+            StartGame();
+        }
+    }
 
     public void GameOver()
     {
