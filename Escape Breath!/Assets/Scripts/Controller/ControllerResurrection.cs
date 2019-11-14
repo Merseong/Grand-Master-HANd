@@ -35,7 +35,7 @@ public class ControllerResurrection : MonoBehaviour
                 Piece p = contGrab.pieceInHand;
                 float nextPoint = 0;
                 nextPoint += Vector2.Distance(beforeTouchPosition, touchPositionAction.GetAxis(handType));
-                //Debug.Log(nextPoint);
+                //Debug.Log(nextPoint + ", " + beforeTouchPosition + ", " + touchPositionAction.GetAxis(handType));
                 //nextPoint += Vector3.Distance(beforeControllerPosition, controllerPose.transform.position);
                 //Debug.LogError(nextPoint);
                 if (nextPoint > 0)
@@ -43,9 +43,10 @@ public class ControllerResurrection : MonoBehaviour
                     p.rechargePoint += nextPoint;
                     hapticAction.Execute(0, 0.1f, nextPoint, nextPoint, handType);
                     p.GetComponent<MeshRenderer>().material.SetColor("_BaseColor", Color.Lerp(Color.black, Color.white, p.rechargePoint / rechargeEnd));
+                    if (!particle.isPlaying) particle.Play();
                 }
+                else particle.Stop();
 
-                if (!particle.isPlaying) particle.Play();
                 //Debug.Log(p.rechargePoint);
                 if (p.rechargePoint > rechargeEnd)
                 {

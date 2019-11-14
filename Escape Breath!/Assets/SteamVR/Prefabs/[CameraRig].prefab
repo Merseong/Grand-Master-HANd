@@ -127,6 +127,9 @@ MonoBehaviour:
   touchPositionAction:
     actionPath: /actions/default/in/TouchPosition
     needsReinit: 0
+  hapticAction:
+    actionPath: 
+    needsReinit: 0
   particle: {fileID: 3031805392144043318}
 --- !u!114 &1505395968
 MonoBehaviour:
@@ -251,14 +254,14 @@ MonoBehaviour:
   size: 0
   color: {r: 0, g: 1, b: 1, a: 1}
   vertices:
-  - {x: 0.5, y: 0.01, z: -0.5000001}
-  - {x: -0.5, y: 0.01, z: -0.5000001}
-  - {x: -0.5, y: 0.01, z: 0.5000001}
-  - {x: 0.5, y: 0.01, z: 0.5000001}
-  - {x: 0.65, y: 0.01, z: -0.6500001}
-  - {x: -0.65, y: 0.01, z: -0.6500001}
-  - {x: -0.65, y: 0.01, z: 0.6500001}
-  - {x: 0.65, y: 0.01, z: 0.6500001}
+  - {x: 0.50000006, y: 0.01, z: -0.50000006}
+  - {x: -0.50000006, y: 0.01, z: -0.50000006}
+  - {x: -0.50000006, y: 0.01, z: 0.50000006}
+  - {x: 0.50000006, y: 0.01, z: 0.50000006}
+  - {x: 0.6500001, y: 0.01, z: -0.6500001}
+  - {x: -0.6500001, y: 0.01, z: -0.6500001}
+  - {x: -0.6500001, y: 0.01, z: 0.6500001}
+  - {x: 0.6500001, y: 0.01, z: 0.6500001}
 --- !u!1 &147176
 GameObject:
   m_ObjectHideFlags: 0
@@ -457,6 +460,9 @@ MonoBehaviour:
   touchPositionAction:
     actionPath: /actions/default/in/TouchPosition
     needsReinit: 0
+  hapticAction:
+    actionPath: 
+    needsReinit: 0
   particle: {fileID: 3031805390937776108}
 --- !u!1 &192944
 GameObject:
@@ -620,17 +626,17 @@ PrefabInstance:
     - target: {fileID: 3031805390765880791, guid: ba5a217f793ad8746883279ad5f39efb,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 3031805390765880791, guid: ba5a217f793ad8746883279ad5f39efb,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 3031805390765880791, guid: ba5a217f793ad8746883279ad5f39efb,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 3031805390765880791, guid: ba5a217f793ad8746883279ad5f39efb,
         type: 3}
@@ -701,17 +707,17 @@ PrefabInstance:
     - target: {fileID: 3031805390765880791, guid: ba5a217f793ad8746883279ad5f39efb,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 3031805390765880791, guid: ba5a217f793ad8746883279ad5f39efb,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 3031805390765880791, guid: ba5a217f793ad8746883279ad5f39efb,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 3031805390765880791, guid: ba5a217f793ad8746883279ad5f39efb,
         type: 3}
