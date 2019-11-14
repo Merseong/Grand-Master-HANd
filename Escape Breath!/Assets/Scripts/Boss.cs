@@ -40,7 +40,7 @@ public class Boss : MonoBehaviour
         // first phase
         phase = 0;
         outsiderRate = 0.1f;
-        GameManager.inst.turnSystem.turnTimers[TurnType.MovePiece] = 5f;
+        GameManager.inst.turnSystem.turnTimers[TurnType.MovePiece] = 8f;
     }
 
     ////test
@@ -77,27 +77,27 @@ public class Boss : MonoBehaviour
     private void Damaged(int damage)
     {
         if (!GameManager.inst.isPlaying) return;
-        health = Mathf.Max(0, health - damage * 3);
+        health = Mathf.Max(0, health - damage);
         redValue = health / maxHealth;
         redHealth.value = redValue;
         if (health == 0) GameManager.inst.GameClear();
         else if (health < 500)
         {
             phase = 2;
-            outsiderRate = 0.5f;
-            GameManager.inst.turnSystem.turnTimers[TurnType.MovePiece] = 4f;
+            outsiderRate = 0.3f;
+            GameManager.inst.turnSystem.turnTimers[TurnType.MovePiece] = 6f;
         }
         else if (health < 2000)
         {
             phase = 1;
-            outsiderRate = 0.3f;
-            GameManager.inst.turnSystem.turnTimers[TurnType.MovePiece] = 6f;
+            outsiderRate = 0.15f;
+            GameManager.inst.turnSystem.turnTimers[TurnType.MovePiece] = 7f;
         }
         else
         {
             phase = 0;
-            outsiderRate = 0.1f;
-            GameManager.inst.turnSystem.turnTimers[TurnType.MovePiece] = 5f;
+            outsiderRate = 0f;
+            GameManager.inst.turnSystem.turnTimers[TurnType.MovePiece] = 8f;
         }
     }
 
@@ -110,7 +110,7 @@ public class Boss : MonoBehaviour
     private BossPattern SelectPattern()
     {
         // randomly make outside attacker
-        if (Random.Range(0f, 1f) < 0.5f)
+        if (Random.Range(0f, 1f) < outsiderRate)
         {
             SpawnOutsideAttacker();
         }
@@ -162,7 +162,7 @@ public class Boss : MonoBehaviour
 
         if (GameManager.inst.chessBoard.GetPiece(pos.x, pos.y) != null)
         {
-            GameManager.inst.chessBoard.GetPiece(pos.x, pos.y).Damaged();
+            GameManager.inst.chessBoard.GetPiece(pos.x, pos.y).Damaged(isStrong);
         }
         yield return null;
     }

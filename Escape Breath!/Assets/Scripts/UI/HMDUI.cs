@@ -32,6 +32,6 @@ public class HMDUI : MonoBehaviour
                 widthScale = 1;
                 break;
         }
-        turnImage.rectTransform.sizeDelta = new Vector2(GetComponent<RectTransform>().sizeDelta.x * widthScale, turnImage.rectTransform.rect.height);
+        turnImage.fillAmount = widthScale;
     }
 }

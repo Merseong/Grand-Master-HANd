@@ -93,6 +93,7 @@ GameObject:
   - component: {fileID: 8300799167627759386}
   - component: {fileID: 3264397642185930567}
   - component: {fileID: -7631530718929568113}
+  - component: {fileID: 1705091906099284199}
   m_Layer: 12
   m_Name: King
   m_TagString: Piece
@@ -244,3 +245,16 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 14
   m_Mesh: {fileID: 4300000, guid: f5edbe7e601e05143b29e56c2de68b97, type: 3}
+--- !u!65 &1705091906099284199
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8300799167627759383}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.044999994, y: 0.044999994, z: 0.101998955}
+  m_Center: {x: 0, y: 0, z: 0.050999478}

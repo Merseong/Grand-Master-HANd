@@ -29,7 +29,7 @@ public class MeteorP : BossPattern
         var board = GameManager.inst.chessBoard;
         var boss = GameManager.inst.boss;
 
-        for (int i = 0; i < (phase + 1) * 5; i++)
+        for (int i = 0; i < (phase + 1) * 3; i++)
         {
             var atkPos = targets.Dequeue();
             float disappearTime = Random.Range(2, 2.5f);
