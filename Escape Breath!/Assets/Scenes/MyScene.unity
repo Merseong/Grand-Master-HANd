@@ -1960,9 +1960,10 @@ MonoBehaviour:
   health: 1000
   phase: 0
   phasePatterns:
-  - {fileID: 5303393613228015808, guid: f89e0c6625e792846adb04a41a2e5bd9, type: 3}
+  - {fileID: 6715769732842191090, guid: a75573f065eda4e439dce3e883d07cb8, type: 3}
   - {fileID: 1985843426806431976, guid: 14ce8cf5b53e1d1408f568b3fe53b376, type: 3}
   - {fileID: 8409352366553905763, guid: 22e6600eed62f3548a1ec1178dc307dc, type: 3}
+  - {fileID: 5303393613228015808, guid: f89e0c6625e792846adb04a41a2e5bd9, type: 3}
   outsideAttackerObj: {fileID: 3395381006109346755, guid: 9c57397be6d75aa4c9307386c954a6d9,
     type: 3}
   attackType: 0

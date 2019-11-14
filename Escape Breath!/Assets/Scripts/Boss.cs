@@ -49,7 +49,7 @@ public class Boss : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space)) //meteor test
         {
             Debug.Log("test Space");
-            var A = Instantiate(phasePatterns[2]).GetComponent<BossPattern>();
+            var A = Instantiate(phasePatterns[0]).GetComponent<BossPattern>();
             A.StartPattern();
         }
     }
@@ -117,10 +117,10 @@ public class Boss : MonoBehaviour
 
         // select random pattern or biased pattern
         if (isClose)
-            return Instantiate(phasePatterns[0]).GetComponent<BossPattern>(); //근접 공격 phasepatterns 임시 숫자임
+            return Instantiate(phasePatterns[0]).GetComponent<BossPattern>(); 
         else
         {
-            int idx = Random.Range(0, phasePatterns.Count);
+            int idx = Random.Range(1, phasePatterns.Count);
             return Instantiate(phasePatterns[idx]).GetComponent<BossPattern>();
         }
     }
