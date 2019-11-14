@@ -6,12 +6,14 @@ public class LazerP : BossPattern
 {
     public GameObject lazerPiece;
     Boss boss;
-    ChessBoard board = GameManager.inst.chessBoard;
+    ChessBoard board;
     int phase;
     int checkKing;
 
     public override void StartPattern()
     {
+        Debug.Log("lazerStart");
+        board = GameManager.inst.chessBoard;
         boss = GameManager.inst.boss;
         phase = boss.phase;
         SelectTarget();
@@ -19,6 +21,7 @@ public class LazerP : BossPattern
     }
     protected override void SelectTarget()
     {
+        Debug.Log("select start");
         Piece king = board.GetRandomPiece(PieceType.King);
 
         if (king == null)
@@ -31,28 +34,22 @@ public class LazerP : BossPattern
             targets.Enqueue(king.boardIdx);
             checkKing = 1;
         }
-        for (int i = 0; i < (phase + 1) * 4; i++)
+        for (int i = 0; i < (phase); i++)
         {
             Vector2Int pos = new Vector2Int();
-            pos.x = Random.Range(1, 8);
-            pos.y = Random.Range(1, 4);
-            if (board.CheckPiece(pos))
-            {
-                targets.Enqueue(pos);
-            }
-            else
-            {
-                i--;
-            }
+            pos = board.GetRandomPiece().boardIdx;
+            targets.Enqueue(pos);
         }
+        Debug.Log("Target select done");
     }
     public void AttackReady()
     {
-        for(int i =0; i < (phase + 1) * 4 + checkKing; i++)
+        Debug.Log("atkkkk");
+        for (int i = 0; i < (phase + 1) + checkKing; i++)
         {
             var atkPos = targets.Dequeue();
             float disappearTime = Random.Range(2, 2.5f);
-            GameObject obj = Instantiate(lazerPiece, board.IndexToGlobalPos(atkPos.x, atkPos.y), Quaternion.identity);
+            GameObject obj = Instantiate(lazerPiece, board.IndexToGlobalPos(atkPos.x, atkPos.y), Quaternion.Euler(90,0,0));
             boss.AttackOnBoard(atkPos, disappearTime, true);
             boss.AttackOnBoard(new Vector2Int((atkPos.x + 1), atkPos.y), disappearTime, false);
             boss.AttackOnBoard(new Vector2Int((atkPos.x - 1), atkPos.y), disappearTime, false);

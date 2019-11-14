@@ -8,11 +8,12 @@ public class Boss : MonoBehaviour
 {
     private float maxHealth;
     public int health;
-    public int phase;
+    public int phase = 0;
     public List<GameObject> phasePatterns = new List<GameObject>();
 
     [Space(10)]
     public GameObject outsideAttackerObj;
+    private float outsiderRate = 0.1f;
 
     [Space(10)]
     public int attackType;
@@ -35,19 +36,24 @@ public class Boss : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
         maxHealth = health;
+
+        // first phase
+        phase = 0;
+        outsiderRate = 0.1f;
+        GameManager.inst.turnSystem.turnTimers[TurnType.MovePiece] = 5f;
     }
 
-    //test
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space)) //meteor test
-        {
-            Debug.Log("test Space");
-            var A = Instantiate(phasePatterns[1]).GetComponent<BossPattern>();
-            A.StartPattern();
-        }
-    }
-    //test
+    ////test
+    //private void Update()
+    //{
+    //    if (Input.GetKeyDown(KeyCode.Space)) //meteor test
+    //    {
+    //        Debug.Log("test Space");
+    //        var A = Instantiate(phasePatterns[1]).GetComponent<BossPattern>();
+    //        A.StartPattern();
+    //    }
+    //}
+    ////test
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Attack"))
@@ -75,6 +81,24 @@ public class Boss : MonoBehaviour
         redValue = health / maxHealth;
         redHealth.value = redValue;
         if (health == 0) GameManager.inst.GameClear();
+        else if (health < 500)
+        {
+            phase = 2;
+            outsiderRate = 0.5f;
+            GameManager.inst.turnSystem.turnTimers[TurnType.MovePiece] = 4f;
+        }
+        else if (health < 2000)
+        {
+            phase = 1;
+            outsiderRate = 0.3f;
+            GameManager.inst.turnSystem.turnTimers[TurnType.MovePiece] = 6f;
+        }
+        else
+        {
+            phase = 0;
+            outsiderRate = 0.1f;
+            GameManager.inst.turnSystem.turnTimers[TurnType.MovePiece] = 5f;
+        }
     }
 
     public void ResetYellowHealth()
@@ -129,7 +153,7 @@ public class Boss : MonoBehaviour
     public void AttackOnBoard(Vector2Int pos, float duration, bool isStrong = false)
     {
         StartCoroutine(AttackPiece(pos, duration, isStrong));
-        GameManager.inst.chessBoard.ShowAttackArea(pos, duration - 0.1f, isStrong);
+        GameManager.inst.chessBoard.ShowAttackArea(pos, duration - 0.05f, isStrong);
     }
 
     IEnumerator AttackPiece(Vector2Int pos, float time, bool isStrong)
@@ -138,7 +162,7 @@ public class Boss : MonoBehaviour
 
         if (GameManager.inst.chessBoard.GetPiece(pos.x, pos.y) != null)
         {
-            GameManager.inst.chessBoard.GetPiece(pos.x, pos.y).Damaged(); //강공격 약공격도 처리 해줘야 함
+            GameManager.inst.chessBoard.GetPiece(pos.x, pos.y).Damaged();
         }
         yield return null;
     }

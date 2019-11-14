@@ -111,7 +111,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 992ff985671f39c449e64f8f4a3eacf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pieceType: 0
+  pieceType: 2
   isAttacker: 0
   damage: 0
   moveLimit: 6

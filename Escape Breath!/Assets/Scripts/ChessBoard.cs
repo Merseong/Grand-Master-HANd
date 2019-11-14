@@ -215,7 +215,7 @@ public class ChessBoard : MonoBehaviour
         if (isStrong)
         {
             var newDangerArea = Instantiate(DangerAreaPrefab, transform);
-            newDangerArea.transform.localPosition = IndexToLocalPos(pos.x, pos.y, 0.001f);
+            newDangerArea.transform.localPosition = IndexToLocalPos(pos.x, pos.y, 0.0015f);
             Destroy(newDangerArea, duration);
         }
         else
