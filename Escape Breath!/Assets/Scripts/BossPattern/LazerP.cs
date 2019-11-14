@@ -23,16 +23,18 @@ public class LazerP : BossPattern
     {
         Debug.Log("select start");
         Piece king = board.GetRandomPiece(PieceType.King);
-
-        if (king == null)
+        if (phase > 0)
         {
-            Debug.Log("king is out!");
-            checkKing = 0;
-        }
-        else
-        {
-            targets.Enqueue(king.boardIdx);
-            checkKing = 1;
+            if (king == null)
+            {
+                Debug.Log("king is out!");
+                checkKing = 0;
+            }
+            else
+            {
+                targets.Enqueue(king.boardIdx);
+                checkKing = 1;
+            }
         }
         for (int i = 0; i < (phase + 1); i++)
         {
@@ -57,5 +59,6 @@ public class LazerP : BossPattern
             boss.AttackOnBoard(new Vector2Int(atkPos.x, (atkPos.y - 1)), disappearTime, false);
             obj.GetComponent<LazerPiece>().Throw(disappearTime);
         }
+        checkKing = 0;
     }
 }

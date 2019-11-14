@@ -44,15 +44,15 @@ public class Boss : MonoBehaviour
     }
 
     ////test
-    //private void Update()
-    //{
-    //    if (Input.GetKeyDown(KeyCode.Space)) //meteor test
-    //    {
-    //        Debug.Log("test Space");
-    //        var A = Instantiate(phasePatterns[1]).GetComponent<BossPattern>();
-    //        A.StartPattern();
-    //    }
-    //}
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space)) //meteor test
+        {
+            Debug.Log("test Space");
+            var A = Instantiate(phasePatterns[2]).GetComponent<BossPattern>();
+            A.StartPattern();
+        }
+    }
     ////test
     private void OnTriggerEnter(Collider other)
     {
@@ -152,8 +152,8 @@ public class Boss : MonoBehaviour
 
     public void AttackOnBoard(Vector2Int pos, float duration, bool isStrong = false)
     {
-        StartCoroutine(AttackPiece(pos, duration, isStrong));
-        GameManager.inst.chessBoard.ShowAttackArea(pos, duration - 0.05f, isStrong);
+        StartCoroutine(AttackPiece(pos, duration - 0.01f, isStrong));
+        GameManager.inst.chessBoard.ShowAttackArea(pos, duration - 0.01f, isStrong);
     }
 
     IEnumerator AttackPiece(Vector2Int pos, float time, bool isStrong)
