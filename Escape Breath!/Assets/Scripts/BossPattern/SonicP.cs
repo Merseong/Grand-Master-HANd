@@ -20,7 +20,7 @@ public class SonicP : BossPattern
     }
     protected override void SelectTarget()
     {
-        for(int i = 0; i < phase+1; i++)
+        for(int i = 0; i < phase; i++)
         {
             Vector2Int pos = new Vector2Int();
             pos.x = Random.Range(0, 8);
@@ -30,7 +30,7 @@ public class SonicP : BossPattern
     }
     public void AttackReady()
     {
-        for (int i =0; i<phase+1; i++)
+        for (int i =0; i<phase; i++)
         {
             var atkPos = targets.Dequeue();
             float disappearTime = Random.Range(2, 2.5f);

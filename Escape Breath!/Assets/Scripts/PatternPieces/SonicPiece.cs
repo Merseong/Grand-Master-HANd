@@ -6,7 +6,6 @@ public class SonicPiece : MonoBehaviour
 {
     public Vector3 targetPos;
     public float acceleration = 0.8f;
-    public GameObject sonicPieceCore;
     public Vector3 startPos;
 
     public void Awake()
@@ -19,7 +18,7 @@ public class SonicPiece : MonoBehaviour
     public void Fire(float time)
     {
         Debug.Log("데굴 데굴");
-        gameObject.GetComponentInChildren<SonicPieceCore>().StartRotate(time);
+        //gameObject.GetComponentInChildren<SonicPieceCore>().StartRotate(time);
         StartCoroutine(ThrowPiece(time));
     }
 
