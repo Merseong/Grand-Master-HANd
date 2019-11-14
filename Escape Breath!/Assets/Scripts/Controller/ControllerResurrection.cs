@@ -45,17 +45,17 @@ public class ControllerResurrection : MonoBehaviour
                     p.GetComponent<MeshRenderer>().material.SetColor("_BaseColor", Color.Lerp(Color.black, Color.white, p.rechargePoint / rechargeEnd));
                     if (!particle.isPlaying) particle.Play();
                 }
-                else particle.Stop();
 
                 //Debug.Log(p.rechargePoint);
                 if (p.rechargePoint > rechargeEnd)
                 {
+                    particle.Stop();
                     p.Resurrection();
                 }
             }
             else
             {
-                particle.Stop();
+                if (particle.isPlaying) particle.Stop();
             }
             beforeTouchPosition = touchPositionAction.GetAxis(handType);
             beforeControllerPosition = controllerPose.transform.position;
