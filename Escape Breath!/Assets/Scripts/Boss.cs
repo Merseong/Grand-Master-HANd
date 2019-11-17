@@ -25,6 +25,8 @@ public class Boss : MonoBehaviour
     private Slider yellowHealth = null;
     private float yellowValue = 1;
     public Object attackArea;
+    public GameObject redBuff;
+    public GameObject blueBuff;
     
     public Transform attackPoint;
     [HideInInspector]
@@ -86,12 +88,14 @@ public class Boss : MonoBehaviour
             phase = 2;
             outsiderRate = 0.3f;
             GameManager.inst.turnSystem.turnTimers[TurnType.MovePiece] = 6f;
+            redBuff.SetActive(true);
         }
         else if (health < 2000)
         {
             phase = 1;
             outsiderRate = 0.15f;
             GameManager.inst.turnSystem.turnTimers[TurnType.MovePiece] = 7f;
+            blueBuff.SetActive(true);
         }
         else
         {
