@@ -139,7 +139,14 @@ public class Boss : MonoBehaviour
     {
         Vector3 randomPos = new Vector3(Random.Range(-3f, 3f), Random.Range(1f, 3f), Random.Range(-3f, 3f));
         var outside = Instantiate(outsideAttackerObj, randomPos, Quaternion.identity).GetComponent<OutsideEnemy>();
-        outside.target = GameManager.inst.chessBoard.GetRandomPiece().transform;
+        PieceType randomTarget;
+        float rand = Random.Range(0f, 1f);
+        if (rand < 0.4f) randomTarget = PieceType.King;
+        else if (rand < 0.6f) randomTarget = PieceType.Queen;
+        else if (rand < 0.8f) randomTarget = PieceType.Rook;
+        else if (rand < 0.9f) randomTarget = PieceType.Bishop;
+        else randomTarget = PieceType.Knight;
+        outside.target = GameManager.inst.chessBoard.GetRandomPiece(randomTarget).transform;
     }
     
     public void CheckClose()
