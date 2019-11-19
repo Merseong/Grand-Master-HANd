@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Valve.VR;
+using Valve.VR.InteractionSystem;
 
 public class ControllerTest : MonoBehaviour
 {
@@ -11,9 +12,15 @@ public class ControllerTest : MonoBehaviour
     public SteamVR_Action_Vector2 touchPositionAction;
     public SteamVR_Action_Boolean teleportAction;
     public SteamVR_Action_Boolean grabGripAction;
+    public SteamVR_Action_Vibration hapticAction;
 
-    private void Update()
+    public float frequency;
+    public float amplitute;
+    public float duration;
+
+    private void Start()
     {
+        StartCoroutine(HapticCoroutine());
         //if (touchPadAction.GetState(handType))
         //{
         //    Time.timeScale = (touchPositionAction.GetAxis(handType).y + 1) / 2;
@@ -26,5 +33,14 @@ public class ControllerTest : MonoBehaviour
         //        p.AutoAttack();
         //    });
         //}
+    }
+
+    IEnumerator HapticCoroutine()
+    {
+        while (true)
+        {
+            hapticAction.Execute(1, 0.1f, 64, 2, handType);
+            yield return new WaitForSeconds(1);
+        }
     }
 }

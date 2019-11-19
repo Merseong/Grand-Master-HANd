@@ -29,6 +29,15 @@ public class BossBackUI : MonoBehaviour
             promotionUIinst[instIdx].transform.localPosition = new Vector2(isRight ? 60 : -60, 10);
             promotionUIinst[instIdx].transform.localScale = new Vector2(0, 0);
             StartCoroutine(PromotionUICoroutine(promotionUIinst[instIdx].transform, isRight));
+            StartCoroutine(HapticCoroutine(isRight));
+        }
+    }
+    IEnumerator HapticCoroutine(bool isRight)
+    {
+        while (true)
+        {
+            hapticAction.Execute(1, 0.1f, 64, 2, isRight ? SteamVR_Input_Sources.RightHand : SteamVR_Input_Sources.LeftHand);
+            yield return new WaitForSeconds(1);
         }
     }
 
@@ -49,7 +58,7 @@ public class BossBackUI : MonoBehaviour
         SteamVR_Input_Sources handType = isRight ? SteamVR_Input_Sources.RightHand : SteamVR_Input_Sources.LeftHand;
         while (true)
         {
-            hapticAction.Execute(0, 0.1f, 5, 300, handType);
+            hapticAction.Execute(0, 0.1f, 2, 2, handType);
             selector.localPosition = touchPositionAction.GetAxis(handType) * 12f;
             int xIdx = selector.localPosition.x > 7 ? 1 : (selector.localPosition.x < -7 ? -1 : 0);
             int yIdx = selector.localPosition.y > 7 ? 1 : (selector.localPosition.y < -7 ? -1 : 0);
