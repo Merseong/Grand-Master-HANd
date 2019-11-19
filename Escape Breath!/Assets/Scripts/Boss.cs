@@ -100,7 +100,7 @@ public class Boss : MonoBehaviour
         else
         {
             phase = 0;
-            outsiderRate = 1f;
+            outsiderRate = 0.1f;
             GameManager.inst.turnSystem.turnTimers[TurnType.MovePiece] = 8f;
         }
     }

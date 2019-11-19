@@ -121,14 +121,20 @@ public class ChessBoard : MonoBehaviour
         if (CheckPiece(targetX, 7))
         {
             Piece p = GetPiece(targetX, 7);
-            Instantiate(pieceGameObjects[targetNum], IndexToGlobalPos(p.boardIdx.x, p.boardIdx.y), Quaternion.Euler(-90, 0, 0), pieceSetTransform);
-            PermanantRemovePiece(p);
+            if (p.isActive)
+            {
+                Instantiate(pieceGameObjects[targetNum], IndexToGlobalPos(p.boardIdx.x, p.boardIdx.y), Quaternion.Euler(-90, 0, 0), pieceSetTransform);
+                PermanantRemovePiece(p);
+            }
         }
         if (CheckPiece(targetX + 1, 7))
         {
             Piece p = GetPiece(targetX + 1, 7);
-            Instantiate(pieceGameObjects[targetNum], IndexToGlobalPos(p.boardIdx.x, p.boardIdx.y), Quaternion.Euler(-90, 0, 0), pieceSetTransform);
-            PermanantRemovePiece(p);
+            if (p.isActive)
+            {
+                Instantiate(pieceGameObjects[targetNum], IndexToGlobalPos(p.boardIdx.x, p.boardIdx.y), Quaternion.Euler(-90, 0, 0), pieceSetTransform);
+                PermanantRemovePiece(p);
+            }
         }
     }
 

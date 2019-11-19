@@ -193,7 +193,7 @@ MonoBehaviour:
   rb: {fileID: 0}
   isFloorDetected: 0
   buffRange: 1
-  buffAmount: 2
+  buffAmount: 3
   buffCube: {fileID: 277665634651395546}
   originScale: {x: 0, y: 0, z: 0}
   largedScale: {x: 0.18, y: 0.18, z: 0.01}

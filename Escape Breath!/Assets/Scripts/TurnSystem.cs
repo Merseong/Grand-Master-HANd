@@ -58,6 +58,7 @@ public class TurnSystem : MonoBehaviour
             timeCounter += Time.unscaledDeltaTime;
             GameManager.inst.hmdUI.ShowTurn(currentTurn, timeCounter);
             GameManager.inst.hmdUI.turnCountText.text = turnCount.ToString();
+            GameManager.inst.hmdUI.turnCountText.color = Color.Lerp(Color.white, Color.red, turnCount / 40);
         }
     }
 
