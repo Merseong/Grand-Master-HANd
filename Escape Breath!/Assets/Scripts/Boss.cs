@@ -114,7 +114,7 @@ public class Boss : MonoBehaviour
         {
             SpawnOutsideAttacker();
         }
-
+        CheckClose();
         // select random pattern or biased pattern
         if (isClose)
             return Instantiate(phasePatterns[0]).GetComponent<BossPattern>(); 
@@ -128,6 +128,7 @@ public class Boss : MonoBehaviour
     public void StartPattern()
     {
         var pattern = SelectPattern();
+        isClose = false;
         pattern.StartPattern();
     }
 
@@ -145,8 +146,13 @@ public class Boss : MonoBehaviour
             for (int a = 0; a < 8; a++)
             {
                 if (GameManager.inst.chessBoard.GetPiece(a, b) != null)
+                {
                     isClose = true;
+                    break;
+                }
             }
+            if (isClose == true)
+                break;
         }
     }
 
