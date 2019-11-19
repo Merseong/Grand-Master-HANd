@@ -332,7 +332,7 @@ public class ChessBoard : MonoBehaviour
         {
             var newList = pieceList.FindAll((element) =>
             {
-                return element.isActive && element.pieceType == type;
+                return (element.pieceType == type && (type == PieceType.King || element.isActive));
             });
             if (newList.Count > 0)
             {

@@ -23,15 +23,19 @@ public class OutsideEnemy : MonoBehaviour
 
     private void Start()
     {
-        PieceType randomTarget;
-        float rand = Random.Range(0f, 1f);
-        if (rand < 0.4f) randomTarget = PieceType.King;
-        else if (rand < 0.6f) randomTarget = PieceType.Queen;
-        else if (rand < 0.8f) randomTarget = PieceType.Rook;
-        else if (rand < 0.9f) randomTarget = PieceType.Bishop;
-        else randomTarget = PieceType.Knight;
-        target = GameManager.inst.chessBoard.GetRandomPiece(randomTarget).transform;
+        while (target == null)
+        {
+            PieceType randomTarget;
+            float rand = Random.Range(0f, 1f);
+            if (rand < 0.4f) randomTarget = PieceType.King;
+            else if (rand < 0.6f) randomTarget = PieceType.Queen;
+            else if (rand < 0.8f) randomTarget = PieceType.Rook;
+            else if (rand < 0.9f) randomTarget = PieceType.Bishop;
+            else randomTarget = PieceType.Knight;
+            target = GameManager.inst.chessBoard.GetRandomPiece(randomTarget).transform;
+        }
         StartCoroutine(HapticCoroutine());
+        Destroy(gameObject, flightTime + 0.1f);
     }
 
     private void Update()

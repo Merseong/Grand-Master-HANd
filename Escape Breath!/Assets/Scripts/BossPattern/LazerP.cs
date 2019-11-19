@@ -25,7 +25,7 @@ public class LazerP : BossPattern
         Piece king = board.GetRandomPiece(PieceType.King);
         if (phase > 0)
         {
-            if (king == null)
+            if (!king.isActive)
             {
                 Debug.Log("king is out!");
                 checkKing = 0;

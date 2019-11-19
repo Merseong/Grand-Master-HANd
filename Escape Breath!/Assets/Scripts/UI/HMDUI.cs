@@ -7,6 +7,7 @@ public class HMDUI : MonoBehaviour
 {
     public Text turnText;
     public Image turnImage;
+    public Text turnCountText;
 
     private float turnTime = 0;
 
