@@ -118,23 +118,36 @@ public class Boss : MonoBehaviour
 
     private BossPattern SelectPattern()
     {
-        // randomly make outside attacker
-        if (Random.Range(0f, 1f) < outsiderRate)
+        if (GameManager.inst.turnSystem.turnCount < 40)
         {
-            SpawnOutsideAttacker();
-        }
-        CheckClose();
-        // select random pattern or biased pattern
-        if (isClose)
-        {
-            if (guardOn == 0)
+            // randomly make outside attacker
+            if (Random.Range(0f, 1f) < outsiderRate)
             {
-                guardOn = 2;
-                return Instantiate(phasePatterns[0]).GetComponent<BossPattern>();
+                SpawnOutsideAttacker();
+            }
+            CheckClose();
+            // select random pattern or biased pattern
+            if (isClose)
+            {
+                if (guardOn == 0)
+                {
+                    guardOn = 2;
+                    return Instantiate(phasePatterns[0]).GetComponent<BossPattern>();
+                }
+                else
+                {
+                    guardOn--;
+                    int idx = pastPattern;
+                    while (idx == pastPattern)
+                    {
+                        idx = Random.Range(1, phasePatterns.Count);
+                    }
+                    pastPattern = idx;
+                    return Instantiate(phasePatterns[idx]).GetComponent<BossPattern>();
+                }
             }
             else
             {
-                guardOn--;
                 int idx = pastPattern;
                 while (idx == pastPattern)
                 {
@@ -146,13 +159,7 @@ public class Boss : MonoBehaviour
         }
         else
         {
-            int idx = pastPattern;
-            while (idx == pastPattern)
-            {
-                idx = Random.Range(1, phasePatterns.Count);
-            }
-            pastPattern = idx;
-            return Instantiate(phasePatterns[idx]).GetComponent<BossPattern>();
+            return Instantiate(phasePatterns[5]).GetComponent<BossPattern>(); //필중 패턴 구현 해야함
         }
     }
 
