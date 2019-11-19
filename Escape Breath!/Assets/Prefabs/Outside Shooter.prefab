@@ -93,6 +93,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e156477896c07c48a1106c4735d7b01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hapticAction:
+    actionPath: /actions/default/out/Haptic
+    needsReinit: 0
   laser: {fileID: 4047128706955837974}
   bullet: {fileID: 3395381007033390746}
   target: {fileID: 0}

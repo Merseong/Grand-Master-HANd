@@ -1,9 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Valve.VR;
 
 public class OutsideEnemy : MonoBehaviour
 {
+    public SteamVR_Action_Vibration hapticAction;
     [SerializeField]
     private Transform laser;
     [SerializeField]
@@ -16,6 +18,22 @@ public class OutsideEnemy : MonoBehaviour
     private Vector3 targetPos;
     private Vector3 targetOffset = new Vector3(0, 0.1f, 0);
 
+    private float lDist;
+    private float rDist;
+
+    private void Start()
+    {
+        PieceType randomTarget;
+        float rand = Random.Range(0f, 1f);
+        if (rand < 0.4f) randomTarget = PieceType.King;
+        else if (rand < 0.6f) randomTarget = PieceType.Queen;
+        else if (rand < 0.8f) randomTarget = PieceType.Rook;
+        else if (rand < 0.9f) randomTarget = PieceType.Bishop;
+        else randomTarget = PieceType.Knight;
+        target = GameManager.inst.chessBoard.GetRandomPiece(randomTarget).transform;
+        StartCoroutine(HapticCoroutine());
+    }
+
     private void Update()
     {
         targetPos = target.position + targetOffset;
@@ -25,5 +43,19 @@ public class OutsideEnemy : MonoBehaviour
         bullet.position = Vector3.Lerp(transform.position, targetPos, timer / flightTime);
         bullet.LookAt(targetPos);
         timer += Time.unscaledDeltaTime;
+    }
+
+    IEnumerator HapticCoroutine()
+    {
+        float time = 0;
+        while (time < flightTime - 0.2f)
+        {
+            time += Time.unscaledDeltaTime;
+            lDist = Vector3.Distance(transform.position, GameManager.inst.leftController.transform.position);
+            rDist = Vector3.Distance(transform.position, GameManager.inst.rightController.transform.position);
+            SteamVR_Input_Sources handtype = lDist < rDist ? SteamVR_Input_Sources.LeftHand : SteamVR_Input_Sources.RightHand;
+            hapticAction.Execute(0, 1f, 128, 50 * time / flightTime, handtype);
+            yield return new WaitForSecondsRealtime(1f);
+        }
     }
 }

@@ -93,14 +93,14 @@ public class Boss : MonoBehaviour
         else if (health < 2000)
         {
             phase = 1;
-            outsiderRate = 0.15f;
+            outsiderRate = 0.2f;
             GameManager.inst.turnSystem.turnTimers[TurnType.MovePiece] = 7f;
             blueBuff.SetActive(true);
         }
         else
         {
             phase = 0;
-            outsiderRate = 0f;
+            outsiderRate = 1f;
             GameManager.inst.turnSystem.turnTimers[TurnType.MovePiece] = 8f;
         }
     }
@@ -139,15 +139,7 @@ public class Boss : MonoBehaviour
     void SpawnOutsideAttacker()
     {
         Vector3 randomPos = new Vector3(Random.Range(-3f, 3f), Random.Range(1f, 3f), Random.Range(-3f, 3f));
-        var outside = Instantiate(outsideAttackerObj, randomPos, Quaternion.identity).GetComponent<OutsideEnemy>();
-        PieceType randomTarget;
-        float rand = Random.Range(0f, 1f);
-        if (rand < 0.4f) randomTarget = PieceType.King;
-        else if (rand < 0.6f) randomTarget = PieceType.Queen;
-        else if (rand < 0.8f) randomTarget = PieceType.Rook;
-        else if (rand < 0.9f) randomTarget = PieceType.Bishop;
-        else randomTarget = PieceType.Knight;
-        outside.target = GameManager.inst.chessBoard.GetRandomPiece(randomTarget).transform;
+        Instantiate(outsideAttackerObj, randomPos, Quaternion.identity);
     }
     
     public void CheckClose()

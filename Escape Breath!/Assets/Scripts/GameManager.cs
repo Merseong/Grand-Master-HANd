@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Valve.VR;
 
 public class GameManager : MonoBehaviour
 {
@@ -17,6 +18,9 @@ public class GameManager : MonoBehaviour
     public TurnSystem turnSystem;
     public BossBackUI bossBackUI;
     public HMDUI hmdUI;
+
+    public SteamVR_Behaviour_Pose leftController;
+    public SteamVR_Behaviour_Pose rightController;
 
     public GameObject attackObj;
     public Material whiteMat;

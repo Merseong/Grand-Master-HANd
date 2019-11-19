@@ -29,7 +29,6 @@ public class BossBackUI : MonoBehaviour
             promotionUIinst[instIdx].transform.localPosition = new Vector2(isRight ? 60 : -60, 10);
             promotionUIinst[instIdx].transform.localScale = new Vector2(0, 0);
             StartCoroutine(PromotionUICoroutine(promotionUIinst[instIdx].transform, isRight));
-            StartCoroutine(HapticCoroutine(isRight));
         }
     }
     IEnumerator HapticCoroutine(bool isRight)
@@ -43,6 +42,7 @@ public class BossBackUI : MonoBehaviour
 
     public IEnumerator PromotionUICoroutine(Transform tr, bool isRight)
     {
+        var haptic = StartCoroutine(HapticCoroutine(isRight));
         float timer = 0;
         while (timer < 1)
         {
@@ -93,6 +93,7 @@ public class BossBackUI : MonoBehaviour
             if (touchClickAction.GetStateDown(handType) && targetNum > -1)
             {
                 GameManager.inst.chessBoard.PromotePawns(isRight, targetNum);
+                StopCoroutine(haptic);
                 break;
             }
             yield return null;
