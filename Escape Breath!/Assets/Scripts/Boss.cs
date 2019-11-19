@@ -44,15 +44,15 @@ public class Boss : MonoBehaviour
     }
 
     ////test
-    //private void Update()
-    //{
-    //    if (Input.GetKeyDown(KeyCode.Space)) //meteor test
-    //    {
-    //        Debug.Log("test Space");
-    //        var A = Instantiate(phasePatterns[1]).GetComponent<BossPattern>();
-    //        A.StartPattern();
-    //    }
-    //}
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space)) //meteor test
+        {
+            Debug.Log("test Space");
+            var A = Instantiate(phasePatterns[0]).GetComponent<BossPattern>();
+            A.StartPattern();
+        }
+    }
     ////test
     private void OnTriggerEnter(Collider other)
     {
@@ -114,13 +114,13 @@ public class Boss : MonoBehaviour
         {
             SpawnOutsideAttacker();
         }
-
+        CheckClose();
         // select random pattern or biased pattern
         if (isClose)
-            return Instantiate(phasePatterns[0]).GetComponent<BossPattern>(); //근접 공격 phasepatterns 임시 숫자임
+            return Instantiate(phasePatterns[0]).GetComponent<BossPattern>(); 
         else
         {
-            int idx = Random.Range(0, phasePatterns.Count);
+            int idx = Random.Range(1, phasePatterns.Count);
             return Instantiate(phasePatterns[idx]).GetComponent<BossPattern>();
         }
     }
@@ -128,6 +128,7 @@ public class Boss : MonoBehaviour
     public void StartPattern()
     {
         var pattern = SelectPattern();
+        isClose = false;
         pattern.StartPattern();
     }
 
@@ -145,15 +146,20 @@ public class Boss : MonoBehaviour
             for (int a = 0; a < 8; a++)
             {
                 if (GameManager.inst.chessBoard.GetPiece(a, b) != null)
+                {
                     isClose = true;
+                    break;
+                }
             }
+            if (isClose == true)
+                break;
         }
     }
 
     public void AttackOnBoard(Vector2Int pos, float duration, bool isStrong = false)
     {
-        StartCoroutine(AttackPiece(pos, duration, isStrong));
-        GameManager.inst.chessBoard.ShowAttackArea(pos, duration - 0.05f, isStrong);
+        StartCoroutine(AttackPiece(pos, duration - 0.01f, isStrong));
+        GameManager.inst.chessBoard.ShowAttackArea(pos, duration - 0.01f, isStrong);
     }
 
     IEnumerator AttackPiece(Vector2Int pos, float time, bool isStrong)
