@@ -16,11 +16,18 @@ public class MeteorP : BossPattern
 
     protected override void SelectTarget()
     {
-        for (int i = 0; i < (phase + 1) * 3; i++)
+        Vector2Int check = new Vector2Int(-1, -1);
+        for (int i = 0; i < (phase + 1) * 3;)
         {
+            i++;
             Vector2Int pos = new Vector2Int();
             pos.x = Random.Range(0, 8);
             pos.y = Random.Range(0, 4);
+            if(check == pos)
+            {
+                i--;
+                continue;
+            }
             targets.Enqueue(pos);
         }
     }

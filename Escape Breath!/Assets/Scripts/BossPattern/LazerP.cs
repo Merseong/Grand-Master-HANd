@@ -36,10 +36,17 @@ public class LazerP : BossPattern
                 checkKing = 1;
             }
         }
-        for (int i = 0; i < (phase + 1); i++)
+        Vector2Int check = new Vector2Int(-1, -1);
+        for (int i = 0; i < (phase + 1);)
         {
+            i++;
             Vector2Int pos = new Vector2Int();
             pos = board.GetRandomPiece().boardIdx;
+            if(check == pos)
+            {
+                i--;
+                continue;
+            }
             targets.Enqueue(pos);
         }
         Debug.Log("Target select done");
