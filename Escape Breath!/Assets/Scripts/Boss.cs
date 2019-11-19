@@ -27,12 +27,15 @@ public class Boss : MonoBehaviour
     public Object attackArea;
     public GameObject redBuff;
     public GameObject blueBuff;
-    
+
     public Transform attackPoint;
     [HideInInspector]
     public Rigidbody rb;
 
     bool isClose = false;
+
+    private int guardOn;
+    private int pastPattern;
 
     private void Awake()
     {
@@ -42,6 +45,8 @@ public class Boss : MonoBehaviour
         // first phase
         phase = 0;
         outsiderRate = 0.1f;
+        guardOn = 0;
+        pastPattern = -1;
         GameManager.inst.turnSystem.turnTimers[TurnType.MovePiece] = 8f;
     }
 
@@ -121,10 +126,32 @@ public class Boss : MonoBehaviour
         CheckClose();
         // select random pattern or biased pattern
         if (isClose)
-            return Instantiate(phasePatterns[0]).GetComponent<BossPattern>(); 
+        {
+            if (guardOn == 0)
+            {
+                guardOn = 2;
+                return Instantiate(phasePatterns[0]).GetComponent<BossPattern>();
+            }
+            else
+            {
+                guardOn--;
+                int idx = pastPattern;
+                while (idx == pastPattern)
+                {
+                    idx = Random.Range(1, phasePatterns.Count);
+                }
+                pastPattern = idx;
+                return Instantiate(phasePatterns[idx]).GetComponent<BossPattern>();
+            }
+        }
         else
         {
-            int idx = Random.Range(1, phasePatterns.Count);
+            int idx = pastPattern;
+            while (idx == pastPattern)
+            {
+                idx = Random.Range(1, phasePatterns.Count);
+            }
+            pastPattern = idx;
             return Instantiate(phasePatterns[idx]).GetComponent<BossPattern>();
         }
     }
@@ -156,7 +183,7 @@ public class Boss : MonoBehaviour
         {
             for (int a = 0; a < 8; a++)
             {
-                if (GameManager.inst.chessBoard.GetPiece(a, b) != null)
+                if (GameManager.inst.chessBoard.GetPiece(a, b) != null && GameManager.inst.chessBoard.GetPiece(a, b).isActive == true)
                 {
                     isClose = true;
                     break;
