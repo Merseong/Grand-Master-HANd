@@ -45,6 +45,10 @@
       "type": "boolean"
     },
     {
+      "name": "/actions/default/in/MenuButton",
+      "type": "boolean"
+    },
+    {
       "name": "/actions/default/out/Haptic",
       "type": "vibration"
     },
@@ -159,7 +163,8 @@
       "/actions/platformer/in/Jump": "Jump",
       "/actions/default/in/TouchPad": "TouchPad",
       "/actions/default/in/TouchPosition": "TouchPosition",
-      "/actions/default/in/TouchClick": "TouchClick"
+      "/actions/default/in/TouchClick": "TouchClick",
+      "/actions/default/in/MenuButton": "MenuButton"
     }
   ]
 }

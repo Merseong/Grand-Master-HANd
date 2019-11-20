@@ -103,15 +103,6 @@
             {
                "inputs" : {
                   "click" : {
-                     "output" : "/actions/default/in/interactui"
-                  }
-               },
-               "mode" : "button",
-               "path" : "/user/hand/left/input/trigger"
-            },
-            {
-               "inputs" : {
-                  "click" : {
                      "output" : "/actions/default/in/grabgrip"
                   }
                },
@@ -136,15 +127,6 @@
                   "force_input" : "value"
                },
                "path" : "/user/hand/left/input/trigger"
-            },
-            {
-               "inputs" : {
-                  "click" : {
-                     "output" : "/actions/default/in/interactui"
-                  }
-               },
-               "mode" : "button",
-               "path" : "/user/hand/right/input/trigger"
             },
             {
                "inputs" : {
@@ -220,6 +202,24 @@
                },
                "mode" : "trigger",
                "path" : "/user/hand/right/input/trigger"
+            },
+            {
+               "inputs" : {
+                  "click" : {
+                     "output" : "/actions/default/in/menubutton"
+                  }
+               },
+               "mode" : "button",
+               "path" : "/user/hand/left/input/application_menu"
+            },
+            {
+               "inputs" : {
+                  "click" : {
+                     "output" : "/actions/default/in/menubutton"
+                  }
+               },
+               "mode" : "button",
+               "path" : "/user/hand/right/input/application_menu"
             }
          ]
       },
