@@ -36,6 +36,7 @@ public class Boss : MonoBehaviour
 
     private int guardOn;
     private int pastPattern;
+    public int turnLimit = 40;
 
     private void Awake()
     {
@@ -56,7 +57,7 @@ public class Boss : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space)) //meteor test
         {
             Debug.Log("test Space");
-            var A = Instantiate(phasePatterns[0]).GetComponent<BossPattern>();
+            var A = Instantiate(phasePatterns[4]).GetComponent<BossPattern>();
             A.StartPattern();
         }
     }
@@ -118,7 +119,7 @@ public class Boss : MonoBehaviour
 
     private BossPattern SelectPattern()
     {
-        if (GameManager.inst.turnSystem.turnCount < 40)
+        if (GameManager.inst.turnSystem.turnCount < turnLimit)
         {
             // randomly make outside attacker
             if (Random.Range(0f, 1f) < outsiderRate)
@@ -159,6 +160,10 @@ public class Boss : MonoBehaviour
         }
         else
         {
+            for (int i = 1; i < 5; i++)
+            {
+                SpawnOutsideAttacker();
+            }
             return Instantiate(phasePatterns[5]).GetComponent<BossPattern>(); //필중 패턴 구현 해야함
         }
     }
