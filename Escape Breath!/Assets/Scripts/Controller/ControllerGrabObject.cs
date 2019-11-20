@@ -134,7 +134,7 @@ public class ControllerGrabObject : MonoBehaviour
             {
                 var piece = objectInHand.GetComponent<Piece>();
                 piece.isMoving = false;
-                GameManager.inst.chessBoard.HideMoveArea(handType == SteamVR_Input_Sources.RightHand, piece);
+                GameManager.inst.chessBoard.HideMoveArea(handType == SteamVR_Input_Sources.RightHand);
             }
             if (objectInHand.GetComponent<Outline>())
             {
