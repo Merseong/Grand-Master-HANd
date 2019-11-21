@@ -8,6 +8,8 @@ public class BeforeStartScript : MonoBehaviour
     public Transform kingTr;
     public Transform bossTr;
 
+    public EnvRotate[] envs;
+
     private bool isStarting = false;
     private Vector3 bossStartPos;
     private Vector3 bossFinalPos;
@@ -25,6 +27,10 @@ public class BeforeStartScript : MonoBehaviour
         if (other.transform == kingTr && !isStarting)
         {
             isStarting = true;
+            for (int i = 0; i < envs.Length; ++i)
+            {
+                envs[i].isRotating = false;
+            }
             StartCoroutine(LoadSceneAsyncCoroutine());
         }
     }
