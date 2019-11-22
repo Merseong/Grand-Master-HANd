@@ -260,7 +260,7 @@ public class ChessBoard : MonoBehaviour
         ShowMoveArea(boardIdx.x, boardIdx.y, limit, isRightHand);
     }
 
-    public void HideMoveArea(bool isRightHand, Piece droped)
+    public void HideMoveArea(bool isRightHand)
     {
         if (isRightHand)
         {

@@ -5,9 +5,13 @@ using UnityEngine.UI;
 
 public class HMDUI : MonoBehaviour
 {
+    [Header("Turn UI")]
     public Text turnText;
     public Image turnImage;
     public Text turnCountText;
+
+    [Header("Menu UI")]
+    public GameObject[] menuObjs;
 
     private float turnTime = 0;
 

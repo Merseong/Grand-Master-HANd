@@ -48,6 +48,11 @@ public class GameManager : MonoBehaviour
         Debug.LogError("Game Over!");
         turnSystem.isGameEnd = true;
         isPlaying = false;
+        chessBoard.allReset();
+        chessBoard.HideMoveArea(true);
+        chessBoard.HideMoveArea(false);
+        chessBoard.HideDangerArea();
+
         hmdUI.turnText.text = "Game Over!";
         StartCoroutine(PieceFlyingCoroutine());
     }
@@ -57,6 +62,11 @@ public class GameManager : MonoBehaviour
         Debug.LogError("Game Clear!");
         turnSystem.isGameEnd = true;
         isPlaying = false;
+        chessBoard.allReset();
+        chessBoard.HideMoveArea(true);
+        chessBoard.HideMoveArea(false);
+        chessBoard.HideDangerArea();
+
         hmdUI.turnText.text = "Game Clear!";
         Time.timeScale = 1;
         boss.rb.isKinematic = false;
@@ -67,8 +77,7 @@ public class GameManager : MonoBehaviour
     IEnumerator PieceFlyingCoroutine()
     {
         yield return new WaitForFixedUpdate();
-        Time.timeScale = 0.5f;
-        chessBoard.allReset();
+        Time.timeScale = 0.2f;
         for (int i = 0; i < chessBoard.pieceList.Count; ++i)
         {
             chessBoard.pieceList[i].rb.AddExplosionForce(5f, Vector3.zero, 500f, 1, ForceMode.Impulse);
