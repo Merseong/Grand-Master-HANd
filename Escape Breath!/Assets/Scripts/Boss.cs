@@ -51,17 +51,6 @@ public class Boss : MonoBehaviour
         GameManager.inst.turnSystem.turnTimers[TurnType.MovePiece] = 8f;
     }
 
-    ////test
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space)) //meteor test
-        {
-            Debug.Log("test Space");
-            var A = Instantiate(phasePatterns[4]).GetComponent<BossPattern>();
-            A.StartPattern();
-        }
-    }
-    ////test
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Attack"))
@@ -187,7 +176,8 @@ public class Boss : MonoBehaviour
         {
             for (int a = 0; a < 8; a++)
             {
-                if (GameManager.inst.chessBoard.GetPiece(a, b) != null && GameManager.inst.chessBoard.GetPiece(a, b).isActive == true)
+                var p = GameManager.inst.chessBoard.GetPiece(a, b);
+                if (p != null && p.isAlive)
                 {
                     isClose = true;
                     break;
