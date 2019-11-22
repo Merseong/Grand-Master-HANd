@@ -40,7 +40,16 @@ public class MeteorP : BossPattern
         {
             var atkPos = targets.Dequeue();
             float disappearTime = Random.Range(2, 2.5f);
-            boss.AttackOnBoard(atkPos, disappearTime, true);
+            bool atk = true;
+            if(i%2 != 1)
+            {
+                atk = false;
+            }
+            else
+            {
+                atk = true;
+            }
+            boss.AttackOnBoard(atkPos, disappearTime, atk);
             GameObject obj = Instantiate(meteorPiece, boss.attackPoint.position, Quaternion.identity);
             obj.GetComponent<MeteorPiece>().Throw(board.IndexToGlobalPos(atkPos.x, atkPos.y), disappearTime);
         }

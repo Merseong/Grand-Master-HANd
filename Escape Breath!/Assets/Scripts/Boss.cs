@@ -141,7 +141,7 @@ public class Boss : MonoBehaviour
                     int idx = pastPattern;
                     while (idx == pastPattern)
                     {
-                        idx = Random.Range(1, phasePatterns.Count);
+                        idx = Random.Range(1, phasePatterns.Count - 1);
                     }
                     pastPattern = idx;
                     return Instantiate(phasePatterns[idx]).GetComponent<BossPattern>();
@@ -152,7 +152,7 @@ public class Boss : MonoBehaviour
                 int idx = pastPattern;
                 while (idx == pastPattern)
                 {
-                    idx = Random.Range(1, phasePatterns.Count);
+                    idx = Random.Range(1, phasePatterns.Count - 1);
                 }
                 pastPattern = idx;
                 return Instantiate(phasePatterns[idx]).GetComponent<BossPattern>();
