@@ -16,11 +16,18 @@ public class MeteorP : BossPattern
 
     protected override void SelectTarget()
     {
-        for (int i = 0; i < (phase + 1) * 3; i++)
+        Vector2Int check = new Vector2Int(-1, -1);
+        for (int i = 0; i < (phase + 1) * 3;)
         {
+            i++;
             Vector2Int pos = new Vector2Int();
             pos.x = Random.Range(0, 8);
             pos.y = Random.Range(0, 4);
+            if(check == pos)
+            {
+                i--;
+                continue;
+            }
             targets.Enqueue(pos);
         }
     }
@@ -33,7 +40,16 @@ public class MeteorP : BossPattern
         {
             var atkPos = targets.Dequeue();
             float disappearTime = Random.Range(2, 2.5f);
-            boss.AttackOnBoard(atkPos, disappearTime, true);
+            bool atk = true;
+            if(i%2 != 1)
+            {
+                atk = false;
+            }
+            else
+            {
+                atk = true;
+            }
+            boss.AttackOnBoard(atkPos, disappearTime, atk);
             GameObject obj = Instantiate(meteorPiece, boss.attackPoint.position, Quaternion.identity);
             obj.GetComponent<MeteorPiece>().Throw(board.IndexToGlobalPos(atkPos.x, atkPos.y), disappearTime);
         }

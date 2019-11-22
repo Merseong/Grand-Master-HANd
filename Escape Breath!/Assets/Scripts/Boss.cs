@@ -27,12 +27,16 @@ public class Boss : MonoBehaviour
     public Object attackArea;
     public GameObject redBuff;
     public GameObject blueBuff;
-    
+
     public Transform attackPoint;
     [HideInInspector]
     public Rigidbody rb;
 
     bool isClose = false;
+
+    private int guardOn;
+    private int pastPattern;
+    public int turnLimit = 40;
 
     private void Awake()
     {
@@ -42,6 +46,8 @@ public class Boss : MonoBehaviour
         // first phase
         phase = 0;
         outsiderRate = 0.1f;
+        guardOn = 0;
+        pastPattern = -1;
         GameManager.inst.turnSystem.turnTimers[TurnType.MovePiece] = 8f;
     }
 
@@ -51,7 +57,7 @@ public class Boss : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space)) //meteor test
         {
             Debug.Log("test Space");
-            var A = Instantiate(phasePatterns[0]).GetComponent<BossPattern>();
+            var A = Instantiate(phasePatterns[4]).GetComponent<BossPattern>();
             A.StartPattern();
         }
     }
@@ -113,19 +119,52 @@ public class Boss : MonoBehaviour
 
     private BossPattern SelectPattern()
     {
-        // randomly make outside attacker
-        if (Random.Range(0f, 1f) < outsiderRate)
+        if (GameManager.inst.turnSystem.turnCount < turnLimit)
         {
-            SpawnOutsideAttacker();
+            // randomly make outside attacker
+            if (Random.Range(0f, 1f) < outsiderRate)
+            {
+                SpawnOutsideAttacker();
+            }
+            CheckClose();
+            // select random pattern or biased pattern
+            if (isClose)
+            {
+                if (guardOn == 0)
+                {
+                    guardOn = 2;
+                    return Instantiate(phasePatterns[0]).GetComponent<BossPattern>();
+                }
+                else
+                {
+                    guardOn--;
+                    int idx = pastPattern;
+                    while (idx == pastPattern)
+                    {
+                        idx = Random.Range(1, phasePatterns.Count - 1);
+                    }
+                    pastPattern = idx;
+                    return Instantiate(phasePatterns[idx]).GetComponent<BossPattern>();
+                }
+            }
+            else
+            {
+                int idx = pastPattern;
+                while (idx == pastPattern)
+                {
+                    idx = Random.Range(1, phasePatterns.Count - 1);
+                }
+                pastPattern = idx;
+                return Instantiate(phasePatterns[idx]).GetComponent<BossPattern>();
+            }
         }
-        CheckClose();
-        // select random pattern or biased pattern
-        if (isClose)
-            return Instantiate(phasePatterns[0]).GetComponent<BossPattern>(); 
         else
         {
-            int idx = Random.Range(1, phasePatterns.Count);
-            return Instantiate(phasePatterns[idx]).GetComponent<BossPattern>();
+            for (int i = 1; i < 5; i++)
+            {
+                SpawnOutsideAttacker();
+            }
+            return Instantiate(phasePatterns[5]).GetComponent<BossPattern>(); //필중 패턴 구현 해야함
         }
     }
 
@@ -148,7 +187,7 @@ public class Boss : MonoBehaviour
         {
             for (int a = 0; a < 8; a++)
             {
-                if (GameManager.inst.chessBoard.GetPiece(a, b) != null)
+                if (GameManager.inst.chessBoard.GetPiece(a, b) != null && GameManager.inst.chessBoard.GetPiece(a, b).isActive == true)
                 {
                     isClose = true;
                     break;
