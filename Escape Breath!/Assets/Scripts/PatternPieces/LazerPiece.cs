@@ -11,7 +11,7 @@ public class LazerPiece : MonoBehaviour
 
     public void Throw(float time)
     {
-        Debug.Log("던져 던저");
+        //Debug.Log("던져 던저");
         StartCoroutine(ThrowPiece(time));
     }
     IEnumerator ThrowPiece(float durationTime)
@@ -20,13 +20,13 @@ public class LazerPiece : MonoBehaviour
 
         transform.Translate(0, 0, - distance);
         startPos = transform.position;
-        Debug.Log(startPos);
+        //Debug.Log(startPos);
         float Velocity = 0; //속도 계산 
 
         float elapseTime = 0;
 
         //Debug.Log("real start throw");
-        Destroy(gameObject, durationTime);
+        Destroy(gameObject, durationTime + 1f);
         while (elapseTime < durationTime)
         {
             transform.Translate(0, 0, - (Velocity -(gravity * elapseTime)) * Time.deltaTime);
