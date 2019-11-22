@@ -6,6 +6,7 @@ public class LazerPiece : MonoBehaviour
 {
     public Vector3 targetPos;
     public float gravity = 2.9f;
+    public AudioSource dropSound;
 
     public Vector3 startPos;
 
@@ -13,6 +14,7 @@ public class LazerPiece : MonoBehaviour
     {
         Debug.Log("던져 던저");
         StartCoroutine(ThrowPiece(time));
+        StartCoroutine(StartBGM(time));
     }
     IEnumerator ThrowPiece(float durationTime)
     {
@@ -35,5 +37,10 @@ public class LazerPiece : MonoBehaviour
 
             yield return null;
         }
+    }
+    IEnumerator StartBGM(float durationTime)
+    {
+        yield return new WaitForSeconds(durationTime- 0.35f);
+        dropSound.Play();
     }
 }
