@@ -12,11 +12,8 @@ GameObject:
   - component: {fileID: 1845176524836196453}
   - component: {fileID: 1950670474311546094}
   - component: {fileID: 6189481926039585957}
-<<<<<<< HEAD
-  - component: {fileID: -2992162586044374813}
-=======
+  - component: {fileID: -8594736295191544544}
   - component: {fileID: 6699633199545379788}
->>>>>>> 80059b4fb566279491816b4b59cb82bd86aa571b
   m_Layer: 0
   m_Name: lazerP
   m_TagString: Untagged
@@ -98,28 +95,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   targetPos: {x: 0, y: 0, z: 0}
   gravity: 9.8
-  dropSound: {fileID: -2992162586044374813}
+  dropSound: {fileID: -8594736295191544544}
   startPos: {x: 0, y: 0, z: 0}
-<<<<<<< HEAD
---- !u!82 &-2992162586044374813
+--- !u!82 &-8594736295191544544
 AudioSource:
-=======
---- !u!96 &6699633199545379788
-TrailRenderer:
-  serializedVersion: 2
->>>>>>> 80059b4fb566279491816b4b59cb82bd86aa571b
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 552939717449284894}
   m_Enabled: 1
-<<<<<<< HEAD
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 61b7967ffc0d85f498981d617657f322, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.85
+  m_Volume: 1
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -127,8 +117,8 @@ TrailRenderer:
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
+  MinDistance: 0.1
+  MaxDistance: 10
   Pan2D: 0
   rolloffMode: 0
   BypassEffects: 0
@@ -163,7 +153,7 @@ TrailRenderer:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -203,7 +193,15 @@ TrailRenderer:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-=======
+--- !u!96 &6699633199545379788
+TrailRenderer:
+  serializedVersion: 2
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 552939717449284894}
+  m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -300,4 +298,3 @@ TrailRenderer:
   m_MinVertexDistance: 0.1
   m_Autodestruct: 0
   m_Emitting: 1
->>>>>>> 80059b4fb566279491816b4b59cb82bd86aa571b
