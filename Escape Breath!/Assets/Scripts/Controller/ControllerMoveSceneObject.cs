@@ -10,7 +10,7 @@ public class ControllerMoveSceneObject : MonoBehaviour
 
     public void StartMoveScene()
     {
-        awakeUIinst = Instantiate(awakeUI).GetComponent<SceneAwakeUI>();
+        awakeUIinst = Instantiate(awakeUI, Camera.main.transform).GetComponent<SceneAwakeUI>();
         awakeUIinst.GetComponent<Canvas>().worldCamera = Camera.main;
         awakeUIinst.isFadeIn = false;
         StartCoroutine(awakeUIinst.BackgroundAlphaCoroutine());
