@@ -12,12 +12,12 @@ public class SonicPiece : MonoBehaviour
     {
         transform.Translate(0, 0.11f, 0);
         startPos = transform.position;
-        Debug.Log("sonic ONLINE");
+        //Debug.Log("sonic ONLINE");
     }
 
     public void Fire(float time)
     {
-        Debug.Log("데굴 데굴");
+        //Debug.Log("데굴 데굴");
         //gameObject.GetComponentInChildren<SonicPieceCore>().StartRotate(time);
         StartCoroutine(ThrowPiece(time));
     }

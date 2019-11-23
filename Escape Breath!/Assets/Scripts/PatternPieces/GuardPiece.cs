@@ -15,7 +15,7 @@ public class GuardPiece : MonoBehaviour
     }
     IEnumerator ThrowPiece(float durationTime)
     {
-        durationTime -= 0.8f;
+        durationTime -= 0.1f;
 
         float distance = gravity * durationTime * durationTime / 2;
 

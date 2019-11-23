@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
     public SteamVR_Behaviour_Pose leftController;
     public SteamVR_Behaviour_Pose rightController;
 
+    public GameObject moveSceneObj;
     public GameObject attackObj;
     public Material whiteMat;
     public Material blackMat;
@@ -55,6 +56,7 @@ public class GameManager : MonoBehaviour
 
         hmdUI.turnText.text = "Game Over!";
         StartCoroutine(PieceFlyingCoroutine());
+        StartCoroutine(ShowMoveSceneObject(Color.red));
     }
 
     public void GameClear()
@@ -72,11 +74,13 @@ public class GameManager : MonoBehaviour
         boss.rb.isKinematic = false;
         boss.rb.AddExplosionForce(5f, Vector3.zero, 500f, 1, ForceMode.Impulse);
         StartCoroutine(LightWiderCoroutine());
+        StartCoroutine(ShowMoveSceneObject(Color.green));
     }
 
     IEnumerator PieceFlyingCoroutine()
     {
-        yield return new WaitForFixedUpdate();
+        yield return new WaitForEndOfFrame();
+        yield return new WaitForSecondsRealtime(0.05f);
         Time.timeScale = 0.2f;
         for (int i = 0; i < chessBoard.pieceList.Count; ++i)
         {
@@ -98,5 +102,12 @@ public class GameManager : MonoBehaviour
         }
         spotLight.spotAngle = 180;
         spotLight.range = 24;
+    }
+    
+    IEnumerator ShowMoveSceneObject(Color color)
+    {
+        yield return new WaitForSecondsRealtime(3f);
+        var obj = Instantiate(moveSceneObj).GetComponent<MeshRenderer>();
+        obj.material.color = color;
     }
 }

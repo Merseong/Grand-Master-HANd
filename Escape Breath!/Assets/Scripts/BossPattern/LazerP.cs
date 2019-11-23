@@ -12,7 +12,7 @@ public class LazerP : BossPattern
 
     public override void StartPattern()
     {
-        Debug.Log("lazerStart");
+        //Debug.Log("lazerStart");
         board = GameManager.inst.chessBoard;
         boss = GameManager.inst.boss;
         phase = boss.phase;
@@ -21,7 +21,7 @@ public class LazerP : BossPattern
     }
     protected override void SelectTarget()
     {
-        Debug.Log("select start");
+        //Debug.Log("select start");
         Piece king = board.GetRandomPiece(PieceType.King);
         if (phase > 0)
         {
@@ -49,11 +49,11 @@ public class LazerP : BossPattern
             }
             targets.Enqueue(pos);
         }
-        Debug.Log("Target select done");
+        //Debug.Log("Target select done");
     }
     public void AttackReady()
     {
-        Debug.Log("atkkkk");
+        //Debug.Log("atkkkk");
         for (int i = 0; i < (phase + 1) + checkKing; i++)
         {
             var atkPos = targets.Dequeue();

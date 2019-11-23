@@ -42,6 +42,7 @@ public class OutsideEnemy : MonoBehaviour
     {
         targetPos = target.position + targetOffset;
         laser.LookAt(targetPos);
+        transform.LookAt(target);
         laser.position = Vector3.Lerp(transform.position, targetPos, 0.5f);
         laser.localScale = new Vector3(laser.localScale.x, laser.localScale.y, Vector3.Distance(transform.position, targetPos) * 10);
         bullet.position = Vector3.Lerp(transform.position, targetPos, timer / flightTime);

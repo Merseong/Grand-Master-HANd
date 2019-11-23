@@ -149,11 +149,12 @@ public class Boss : MonoBehaviour
         }
         else
         {
-            for (int i = 1; i < 5; i++)
+            Debug.Log("End Limit!");
+            for (int i = 0; i < 5; i++)
             {
                 SpawnOutsideAttacker();
             }
-            return Instantiate(phasePatterns[5]).GetComponent<BossPattern>(); //필중 패턴 구현 해야함
+            return Instantiate(phasePatterns[4]).GetComponent<BossPattern>(); //필중 패턴 구현 해야함
         }
     }
 
