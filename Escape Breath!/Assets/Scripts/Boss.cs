@@ -78,17 +78,17 @@ public class Boss : MonoBehaviour
         redValue = health / maxHealth;
         redHealth.value = redValue;
         if (health == 0) GameManager.inst.GameClear();
-        else if (health < 500)
+        else if (health < 1000)
         {
             phase = 2;
-            outsiderRate = 0.3f;
+            outsiderRate = 0.35f;
             GameManager.inst.turnSystem.turnTimers[TurnType.MovePiece] = 6f;
             redBuff.SetActive(true);
         }
-        else if (health < 2000)
+        else if (health < 2250)
         {
             phase = 1;
-            outsiderRate = 0.2f;
+            outsiderRate = 0.25f;
             GameManager.inst.turnSystem.turnTimers[TurnType.MovePiece] = 7f;
             blueBuff.SetActive(true);
         }

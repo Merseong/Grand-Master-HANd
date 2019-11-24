@@ -6,7 +6,7 @@ public class Pawn : Attacker
 {
     public override void BeforeAttack()
     {
-        if (boardIdx.y == 7 && isActive)
+        if (boardIdx.y == 7 && isAlive)
         {
             TurnOnPromotion();
         }
