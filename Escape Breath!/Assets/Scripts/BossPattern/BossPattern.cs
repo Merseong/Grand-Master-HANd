@@ -9,4 +9,9 @@ public abstract class BossPattern : MonoBehaviour
     public abstract void StartPattern();
 
     protected abstract void SelectTarget();
+
+    private void Start()
+    {
+        Destroy(gameObject, 10f);
+    }
 }
